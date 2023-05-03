@@ -1,6 +1,7 @@
-import { Box, CssBaseline, Option, Select, Sheet, Input, Typography, Divider } from '@mui/joy'
+import { Box, CssBaseline, Option, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
 import hyLogo from "./assets/hy_logo.svg"
 import { useState } from 'react'
+import { SxProps } from '@mui/joy/styles/types'
 
 const Header = () => {
   return (
@@ -30,10 +31,10 @@ const courseTypeOptions = [
 ]
 
 const creditOptions = [
-  { value: 1, label: "1-3 op." },
-  { value: 4, label: "4-6 op." },
-  { value: 7, label: "7-9 op." },
-  { value: 10, label: "10 op. tai enemmän" },
+  { value: 0, label: "1-3 op." },
+  { value: 1, label: "4-6 op." },
+  { value: 2, label: "7-9 op." },
+  { value: 3, label: "10 op. tai enemmän" },
 ]
 
 const studentCountOptions = [
@@ -43,26 +44,46 @@ const studentCountOptions = [
   { value: 40, label: "yli 120" },
 ]
 
-const InputSection = ({ children, title, description, resultHours }: { children: React.ReactNode, title: string, description: string, resultHours?: number, }) => {
+const ResultChip = ({ hours }: { hours: number }) => {
   return (
-    <Box width="25%" display="flex" flexDirection="column" alignItems="stretch">
+    <Chip variant="soft">{`${hours} tuntia`}</Chip>
+  )
+}
+
+const InputContainer = ({ children, resultHours, infoBox, sx }: { children: React.ReactNode, resultHours?: number, infoBox?: React.ReactNode, sx?: SxProps }) => {
+  return (
+    <Box display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
       <Sheet sx={{
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
         rowGap: "1rem",
-        mx: "0.5rem"
+        mb: "auto",
       }} variant='soft'>
-        <Box display="flex" p="1rem" flexDirection="column" rowGap="1rem" flexGrow={1}>
-          <Typography level="body1">{title}</Typography>
-          <Typography level="body2" sx={{ mb: "auto" }}>{description}</Typography>
-          {children}
-        </Box>
+        {children}
         <Divider />
-        <Box p="1rem">
-          <Typography>{resultHours || 0} tuntia</Typography>
+        <Box p="1rem" mt="auto" display="flex">
+          <ResultChip hours={resultHours || 0} />
+          {infoBox && 
+            <Tooltip arrow title={
+              <Box width="30rem">{infoBox}</Box>
+            } variant="plain">
+              <Box ml="auto"><Chip variant="outlined">Lisätietoa</Chip></Box>
+            </Tooltip>
+          }
         </Box>
+        
       </Sheet>
+    </Box>
+  )
+}
+
+const InputSection = ({ children, title, description, sx }: { children: React.ReactNode, title: string, description: string, resultHours?: number, sx?: SxProps }) => {
+  return (  
+    <Box display="flex" p="1rem" flexDirection="column" rowGap="1rem" flexGrow={1} sx={sx}>
+      <Typography level="body1">{title}</Typography>
+      <Typography level="body2" sx={{ mb: "auto" }}>{description}</Typography>
+      {children}
     </Box>
   )
 }
@@ -82,12 +103,50 @@ const DropDownMenu = ({ options, value, onChange }: { options: Option[], value: 
 const HourInput = ({ value, onChange }: { value?: number, onChange: (value: number) => void }) => {
   return (
     <Input value={String(value)} onChange={e => onChange(e.target.valueAsNumber)} type="number"
-      
-      placeholder="0"
+      placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
       endDecorator={<Typography level="body2">{value === 1 ? 'tunti' : 'tuntia'}</Typography>}
     />
   )
 }
+
+const preparationHoursTableData = [
+  [5, 15, 30],
+  [10, 30, 50],
+  [15, 45, 70],
+  [20, 60, 90],
+]
+
+const getPreparationHours = ({ credits, courseType }: { credits: Option, courseType: Option }) => {
+  return preparationHoursTableData[credits.value][courseType.value]
+}
+
+const PreparationHoursInfoBox = () => (
+  <Sheet >
+    <Box p="1rem">
+      <Typography level="body2">Kurssiin valmistautumiseen käytettävä työaika lasketaan seuraavan taulukon mukaisesti:</Typography>
+    </Box>
+    <Table>
+      <thead>
+        <tr>
+          <th />
+          <th>Toistuva</th>
+          <th>Uudistettava</th>
+          <th>Uusi</th>
+        </tr>
+      </thead>
+      <tbody>
+          {preparationHoursTableData.map((row, i) => (
+            <tr key={i}>
+              <td>{creditOptions[i].label}</td>
+              {row.map((cell, j) => (
+                <td key={j}>{cell} h</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+    </Table>
+  </Sheet>
+)
 
 const WorkHourCalculator = () => {
   const [teachingHours, setTeachingHours] = useState<number|undefined>(0)
@@ -95,39 +154,70 @@ const WorkHourCalculator = () => {
   const [credits, setCredits] = useState(creditOptions[1])
   const [studentCount, setStudentCount] = useState(studentCountOptions[1])
 
+  const prepHours = getPreparationHours({ credits, courseType })
+
   return (
     <Box>
-      <Box display="flex" mb="1rem">
-        <InputSection
-          title="Opetustuntien lukumäärä"
-          description="Määritetty usein opetusohjelmassa. Tarvittaessa koulutusohjelman johtaja tai johtoryhmä päättää. Esim. 5 op kurssilla tyypillisesti 20-25."
+      <Box sx={theme => ({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        [theme.breakpoints.up('md')]: {
+          flexDirection: 'row',
+        },
+        mb: "2rem",
+       })}>
+        <InputContainer
           resultHours={teachingHours}
+          sx={{ flex: 1 }}
         >
-          <HourInput value={teachingHours} onChange={setTeachingHours} />
-        </InputSection>
-        <InputSection
-          title="Kurssin tyyppi"
-          description="Yleensä kurssit uudistettavia. Koulutusohjelman johtaja päättää."
-          resultHours={0}
+          <InputSection
+            title="Opetustuntien lukumäärä"
+            description="Määritetty usein opetusohjelmassa. Tarvittaessa koulutusohjelman johtaja tai johtoryhmä päättää. Esim. 5 op kurssilla tyypillisesti 20-25."
+          >
+            <HourInput value={teachingHours} onChange={setTeachingHours} />
+          </InputSection>
+        </InputContainer>
+        <InputContainer
+          resultHours={prepHours}
+          infoBox={<PreparationHoursInfoBox />}
+          sx={{ flex: 2 }}
         >
-          <DropDownMenu options={courseTypeOptions} value={courseType} onChange={setCourseType} />
-        </InputSection>
-        <InputSection
-          title="Opintopisteiden määrä"
-          description="Määräytyy OPS:n mukaan. Tyypillisesti 5 op. kursseja."
-          resultHours={credits.value}
-        >
-          <DropDownMenu options={creditOptions} value={credits} onChange={setCredits} />
-        </InputSection>
-        <InputSection
-          title="Suunniteltu opiskelijoiden määrä"
-          description="Määritetty usein opetusohjelmassa. Tarvittaessa koulutusohjelman johtaja tai johtoryhmä päättää."
+          <Box display="flex" flexGrow={1}>
+            <InputSection
+              title="Kurssin tyyppi"
+              description="Yleensä kurssit uudistettavia. Koulutusohjelman johtaja päättää."
+              sx={{ flex: 1 }}
+            >
+              <DropDownMenu options={courseTypeOptions} value={courseType} onChange={setCourseType} />
+            </InputSection>
+            <InputSection
+              title="Opintopisteiden määrä"
+              description="Määräytyy OPS:n mukaan. Tyypillisesti 5 op. kursseja."
+              sx={{ flex: 1 }}
+            >
+              <DropDownMenu options={creditOptions} value={credits} onChange={setCredits} />
+            </InputSection>
+          </Box>
+        </InputContainer>
+        <InputContainer
           resultHours={studentCount.value}
+          sx={{ flex: 1 }}
         >
-          <DropDownMenu options={studentCountOptions} value={studentCount} onChange={setStudentCount}/>
-        </InputSection>
+          <InputSection
+            title="Suunniteltu opiskelijoiden määrä"
+            description="Määritetty usein opetusohjelmassa. Tarvittaessa koulutusohjelman johtaja tai johtoryhmä päättää."
+          >
+            <DropDownMenu options={studentCountOptions} value={studentCount} onChange={setStudentCount}/>
+          </InputSection>
+        </InputContainer>
       </Box>
-
+      <Box display="flex" alignItems="center">
+        <Typography level="h5">Työaika yhteensä </Typography>
+        <Box ml="1rem">
+          <ResultChip hours={(teachingHours || 0) + prepHours + studentCount.value} />
+        </Box>
+      </Box>
     </Box>
   )
 }
@@ -146,8 +236,15 @@ const SalaryTable = () => {
 
 const Calculator = () => {
   return (
-    <Box p="2rem">
-      <WorkHourCalculator />
+    <Box>
+      <Box p="2rem">
+        <Typography level="h4" sx={{ mb: "2rem"}}>Työaikalaskuri</Typography>
+        <WorkHourCalculator />
+      </Box>
+      <Divider />
+      <Box p="2rem">
+        <Typography level="h4" sx={{ mb: "2rem"}}>Palkkalaskuri</Typography>
+      </Box>
     </Box>
   )
 }
