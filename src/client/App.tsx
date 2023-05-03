@@ -1,7 +1,9 @@
-import { Box, CssBaseline, Option, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
+import { Box, CssBaseline, Option, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip, Link } from '@mui/joy'
 import hyLogo from "./assets/hy_logo.svg"
-import { useState } from 'react'
+import toskaLogo from "./assets/toska13.png"
+import { useEffect, useState } from 'react'
 import { SxProps } from '@mui/joy/styles/types'
+import { GitHub } from "@mui/icons-material"
 
 const Header = () => {
   return (
@@ -17,6 +19,27 @@ const Header = () => {
       <Box display="flex" alignItems="center " columnGap="1rem">
         <Typography level="body1">TOPPI</Typography>
         <Typography level="body2">– TYÖKALU ULKOPUOLISTEN TUNTIOPETTAJIEN TYÖAIKOJEN JA PALKKIOIDEN LASKEMISEEN</Typography>
+      </Box>
+    </Sheet>
+  )
+}
+
+const Footer = () => {
+  return (
+    <Sheet sx={{
+      p: "1rem",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      columnGap: "5rem",
+      mt: "10rem",
+    }}>
+      <Box>
+        <a href="https://toska.dev" ><img src={toskaLogo} alt="Toska" width={70}/></a>
+      </Box>
+      <Typography level="body2">© Toska, Helsingin yliopisto</Typography>
+      <Box>
+        <Link href="https://github.com/UniversityOfHelsinkiCS/toppi" target="_blank"><GitHub fontSize='large'/></Link>
       </Box>
     </Sheet>
   )
@@ -44,13 +67,19 @@ const studentCountOptions = [
   { value: 40, label: "yli 120" },
 ]
 
-const ResultChip = ({ hours }: { hours: number }) => {
+const HoursChip = ({ hours }: { hours: number }) => {
   return (
     <Chip variant="soft">{`${hours} tuntia`}</Chip>
   )
 }
 
-const InputContainer = ({ children, resultHours, infoBox, sx }: { children: React.ReactNode, resultHours?: number, infoBox?: React.ReactNode, sx?: SxProps }) => {
+const SalaryChip = ({ salary, unit='€/h' }: { salary: number, unit?: string }) => {
+  return (
+    <Chip variant="soft" color="success">{`${salary} ${unit}`}</Chip>
+  )
+}
+
+const InputContainer = ({ children, resultChip, infoBox, sx }: { children: React.ReactNode, resultChip?: React.ReactNode, infoBox?: React.ReactNode, sx?: SxProps }) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
       <Sheet sx={{
@@ -61,17 +90,19 @@ const InputContainer = ({ children, resultHours, infoBox, sx }: { children: Reac
         mb: "auto",
       }} variant='soft'>
         {children}
-        <Divider />
-        <Box p="1rem" mt="auto" display="flex">
-          <ResultChip hours={resultHours || 0} />
-          {infoBox && 
-            <Tooltip arrow title={
-              <Box width="30rem">{infoBox}</Box>
-            } variant="plain">
-              <Box ml="auto"><Chip variant="outlined">Lisätietoa</Chip></Box>
-            </Tooltip>
-          }
-        </Box>
+        {resultChip && <>
+          <Divider />
+          <Box p="1rem" mt="auto" display="flex">
+            <Box mr="auto">{resultChip}</Box>
+            {infoBox && 
+              <Tooltip arrow title={
+                <Box width="30rem">{infoBox}</Box>
+              } variant="outlined">
+                <Box ml="auto"><Chip variant="outlined">Lisätietoa</Chip></Box>
+              </Tooltip>
+            }
+          </Box></>
+        }
         
       </Sheet>
     </Box>
@@ -120,7 +151,7 @@ const getPreparationHours = ({ credits, courseType }: { credits: Option, courseT
   return preparationHoursTableData[credits.value][courseType.value]
 }
 
-const PreparationHoursInfoBox = () => (
+const PreparationHoursTable = () => (
   <Sheet >
     <Box p="1rem">
       <Typography level="body2">Kurssiin valmistautumiseen käytettävä työaika lasketaan seuraavan taulukon mukaisesti:</Typography>
@@ -148,13 +179,17 @@ const PreparationHoursInfoBox = () => (
   </Sheet>
 )
 
-const WorkHourCalculator = () => {
+const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number, setTotalHours: (h: number) => void }) => {
   const [teachingHours, setTeachingHours] = useState<number|undefined>(0)
   const [courseType, setCourseType] = useState(courseTypeOptions[0])
   const [credits, setCredits] = useState(creditOptions[1])
   const [studentCount, setStudentCount] = useState(studentCountOptions[1])
 
   const prepHours = getPreparationHours({ credits, courseType })
+
+  useEffect(() => {
+    setTotalHours((teachingHours || 0) + prepHours + studentCount.value)
+  }, [teachingHours, prepHours, studentCount.value, setTotalHours])
 
   return (
     <Box>
@@ -168,7 +203,7 @@ const WorkHourCalculator = () => {
         mb: "2rem",
        })}>
         <InputContainer
-          resultHours={teachingHours}
+          resultChip={<HoursChip hours={teachingHours || 0} />}
           sx={{ flex: 1 }}
         >
           <InputSection
@@ -179,8 +214,8 @@ const WorkHourCalculator = () => {
           </InputSection>
         </InputContainer>
         <InputContainer
-          resultHours={prepHours}
-          infoBox={<PreparationHoursInfoBox />}
+          resultChip={<HoursChip hours={prepHours} />}
+          infoBox={<PreparationHoursTable />}
           sx={{ flex: 2 }}
         >
           <Box display="flex" flexGrow={1}>
@@ -201,7 +236,7 @@ const WorkHourCalculator = () => {
           </Box>
         </InputContainer>
         <InputContainer
-          resultHours={studentCount.value}
+          resultChip={<HoursChip hours={studentCount.value} />}
           sx={{ flex: 1 }}
         >
           <InputSection
@@ -215,35 +250,99 @@ const WorkHourCalculator = () => {
       <Box display="flex" alignItems="center">
         <Typography level="h5">Työaika yhteensä </Typography>
         <Box ml="1rem">
-          <ResultChip hours={(teachingHours || 0) + prepHours + studentCount.value} />
+          <HoursChip hours={totalHours} />
         </Box>
       </Box>
     </Box>
   )
 }
 
-const SalaryCalculator = () => {
+const salaryTableData = [
+  { qualificationInfo: 'Taso A. Vaativuustaso 8-11 (esim. professori)', salary: 55 },
+  { qualificationInfo: 'Taso B. Vaativuustaso 7 (esim. dosentti)', salary: 40 },
+  { qualificationInfo: 'Taso C. Vaativuustaso 5-6 (esim. tohtori)', salary: 30 },
+  { qualificationInfo: 'Taso D. Vaativuustaso 4 (esim. lisensiaatti tai ylempi korkeakoulututkinto)', salary: 24 },
+  { qualificationInfo: 'Taso E. Alempi korkeakoulututkinto (esim. opetusavustajana toimiva henkilö)', salary: 20 },
+  { qualificationInfo: 'Taso F. Muut', salary: 19 },
+]
+
+const SalaryTable = ({ sx }: { sx: SxProps }) => (
+  <Sheet sx={sx}>
+    <Box pb="1rem">
+      <Typography level="body2">Helsingin yliopiston yleisen taulukon mukaiset palkkiot ulkopuolisille opettajille:</Typography>
+    </Box>
+    <Table>
+      <thead>
+        <tr>
+          <th>Vaativuus / Pätevyys</th>
+          <th>Palkkio</th>
+        </tr>
+      </thead>
+      <tbody>
+          {salaryTableData.map((row, i) => (
+            <tr key={i}>
+              <td>{row.qualificationInfo}</td>
+              <td>{row.salary} €/h</td>
+            </tr>
+          ))}
+        </tbody>
+    </Table>
+  </Sheet>
+)
+
+const SalaryInput = ({ value, onChange }: { value?: number, onChange: (value: number) => void }) => {
   return (
-    <div></div>
+    <Input value={String(value)} onChange={e => onChange(e.target.valueAsNumber)} type="number"
+      placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
+      endDecorator={<Typography level="body2">€/h</Typography>}
+    />
   )
 }
 
-const SalaryTable = () => {
+const SalaryCalculator = ({ totalHours }: { totalHours: number }) => {
+  const [salary, setSalary] = useState(0)
+
   return (
-    <div></div>
+    <Box>
+      <Box sx={theme => ({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        [theme.breakpoints.up('md')]: {
+          flexDirection: 'row',
+        },
+        mb: "2rem",
+      })}>
+        <Box flex={1} mr="2rem">
+          <InputContainer sx={{ mb: "2rem" }}>
+            <InputSection title="Palkka" description="Merkitse vaatimustason mukainen tuntipalkkasi">
+              <SalaryInput value={salary} onChange={setSalary} />
+            </InputSection>
+          </InputContainer>
+          <Box display="flex" alignItems="center" columnGap="1em">
+            <Typography level="h5">Palkkio yhteensä </Typography>
+            <HoursChip hours={totalHours} /> X <SalaryChip salary={salary} /> = <SalaryChip salary={totalHours * salary} unit="€" />
+          </Box>
+        </Box>
+        <SalaryTable sx={{ flex: 2 }}/>
+      </Box>
+    </Box>
   )
 }
 
 const Calculator = () => {
+  const [totalHours, setTotalHours] = useState(0)
+
   return (
     <Box>
       <Box p="2rem">
         <Typography level="h4" sx={{ mb: "2rem"}}>Työaikalaskuri</Typography>
-        <WorkHourCalculator />
+        <WorkHourCalculator totalHours={totalHours} setTotalHours={setTotalHours} />
       </Box>
-      <Divider />
+      <Divider sx={{ my: "1rem" }}/>
       <Box p="2rem">
         <Typography level="h4" sx={{ mb: "2rem"}}>Palkkalaskuri</Typography>
+        <SalaryCalculator totalHours={totalHours} />
       </Box>
     </Box>
   )
@@ -255,6 +354,7 @@ function App() {
     <CssBaseline>
       <Header />
       <Calculator />
+      <Footer />
     </CssBaseline>
   )
 }
