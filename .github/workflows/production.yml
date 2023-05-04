@@ -19,7 +19,7 @@ jobs:
         run: docker-compose -f compose.ci.yml up -d
       
       - name: Print logs for debug
-        run: docker-compose -f compose.ci.yml logs -f
+        run: sleep 4 && docker-compose -f compose.ci.yml logs --tail 100
 
       - name: Install dependencies
         run: npm ci
