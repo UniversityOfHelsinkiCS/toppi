@@ -2,16 +2,26 @@
 import path from 'path'
 
 import express from 'express'
+import morgan from 'morgan'
+import cors from 'cors'
 
 const app = express()
 
 const PORT = process.env.PORT || 8000
 const inProduction = process.env.NODE_ENV === 'production'
 
-app.use('/api', (req, res, next) => {
-  console.log("pong")
-  res.send("pong")
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(morgan("short"))
+
+app.get('/api/ping', (_, res) => { res.send('pong')  })
+
+app.post('/api/contract', (req, res) => {
+  console.log(req.body)
+  res.send('ok')
 })
+
 app.use('/api', (_, res) => res.sendStatus(404))
 
 if (inProduction) {

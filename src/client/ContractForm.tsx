@@ -1,4 +1,5 @@
 import { Box, Button, FormControl, FormLabel, Input, Sheet, Typography } from "@mui/joy";
+import { sendContract } from "./api";
 
 interface FormElements extends HTMLFormControlsCollection {
   firstname: HTMLInputElement;
@@ -36,7 +37,7 @@ const ContractForm = () => {
         <Typography level="h4">Työsopimusta varten tarvittavat muut tiedot</Typography>
         <Box display="flex" justifyContent="center" mt="2rem">
           <form
-            onSubmit={(event: React.FormEvent<SignInFormElement>) => {
+            onSubmit={async (event: React.FormEvent<SignInFormElement>) => {
               event.preventDefault()
               const formElements = event.currentTarget.elements
               const data = {
@@ -50,7 +51,7 @@ const ContractForm = () => {
                 contractEndDate: formElements.contractEndDate.value,
               }
 
-              alert(JSON.stringify(data, null, 2));
+              await sendContract(data)
             }}
           >
             <Box display="flex" flexDirection="column" gap="3rem">
