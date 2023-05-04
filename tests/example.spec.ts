@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const baseUrl = 'http://localhost:8000';
+const baseUrl = 'http://localhost:3000';
 
 test.beforeEach(async ({ page }) => {
   await page.goto(baseUrl);
