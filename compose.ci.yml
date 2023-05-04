@@ -6,7 +6,6 @@ services:
       context: .
       args:
         - E2E=true
-    environment:
     command: ['npm', 'run', 'start:test']
     ports:
       - 8000:8000
