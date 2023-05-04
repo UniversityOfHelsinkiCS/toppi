@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Start the application
-        run: docker-compose -f compose.ci.yml up -d
+      #- name: Start the application
+      # run: docker-compose -f compose.ci.yml up -d
 
       - name: Install dependencies
         run: npm ci
