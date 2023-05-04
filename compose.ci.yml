@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - E2E=true
+    environment:
+    command: ['npm', 'run', 'start:test']
+    ports:
+      - 8000:8000
+    container_name: toppi_dev
