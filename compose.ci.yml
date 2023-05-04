@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: .
+      dockerfile: Containerfile
       args:
         - E2E=true
     command: ['npm', 'run', 'start:test']
