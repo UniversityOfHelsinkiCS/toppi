@@ -69,10 +69,10 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'docker-compose -f compose.ci.yml up -d',
-    url: 'http://localhost:8000',
-    reuseExistingServer: true,
-    timeout: 120 * 1000,
-  },
+  // webServer: {
+  //   command: 'docker-compose -f compose.ci.yml up -d',
+  //   url: 'http://localhost:8000',
+  //   reuseExistingServer: true,
+  //   timeout: 120 * 1000,
+  // },
 });
