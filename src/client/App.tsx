@@ -1,8 +1,9 @@
-import { Box, CssBaseline, Link, Sheet, Typography } from "@mui/joy"
+import { Box, CssBaseline, Divider, Link, Sheet, Typography } from "@mui/joy"
 import Calculator from "./Calculator"
 import { GitHub } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
 import toskaLogo from "./assets/toska13.png"
+import ContractForm from "./ContractForm"
 
 const Header = () => {
   return (
@@ -50,6 +51,8 @@ function App() {
     <CssBaseline>
       <Header />
       <Calculator />
+      <Divider />
+      <ContractForm />
       <Footer />
     </CssBaseline>
   )
