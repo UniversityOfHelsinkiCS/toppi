@@ -36,7 +36,7 @@ const SalaryChip = ({ salary, unit='€/h' }: { salary: number, unit?: string })
   )
 }
 
-const InputContainer = ({ children, resultChip, infoBox, sx }: { children: React.ReactNode, resultChip?: React.ReactNode, infoBox?: React.ReactNode, sx?: SxProps }) => {
+const InputContainer = ({ children, resultName, resultChip, infoBox, sx }: { children: React.ReactNode, resultName?: string, resultChip?: React.ReactNode, infoBox?: React.ReactNode, sx?: SxProps }) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
       <Sheet sx={{
@@ -49,7 +49,8 @@ const InputContainer = ({ children, resultChip, infoBox, sx }: { children: React
         {children}
         {resultChip && <>
           <Divider />
-          <Box p="1rem" mt="auto" display="flex">
+          <Box p="1rem" mt="auto" display="flex" alignItems="center" columnGap="1rem">
+            <Typography>{resultName}</Typography>
             <Box mr="auto">{resultChip}</Box>
             {infoBox && 
               <Tooltip arrow title={
@@ -160,6 +161,7 @@ const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number,
         mb: "2rem",
        })}>
         <InputContainer
+          resultName='Opetustunnit'
           resultChip={<HoursChip hours={teachingHours || 0} />}
           sx={{ flex: 1 }}
         >
@@ -171,6 +173,7 @@ const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number,
           </InputSection>
         </InputContainer>
         <InputContainer
+          resultName="Kurssin valmistelu"
           resultChip={<HoursChip hours={prepHours} />}
           infoBox={<PreparationHoursTable />}
           sx={{ flex: 2 }}
@@ -193,6 +196,7 @@ const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number,
           </Box>
         </InputContainer>
         <InputContainer
+          resultName="Opiskelijoiden määrään perustuva lisätyöaika"
           resultChip={<HoursChip hours={studentCount.value} />}
           sx={{ flex: 1 }}
         >
@@ -264,13 +268,13 @@ const SalaryCalculator = ({ totalHours }: { totalHours: number }) => {
       <Box sx={theme => ({
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem',
+        gap: '3rem',
         [theme.breakpoints.up('md')]: {
           flexDirection: 'row',
         },
         mb: "2rem",
       })}>
-        <Box flex={1} mr="2rem">
+        <Box flex={1}>
           <InputContainer sx={{ mb: "2rem" }}>
             <InputSection title="Palkka" description="Merkitse vaatimustason mukainen tuntipalkkasi">
               <SalaryInput value={salary} onChange={setSalary} />
@@ -291,7 +295,10 @@ const Calculator = () => {
   const [totalHours, setTotalHours] = useState(0)
 
   return (
-    <Box>
+    <Sheet sx={{
+      borderRadius: "1rem",
+      py: "2rem",
+    }}>
       <Box p="2rem">
         <Typography level="h4" sx={{ mb: "2rem"}}>Työaikalaskuri</Typography>
         <WorkHourCalculator totalHours={totalHours} setTotalHours={setTotalHours} />
@@ -301,7 +308,7 @@ const Calculator = () => {
         <Typography level="h4" sx={{ mb: "2rem"}}>Palkkalaskuri</Typography>
         <SalaryCalculator totalHours={totalHours} />
       </Box>
-    </Box>
+    </Sheet>
   )
 }
 

@@ -12,6 +12,7 @@ const Header = () => {
       columnGap: "1rem",
       alignItems: "center",
       display: "flex",
+      borderRadius: "1rem",
     }}>
       <Box width="2rem">
         <img src={hyLogo} alt="hy logo" />
@@ -33,6 +34,7 @@ const Footer = () => {
       justifyContent: "center",
       columnGap: "5rem",
       mt: "10rem",
+      borderRadius: "1rem",
     }}>
       <Box>
         <a href="https://toska.dev" ><img src={toskaLogo} alt="Toska" width={70}/></a>
