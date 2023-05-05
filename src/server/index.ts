@@ -8,6 +8,7 @@ import cors from 'cors'
 const app = express()
 
 const PORT = process.env.PORT || 8000
+const inTesting = process.env.NODE_ENV === 'test'
 const inProduction = process.env.NODE_ENV === 'production'
 
 app.use(cors())
@@ -24,7 +25,7 @@ app.post('/api/contract', (req, res) => {
 
 app.use('/api', (_, res) => res.sendStatus(404))
 
-if (inProduction) {
+if (inProduction || inTesting) {
   const DIST_PATH = path.resolve(__dirname, '../../dist')
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
