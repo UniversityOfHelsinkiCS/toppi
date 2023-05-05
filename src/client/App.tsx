@@ -17,7 +17,7 @@ const Header = () => {
       <Box width="2rem">
         <img src={hyLogo} alt="hy logo" />
       </Box>
-      <Box display="flex" alignItems="center " columnGap="1rem">
+      <Box display="flex" alignItems="center" columnGap="1rem">
         <Typography level="body1">TOPPI</Typography>
         <Typography level="body2">– TYÖKALU ULKOPUOLISTEN TUNTIOPETTAJIEN TYÖAIKOJEN JA PALKKIOIDEN LASKEMISEEN</Typography>
       </Box>

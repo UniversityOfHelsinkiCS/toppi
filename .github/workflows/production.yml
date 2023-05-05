@@ -60,3 +60,29 @@ jobs:
           registry: quay.io/toska
           username: toska+github
           password: ${{ secrets.QUAY_IO_TOKEN }}
+  
+  sentry-release:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Pull image and create a container
+        run: docker create --name toppi quay.io/toska/toppi:production
+
+      - name: Copy assets from the container
+        run: docker cp toppi:/opt/app-root/src/dist ./dist
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_URL: ${{ secrets.SENTRY_URL }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          set_commits: 'skip'
+          sourcemaps: ./dist/assets
+          url_prefix: '~/assets'
