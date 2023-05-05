@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const PUBLIC_URL = process.env.PUBLIC_URL || "http://localhost:8000";
+import { PUBLIC_URL } from "../config";
 
 const client = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
