@@ -4,6 +4,7 @@ import path from 'path'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import Sentry from '@sentry/node'
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.get('/api/ping', (_, res) => { res.send('pong')  })
 
 app.post('/api/contract', (req, res) => {
   console.log(req.body)
+  Sentry.captureMessage('Contract request created: ' + req.body)
   res.send('ok')
 })
 
