@@ -250,9 +250,11 @@ const SalaryCalculator = () => {
               <SalaryInput />
             </InputSection>
           </InputContainer>
-          <Box display="flex" alignItems="center" columnGap="1em">
+          <Box display="flex" alignItems="center" gap="1em" flexWrap="wrap">
             <Typography level="h5">Palkkio yhteensä </Typography>
-            <HoursChip hours={totalHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={totalHours * hourlyRate} unit="€" />
+            <Box display="flex" columnGap="1rem" alignItems="center">
+              <HoursChip hours={totalHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={totalHours * hourlyRate} unit="€" />
+            </Box>
           </Box>
         </Box>
         <SalaryTable sx={{ flex: 2 }}/>
