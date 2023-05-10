@@ -107,7 +107,7 @@ const ContractForm = () => {
 const ContractRequest = () => (
   <Box p="2rem">
     <Typography level="h4">Työsopimuspyyntö</Typography>
-    <Box sx={theme => ({ display: "flex", gap: "2rem", py: "4rem", [theme.breakpoints.down('md')]: { flexDirection: 'column' } })}>
+    <Box sx={theme => ({ display: "flex", gap: "4rem", py: "4rem", [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse', } })}>
       <Box flex={1}>
         <ContractForm />
       </Box>
