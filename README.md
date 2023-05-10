@@ -1,4 +1,4 @@
-# toppi
+# toppi [![CI/CD](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml)
 
 Työaika- ja palkkalaskuri ulkopuolisille tuntiopettajille.
 
