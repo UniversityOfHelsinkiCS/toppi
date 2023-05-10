@@ -3,6 +3,7 @@ import { SxProps } from '@mui/joy/styles/types'
 import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from './store'
 import { Option } from './types'
 import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions } from './calculatorConfig'
+import { SectionDivider } from './common'
 
 const HoursChip = ({ hours }: { hours: number }) => (
   <Chip variant="soft">{`${hours} tuntia`}</Chip>
@@ -263,13 +264,12 @@ const SalaryCalculator = () => {
 const Calculator = () => (
   <Sheet sx={{
     borderRadius: "1rem",
-    py: "2rem",
   }}>
     <Box p="2rem">
       <Typography level="h4" sx={{ mb: "2rem"}}>Työaikalaskuri</Typography>
       <WorkHourCalculator />
     </Box>
-    <Divider sx={{ my: "1rem" }}/>
+    <SectionDivider />
     <Box p="2rem">
       <Typography level="h4" sx={{ mb: "2rem"}}>Palkkalaskuri</Typography>
       <SalaryCalculator />

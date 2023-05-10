@@ -105,7 +105,7 @@ const ContractForm = () => {
 }
 
 const ContractRequest = () => (
-  <Box p="2rem" py="4rem">
+  <Box p="2rem">
     <Typography level="h4">Työsopimuspyyntö</Typography>
     <Box sx={{ display: "flex", gap: "2rem", py: "4rem" }}>
       <Box flex={1}>

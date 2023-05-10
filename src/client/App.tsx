@@ -4,11 +4,13 @@ import { GitHub } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
 import toskaLogo from "./assets/toska13.png"
 import ContractRequest from "./ContractRequest"
+import { SectionDivider } from "./common"
 
 const Header = () => {
   return (
     <Sheet sx={{
       p: "1rem",
+      mb: "4rem",
       columnGap: "1rem",
       alignItems: "center",
       display: "flex",
@@ -53,7 +55,7 @@ function App() {
     <CssBaseline>
       <Header />
       <Calculator />
-      <Divider />
+      <SectionDivider />
       <ContractRequest />
       <Footer />
     </CssBaseline>
