@@ -1,6 +1,7 @@
 import { Box, Option, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
 import { useEffect, useState } from 'react'
 import { SxProps } from '@mui/joy/styles/types'
+import useContractStore from './store'
 
 type Option = { label: string, value: number }
 
@@ -24,79 +25,72 @@ const studentCountOptions = [
   { value: 40, label: "yli 120" },
 ]
 
-const HoursChip = ({ hours }: { hours: number }) => {
-  return (
-    <Chip variant="soft">{`${hours} tuntia`}</Chip>
-  )
-}
+const HoursChip = ({ hours }: { hours: number }) => (
+  <Chip variant="soft">{`${hours} tuntia`}</Chip>
+)
 
-const SalaryChip = ({ salary, unit='€/h' }: { salary: number, unit?: string }) => {
-  return (
-    <Chip variant="soft" color="success">{`${salary} ${unit}`}</Chip>
-  )
-}
 
-const InputContainer = ({ children, resultName, resultChip, infoBox, sx }: { children: React.ReactNode, resultName?: string, resultChip?: React.ReactNode, infoBox?: React.ReactNode, sx?: SxProps }) => {
-  return (
-    <Box display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
-      <Sheet sx={{
-        flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
-        rowGap: "1rem",
-        mb: "auto",
-      }} variant='soft'>
-        {children}
-        {resultChip && <>
-          <Divider />
-          <Box p="1rem" mt="auto" display="flex" alignItems="center" columnGap="1rem">
-            <Typography>{resultName}</Typography>
-            <Box mr="auto">{resultChip}</Box>
-            {infoBox && 
-              <Tooltip arrow title={
-                <Box width="30rem">{infoBox}</Box>
-              } variant="outlined">
-                <Box ml="auto"><Chip variant="outlined">Lisätietoa</Chip></Box>
-              </Tooltip>
-            }
-          </Box></>
-        }
-        
-      </Sheet>
-    </Box>
-  )
-}
+const SalaryChip = ({ salary, unit='€/h' }: { salary: number, unit?: string }) => (
+  <Chip variant="soft" color="success">{`${salary} ${unit}`}</Chip>
+)
 
-const InputSection = ({ children, title, description, sx }: { children: React.ReactNode, title: string, description: string, resultHours?: number, sx?: SxProps }) => {
-  return (  
-    <Box display="flex" p="1rem" flexDirection="column" rowGap="1rem" flexGrow={1} sx={sx}>
-      <Typography level="body1">{title}</Typography>
-      <Typography level="body2" sx={{ mb: "auto" }}>{description}</Typography>
+
+const InputContainer = ({ children, resultName, resultChip, infoBox, sx }: { children: React.ReactNode, resultName?: string, resultChip?: React.ReactNode, infoBox?: React.ReactNode, sx?: SxProps }) => (
+  <Box display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
+    <Sheet sx={{
+      flexGrow: 1,
+      display: "flex",
+      flexDirection: "column",
+      rowGap: "1rem",
+      mb: "auto",
+    }} variant='soft'>
       {children}
-    </Box>
-  )
-}
+      {resultChip && <>
+        <Divider />
+        <Box p="1rem" mt="auto" display="flex" alignItems="center" columnGap="1rem">
+          <Typography>{resultName}</Typography>
+          <Box mr="auto">{resultChip}</Box>
+          {infoBox && 
+            <Tooltip arrow title={
+              <Box width="30rem">{infoBox}</Box>
+            } variant="outlined">
+              <Box ml="auto"><Chip variant="outlined">Lisätietoa</Chip></Box>
+            </Tooltip>
+          }
+        </Box></>
+      }
+      
+    </Sheet>
+  </Box>
+)
 
-const DropDownMenu = ({ options, value, onChange }: { options: Option[], value: Option, onChange: (opt: Option) => void })=> {
-  return (
-    <Select value={value} onChange={(e, newValue) => newValue && onChange(newValue)}>
-      {options.map((option) => (
-        <Option key={option.value} value={option}>
-          {option.label}
-        </Option>
-      ))}
-    </Select>
-  )
-}
 
-const HourInput = ({ value, onChange }: { value?: number, onChange: (value: number) => void }) => {
-  return (
-    <Input value={String(value)} onChange={e => onChange(e.target.valueAsNumber)} type="number"
-      placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
-      endDecorator={<Typography level="body2">{value === 1 ? 'tunti' : 'tuntia'}</Typography>}
-    />
-  )
-}
+const InputSection = ({ children, title, description, sx }: { children: React.ReactNode, title: string, description: string, resultHours?: number, sx?: SxProps }) => (
+  <Box display="flex" p="1rem" flexDirection="column" rowGap="1rem" flexGrow={1} sx={sx}>
+    <Typography level="body1">{title}</Typography>
+    <Typography level="body2" sx={{ mb: "auto" }}>{description}</Typography>
+    {children}
+  </Box>
+)
+
+
+const DropDownMenu = ({ options, value, onChange }: { options: Option[], value: Option, onChange: (opt: Option) => void }) => (
+  <Select value={value} onChange={(e, newValue) => newValue && onChange(newValue)}>
+    {options.map((option) => (
+      <Option key={option.value} value={option}>
+        {option.label}
+      </Option>
+    ))}
+  </Select>
+)
+
+
+const HourInput = ({ value, onChange }: { value?: number, onChange: (value: number) => void }) => (
+  <Input value={String(value)} onChange={e => onChange(e.target.valueAsNumber)} type="number"
+    placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
+    endDecorator={<Typography level="body2">{value === 1 ? 'tunti' : 'tuntia'}</Typography>}
+  />
+)
 
 const preparationHoursTableData = [
   [5, 15, 30],
@@ -137,7 +131,7 @@ const PreparationHoursTable = () => (
   </Sheet>
 )
 
-const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number, setTotalHours: (h: number) => void }) => {
+const WorkHourCalculator = () => {
   const [teachingHours, setTeachingHours] = useState<number|undefined>(0)
   const [courseType, setCourseType] = useState(courseTypeOptions[0])
   const [credits, setCredits] = useState(creditOptions[1])
@@ -145,9 +139,12 @@ const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number,
 
   const prepHours = getPreparationHours({ credits, courseType })
 
+  const workHours = useContractStore(state => state.workHours)
+  const setWorkHours = useContractStore(state => state.setWorkHours)
+
   useEffect(() => {
-    setTotalHours((teachingHours || 0) + prepHours + studentCount.value)
-  }, [teachingHours, prepHours, studentCount.value, setTotalHours])
+    setWorkHours((teachingHours || 0) + prepHours + studentCount.value)
+  }, [teachingHours, prepHours, studentCount.value, setWorkHours])
 
   return (
     <Box>
@@ -211,7 +208,7 @@ const WorkHourCalculator = ({ totalHours, setTotalHours }: { totalHours: number,
       <Box display="flex" alignItems="center">
         <Typography level="h5">Työaika yhteensä </Typography>
         <Box ml="1rem">
-          <HoursChip hours={totalHours} />
+          <HoursChip hours={workHours} />
         </Box>
       </Box>
     </Box>
@@ -251,17 +248,20 @@ const SalaryTable = ({ sx }: { sx: SxProps }) => (
   </Sheet>
 )
 
-const SalaryInput = ({ value, onChange }: { value?: number, onChange: (value: number) => void }) => {
+const SalaryInput = () => {
+  const setHourlyRate = useContractStore(state => state.setHourlyRate)
+
   return (
-    <Input value={String(value)} onChange={e => onChange(e.target.valueAsNumber)} type="number"
+    <Input onChange={e => setHourlyRate(e.target.valueAsNumber)} type="number"
       placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
       endDecorator={<Typography level="body2">€/h</Typography>}
     />
   )
 }
 
-const SalaryCalculator = ({ totalHours }: { totalHours: number }) => {
-  const [salary, setSalary] = useState(0)
+const SalaryCalculator = () => {
+  const workHours = useContractStore(state => state.workHours)
+  const hourlyRate = useContractStore(state => state.hourlyRate)
 
   return (
     <Box>
@@ -277,12 +277,12 @@ const SalaryCalculator = ({ totalHours }: { totalHours: number }) => {
         <Box flex={1}>
           <InputContainer sx={{ mb: "2rem" }}>
             <InputSection title="Palkka" description="Merkitse vaatimustason mukainen tuntipalkkasi">
-              <SalaryInput value={salary} onChange={setSalary} />
+              <SalaryInput />
             </InputSection>
           </InputContainer>
           <Box display="flex" alignItems="center" columnGap="1em">
             <Typography level="h5">Palkkio yhteensä </Typography>
-            <HoursChip hours={totalHours} /> X <SalaryChip salary={salary} /> = <SalaryChip salary={totalHours * salary} unit="€" />
+            <HoursChip hours={workHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={workHours * hourlyRate} unit="€" />
           </Box>
         </Box>
         <SalaryTable sx={{ flex: 2 }}/>
@@ -291,25 +291,21 @@ const SalaryCalculator = ({ totalHours }: { totalHours: number }) => {
   )
 }
 
-const Calculator = () => {
-  const [totalHours, setTotalHours] = useState(0)
-
-  return (
-    <Sheet sx={{
-      borderRadius: "1rem",
-      py: "2rem",
-    }}>
-      <Box p="2rem">
-        <Typography level="h4" sx={{ mb: "2rem"}}>Työaikalaskuri</Typography>
-        <WorkHourCalculator totalHours={totalHours} setTotalHours={setTotalHours} />
-      </Box>
-      <Divider sx={{ my: "1rem" }}/>
-      <Box p="2rem">
-        <Typography level="h4" sx={{ mb: "2rem"}}>Palkkalaskuri</Typography>
-        <SalaryCalculator totalHours={totalHours} />
-      </Box>
-    </Sheet>
-  )
-}
+const Calculator = () => (
+  <Sheet sx={{
+    borderRadius: "1rem",
+    py: "2rem",
+  }}>
+    <Box p="2rem">
+      <Typography level="h4" sx={{ mb: "2rem"}}>Työaikalaskuri</Typography>
+      <WorkHourCalculator />
+    </Box>
+    <Divider sx={{ my: "1rem" }}/>
+    <Box p="2rem">
+      <Typography level="h4" sx={{ mb: "2rem"}}>Palkkalaskuri</Typography>
+      <SalaryCalculator />
+    </Box>
+  </Sheet>
+)
 
 export default Calculator
