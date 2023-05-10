@@ -6,11 +6,19 @@ import morgan from 'morgan'
 import cors from 'cors'
 import Sentry from '@sentry/node'
 
-const app = express()
-
 const PORT = process.env.PORT || 8000
 const inTesting = process.env.NODE_ENV === 'test'
 const inProduction = process.env.NODE_ENV === 'production'
+
+const app = express()
+
+if (inProduction) {
+  Sentry.init({
+    dsn: "https://06393e6c223e4dc69d476c94e74dee75@sentry.cs.helsinki.fi/16",
+    integrations: [new Sentry.Integrations.Http({ tracing: true }), new Sentry.Integrations.Express({ app })],
+    tracesSampleRate: 1.0,
+  })
+}
 
 app.use(cors())
 app.use(express.json())
@@ -21,7 +29,6 @@ app.get('/api/ping', (_, res) => { res.send('pong')  })
 
 app.post('/api/contract', (req, res) => {
   console.log(req.body)
-  Sentry.captureMessage('Contract request created: ' + req.body)
   res.send('ok')
 })
 

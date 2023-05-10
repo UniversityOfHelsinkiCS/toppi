@@ -1,5 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Input, Sheet, Typography } from "@mui/joy";
 import { sendContract } from "./api";
+import CalculatorPreview from "./CalculatorPreview";
 
 interface FormElements extends HTMLFormControlsCollection {
   firstname: HTMLInputElement;
@@ -31,11 +32,10 @@ const ContractForm = () => {
   return (
     <Sheet sx={{
       borderRadius: "1rem",
-      py: "2rem",
     }}>
-      <Box p="2rem">
-        <Typography level="h4">Työsopimusta varten tarvittavat muut tiedot</Typography>
-        <Box display="flex" justifyContent="center" mt="2rem">
+      <Box>
+        <Typography level="h5">Työsopimusta varten tarvittavat muut tiedot</Typography>
+        <Box mt="2rem">
           <form
             onSubmit={async (event: React.FormEvent<SignInFormElement>) => {
               event.preventDefault()
@@ -104,4 +104,18 @@ const ContractForm = () => {
   )
 }
 
-export default ContractForm
+const ContractRequest = () => (
+  <Box p="2rem" py="4rem">
+    <Typography level="h4">Työsopimuspyyntö</Typography>
+    <Box sx={{ display: "flex", gap: "2rem", py: "4rem" }}>
+      <Box flex={1}>
+        <ContractForm />
+      </Box>
+      <Box flex={1}>
+        <CalculatorPreview />
+      </Box>
+    </Box>
+  </Box>
+)
+
+export default ContractRequest
