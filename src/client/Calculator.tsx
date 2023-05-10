@@ -1,29 +1,8 @@
-import { Box, Option, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
-import { useEffect, useState } from 'react'
+import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
 import { SxProps } from '@mui/joy/styles/types'
-import useContractStore from './store'
-
-type Option = { label: string, value: number }
-
-const courseTypeOptions = [
-  { label: "Toistuva", value: 0 },
-  { label: "Uudistettava", value: 1 },
-  { label: "Uusi", value: 2 },
-]
-
-const creditOptions = [
-  { value: 0, label: "1-3 op." },
-  { value: 1, label: "4-6 op." },
-  { value: 2, label: "7-9 op." },
-  { value: 3, label: "10 op. tai enemmän" },
-]
-
-const studentCountOptions = [
-  { value: 10, label: "1-30" },
-  { value: 20, label: "31-70" },
-  { value: 30, label: "71-120" },
-  { value: 40, label: "yli 120" },
-]
+import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from './store'
+import { Option } from './types'
+import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions } from './calculatorConfig'
 
 const HoursChip = ({ hours }: { hours: number }) => (
   <Chip variant="soft">{`${hours} tuntia`}</Chip>
@@ -77,30 +56,22 @@ const InputSection = ({ children, title, description, sx }: { children: React.Re
 const DropDownMenu = ({ options, value, onChange }: { options: Option[], value: Option, onChange: (opt: Option) => void }) => (
   <Select value={value} onChange={(e, newValue) => newValue && onChange(newValue)}>
     {options.map((option) => (
-      <Option key={option.value} value={option}>
+      <SelectOption key={option.value} value={option}>
         {option.label}
-      </Option>
+      </SelectOption>
     ))}
   </Select>
 )
 
 
-const HourInput = ({ value, onChange }: { value?: number, onChange: (value: number) => void }) => (
-  <Input value={String(value)} onChange={e => onChange(e.target.valueAsNumber)} type="number"
-    placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
-    endDecorator={<Typography level="body2">{value === 1 ? 'tunti' : 'tuntia'}</Typography>}
-  />
-)
-
-const preparationHoursTableData = [
-  [5, 15, 30],
-  [10, 30, 50],
-  [15, 45, 70],
-  [20, 60, 90],
-]
-
-const getPreparationHours = ({ credits, courseType }: { credits: Option, courseType: Option }) => {
-  return preparationHoursTableData[credits.value][courseType.value]
+const TeachingHoursInput = () => {
+  const setTeachingHours = useContractStore(state => state.setTeachingHours)
+  return (
+    <Input onChange={e => setTeachingHours(e.target.valueAsNumber)} type="number"
+      placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
+      endDecorator={<Typography level="body2">tuntia</Typography>}
+    />
+  )
 }
 
 const PreparationHoursTable = () => (
@@ -132,19 +103,17 @@ const PreparationHoursTable = () => (
 )
 
 const WorkHourCalculator = () => {
-  const [teachingHours, setTeachingHours] = useState<number|undefined>(0)
-  const [courseType, setCourseType] = useState(courseTypeOptions[0])
-  const [credits, setCredits] = useState(creditOptions[1])
-  const [studentCount, setStudentCount] = useState(studentCountOptions[1])
-
-  const prepHours = getPreparationHours({ credits, courseType })
-
-  const workHours = useContractStore(state => state.workHours)
-  const setWorkHours = useContractStore(state => state.setWorkHours)
-
-  useEffect(() => {
-    setWorkHours((teachingHours || 0) + prepHours + studentCount.value)
-  }, [teachingHours, prepHours, studentCount.value, setWorkHours])
+  const { 
+    teachingHours, 
+    credits, 
+    setCredits, 
+    courseType, 
+    setCourseType, 
+    studentCount, 
+    setStudentCount, 
+    preparationHours, 
+    totalHours
+  } = useWorkHourCalculatorFields()
 
   return (
     <Box>
@@ -166,12 +135,12 @@ const WorkHourCalculator = () => {
             title="Opetustuntien lukumäärä"
             description="Määritetty usein opetusohjelmassa. Tarvittaessa koulutusohjelman johtaja tai johtoryhmä päättää. Esim. 5 op kurssilla tyypillisesti 20-25."
           >
-            <HourInput value={teachingHours} onChange={setTeachingHours} />
+            <TeachingHoursInput />
           </InputSection>
         </InputContainer>
         <InputContainer
           resultName="Kurssin valmistelu"
-          resultChip={<HoursChip hours={prepHours} />}
+          resultChip={<HoursChip hours={preparationHours} />}
           infoBox={<PreparationHoursTable />}
           sx={{ flex: 2 }}
         >
@@ -208,7 +177,7 @@ const WorkHourCalculator = () => {
       <Box display="flex" alignItems="center">
         <Typography level="h5">Työaika yhteensä </Typography>
         <Box ml="1rem">
-          <HoursChip hours={workHours} />
+          <HoursChip hours={totalHours} />
         </Box>
       </Box>
     </Box>
@@ -260,7 +229,7 @@ const SalaryInput = () => {
 }
 
 const SalaryCalculator = () => {
-  const workHours = useContractStore(state => state.workHours)
+  const totalHours = useTotalHours()
   const hourlyRate = useContractStore(state => state.hourlyRate)
 
   return (
@@ -282,7 +251,7 @@ const SalaryCalculator = () => {
           </InputContainer>
           <Box display="flex" alignItems="center" columnGap="1em">
             <Typography level="h5">Palkkio yhteensä </Typography>
-            <HoursChip hours={workHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={workHours * hourlyRate} unit="€" />
+            <HoursChip hours={totalHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={totalHours * hourlyRate} unit="€" />
           </Box>
         </Box>
         <SalaryTable sx={{ flex: 2 }}/>
