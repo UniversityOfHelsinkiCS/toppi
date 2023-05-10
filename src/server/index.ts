@@ -4,7 +4,7 @@ import path from 'path'
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import Sentry from '@sentry/node'
+import * as Sentry from "@sentry/node";
 
 const PORT = process.env.PORT || 8000
 const inTesting = process.env.NODE_ENV === 'test'

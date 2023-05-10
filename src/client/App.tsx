@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Divider, Link, Sheet, Typography } from "@mui/joy"
+import { Box, CssBaseline, Link, Sheet, Typography } from "@mui/joy"
 import Calculator from "./Calculator"
 import { GitHub } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
