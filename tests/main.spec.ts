@@ -26,9 +26,9 @@ test('Full calculator', async ({ page }) => {
   await page.getByText('42 tuntia').click();
   await page.getByRole('combobox').filter({ hasText: 'Toistuva' }).click();
   await page.getByRole('option', { name: 'Uusi' }).click();
-  await page.getByRole('combobox').filter({ hasText: '4-6 op.' }).click();
+  await page.getByRole('combobox').filter({ hasText: '1-3 op.' }).click();
   await page.getByRole('option', { name: '10 op. tai enemmän' }).click();
-  await page.getByRole('combobox').filter({ hasText: '31-70' }).click();
+  await page.getByRole('combobox').filter({ hasText: '1-30' }).click();
   await page.getByRole('option', { name: 'yli 120' }).click();
   await page.getByText('Työaika yhteensä 172 tuntia').click();
   await page.locator('div').filter({ hasText: /^€\/h$/ }).getByPlaceholder('0').click();
