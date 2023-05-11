@@ -22,7 +22,7 @@ jobs:
         with:
           outputs: 
             type=docker,dest=/tmp/toppi.tar
-            type=local,dest=.
+          load: true
           tags: toppi:production
           push: false
           file: ./Containerfile
