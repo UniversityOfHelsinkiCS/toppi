@@ -2,11 +2,7 @@ version: '3.5'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Containerfile
-      args:
-        - E2E=true
+    image: toppi:latest
     command: ['npm', 'run', 'start:test']
     ports:
       - 8000:8000

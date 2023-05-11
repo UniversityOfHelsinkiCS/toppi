@@ -16,6 +16,16 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+      
+      - name: Build image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Containerfile
+          push: false
+          tags: toppi:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Start the application
         run: docker-compose -f compose.ci.yml up -d
@@ -36,7 +46,7 @@ jobs:
           path: |
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-      # - run: npm ci
+
       - run: npx playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - run: npx playwright install-deps
