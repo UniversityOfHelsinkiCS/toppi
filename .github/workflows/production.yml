@@ -17,7 +17,7 @@ jobs:
           tags: production ${{ github.sha }}
           containerfiles: |
             ./Containerfile
-          extra-args: -o="dest=/tmp/toppi.tar,type=tar"
+          extra-args: --output dest=/tmp/toppi.tar,type=tar
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
