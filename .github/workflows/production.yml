@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Build image
         id: build-image
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v1
         with:
           image: toppi
           tags: production ${{ github.sha }}
