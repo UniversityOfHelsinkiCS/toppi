@@ -10,4 +10,4 @@ services:
     command: ['npm', 'run', 'start:test']
     ports:
       - 8000:8000
-    container_name: toppi_dev
+    container_name: toppi
