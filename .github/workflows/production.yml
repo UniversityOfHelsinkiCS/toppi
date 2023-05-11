@@ -20,7 +20,9 @@ jobs:
       - name: 'Build image and export it'
         uses: docker/build-push-action@v3
         with:
-          outputs: type=docker,dest=/tmp/toppi.tar
+          outputs: |
+            type=docker,dest=/tmp/toppi.tar
+            type=local
           tags: toppi:production
           push: false
           file: ./Containerfile
