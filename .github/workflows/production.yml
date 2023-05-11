@@ -108,7 +108,7 @@ jobs:
   
   sentry-release:
     runs-on: ubuntu-latest
-    needs: test
+    needs: push
 
     steps:
       - uses: actions/checkout@v3
