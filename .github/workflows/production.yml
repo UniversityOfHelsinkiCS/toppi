@@ -24,6 +24,7 @@ jobs:
           context: .
           file: ./Containerfile
           push: false
+          load: true
           tags: toppi:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
