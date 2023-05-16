@@ -9,4 +9,15 @@ services:
     ports:
       - 3000:3000
       - 8000:8000
+    environment:
+      DB_CONNECTION_STRING: postgres://toppi:toppi@db:5432/toppi
     container_name: toppi_dev
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: toppi
+      POSTGRES_PASSWORD: toppi
+      POSTGRES_DB: toppi
+    ports:
+      - 5432:5432
+    container_name: toppi_db

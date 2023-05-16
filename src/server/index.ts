@@ -5,6 +5,7 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import * as Sentry from "@sentry/node";
+import { connectToDatabase } from './db/connection';
 
 const PORT = process.env.PORT || 8000
 const inTesting = process.env.NODE_ENV === 'test'
@@ -48,3 +49,5 @@ app.listen(PORT, async () => {
   console.log("Server running on port " + PORT)
   // logger.info(`Server running on port ${PORT}`)
 })
+
+connectToDatabase()
