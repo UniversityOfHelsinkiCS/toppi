@@ -10,7 +10,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    formData: {
+    form_data: {
       type: DataTypes.JSONB,
       allowNull: false,
     },
