@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import * as Sentry from "@sentry/node";
 import { connectToDatabase } from './db/connection';
+import ContractRequest from './db/models/ContractRequest';
 
 const PORT = process.env.PORT || 8000
 const inTesting = process.env.NODE_ENV === 'test'
@@ -30,8 +31,15 @@ app.get('/api/ping', (_, res) => { res.send('pong')  })
 
 app.post('/api/contract', async (req, res) => {
   console.log(req.body)
+  const formData = req.body
+
+  const contractRequest = await ContractRequest.create({
+    formData,
+  })
+
   await new Promise(resolve => setTimeout(resolve, 1000))
-  res.send('ok')
+
+  res.send(contractRequest)
 })
 
 app.use('/api', (_, res) => res.sendStatus(404))

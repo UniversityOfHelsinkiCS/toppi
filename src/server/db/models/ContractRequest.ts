@@ -12,7 +12,7 @@ class ContractRequest extends Model<
 
   declare formData: object
 
-  declare status: ContractRequestStatus
+  declare status: CreationOptional<ContractRequestStatus>
 }
 
 ContractRequest.init(
