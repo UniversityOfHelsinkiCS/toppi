@@ -27,8 +27,9 @@ app.use(morgan("short"))
 
 app.get('/api/ping', (_, res) => { res.send('pong')  })
 
-app.post('/api/contract', (req, res) => {
+app.post('/api/contract', async (req, res) => {
   console.log(req.body)
+  await new Promise(resolve => setTimeout(resolve, 1000))
   res.send('ok')
 })
 

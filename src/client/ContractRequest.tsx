@@ -1,6 +1,7 @@
 import { Box, Button, FormControl, FormLabel, Input, Sheet, Typography } from "@mui/joy";
 import { sendContract } from "./api";
 import CalculatorPreview from "./CalculatorPreview";
+import { toast } from "sonner";
 
 interface FormElements extends HTMLFormControlsCollection {
   firstname: HTMLInputElement;
@@ -29,6 +30,29 @@ const InputRow = ({ label, children }: { label?: string, children: React.ReactNo
 }
 
 const ContractForm = () => {
+  const handleSubmit = async (event: React.FormEvent<SignInFormElement>) => {
+    event.preventDefault()
+    const formElements = event.currentTarget.elements
+    const data = {
+      firstname: formElements.firstname.value,
+      lastname: formElements.lastname.value,
+      email: formElements.email.value,
+      courseName: formElements.courseName.value,
+      courseStartDate: formElements.courseStartDate.value,
+      courseEndDate: formElements.courseEndDate.value,
+      contractStartDate: formElements.contractStartDate.value,
+      contractEndDate: formElements.contractEndDate.value,
+    }
+
+    const req = sendContract(data)
+
+    toast.promise(req, {
+      loading: "Lähetetään työsopimuspyyntöä",
+      success: "Työsopimuspyyntö lähetetty",
+      error: "Työsopimuspyynnön lähettäminen epäonnistui"
+    })
+  }
+
   return (
     <Sheet sx={{
       borderRadius: "1rem",
@@ -37,22 +61,7 @@ const ContractForm = () => {
         <Typography level="h5">Työsopimusta varten tarvittavat muut tiedot</Typography>
         <Box mt="2rem">
           <form
-            onSubmit={async (event: React.FormEvent<SignInFormElement>) => {
-              event.preventDefault()
-              const formElements = event.currentTarget.elements
-              const data = {
-                firstname: formElements.firstname.value,
-                lastname: formElements.lastname.value,
-                email: formElements.email.value,
-                courseName: formElements.courseName.value,
-                courseStartDate: formElements.courseStartDate.value,
-                courseEndDate: formElements.courseEndDate.value,
-                contractStartDate: formElements.contractStartDate.value,
-                contractEndDate: formElements.contractEndDate.value,
-              }
-
-              await sendContract(data)
-            }}
+            onSubmit={handleSubmit}
           >
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputRow>
