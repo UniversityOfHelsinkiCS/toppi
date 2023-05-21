@@ -1,4 +1,4 @@
-# toppi [![CI/CD](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml)
+# TOPPI [![CI/CD](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml)
 
 Production @ https://toppi.ext.ocp-prod-0.k8s.it.helsinki.fi/
 
@@ -14,3 +14,9 @@ with a ready CI/CD pipeline.
 - Playwright e2e tests
 - Express + Typescript
 - Postgres with sequelize
+
+## Maintainers <img src=./public/toska13.png width=100px />
+
+[Toska](https://toska.dev), University of Helsinki
+
+<img src=https://em-content.zobj.net/source/animated-noto-color-emoji/356/goat_1f410.gif width=240px alt="Happy goat of good fortune" />
