@@ -6,6 +6,7 @@ import { toast } from "sonner";
 interface FormElements extends HTMLFormControlsCollection {
   firstname: HTMLInputElement;
   lastname: HTMLInputElement;
+  birthDate: HTMLInputElement;
   email: HTMLInputElement;
   courseName: HTMLInputElement;
   courseStartDate: HTMLInputElement;
@@ -37,6 +38,7 @@ const ContractForm = () => {
       firstname: formElements.firstname.value,
       lastname: formElements.lastname.value,
       email: formElements.email.value,
+      birthDate: formElements.birthDate.value,
       courseName: formElements.courseName.value,
       courseStartDate: formElements.courseStartDate.value,
       courseEndDate: formElements.courseEndDate.value,
@@ -74,6 +76,10 @@ const ContractForm = () => {
                   <Input type="text" name="lastname" slotProps={{ input: { maxLength: 50 }}}/>
                 </FormControl>
               </InputRow>
+              <FormControl required>
+                <FormLabel>Syntymäaika</FormLabel>
+                <Input placeholder="Anna syntymäaika" type="date" name="birthDate"/>
+              </FormControl>
               <FormControl required>
                 <FormLabel>Sähköposti</FormLabel>
                 <Input placeholder="Anna sähköpostisi" type="email" name="email" slotProps={{ input: { maxLength: 50 }}}/>
