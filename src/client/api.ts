@@ -12,8 +12,9 @@ type ContractRequest = {
   courseName: string;
   courseStartDate: string;
   courseEndDate: string;
-  contractStartDate: string;
-  contractEndDate: string;
+  contractDuration: string;
+  contractStartDate?: string;
+  contractEndDate?: string;
 }
 
 export const sendContract = async (contract: ContractRequest) => {

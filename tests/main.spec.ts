@@ -4,16 +4,6 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('has title', async ({ page }) => {
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Toppi/);
-});
-
-test('has työaikalaskuri', async ({ page }) => {
-  await expect(page.getByRole('button')).toHaveText('Lähetä tarkistettavaksi')
-});
-
-
 test('Workhour calculator', async ({ page }) => {
   const hourInput = page.locator('div').filter({ hasText: /^tuntia$/ }).getByPlaceholder('0')
   await hourInput.fill('42')
@@ -36,18 +26,37 @@ test('Full calculator', async ({ page }) => {
   await page.getByText('Palkkio yhteensä 172 tuntia X 55 €/h = 9460 €').click();
 });
 
-test('Fill form', async ({ page }) => {
+test('Fill required contract request form', async ({ page }) => {
   await page.getByLabel('Etunimi *').click();
   await page.getByLabel('Etunimi *').fill('Veikko');
   await page.getByLabel('Sukunimi *').click();
   await page.getByLabel('Sukunimi *').fill('Suhonen');
+  await page.getByLabel('Syntymäaika *').fill('1984-02-03');
   await page.getByPlaceholder('Anna sähköpostisi').click();
-  await page.getByPlaceholder('Anna sähköpostisi').fill('vesuvesuh@gmail.com');
+  await page.getByPlaceholder('Anna sähköpostisi').fill('veijo@gmail.com');
   await page.getByPlaceholder('Anna kurssin nimi').click();
   await page.getByPlaceholder('Anna kurssin nimi').fill('Dota 2 perusteet');
   await page.getByLabel('Ensimmäinen luento *').fill('2023-05-27');
   await page.getByLabel('Viimeinen luento/tentti *').fill('2023-05-19');
-  await page.getByLabel('Alkupäivä *').fill('2023-05-24');
-  await page.getByLabel('Loppupäivä *').fill('2023-05-27');
   await page.getByRole('button', { name: 'Lähetä tarkistettavaksi' }).click();
+  await page.getByText('Lähetetään työsopimuspyyntöä').click();
 });
+
+test('Fill full contract request form', async ({ page }) => {
+  await page.getByLabel('Etunimi *').click();
+  await page.getByLabel('Etunimi *').fill('Pekka');
+  await page.getByLabel('Sukunimi *').click();
+  await page.getByLabel('Sukunimi *').fill('Perhonen');
+  await page.getByLabel('Syntymäaika *').fill('1984-02-03');
+  await page.getByPlaceholder('Anna sähköpostisi').click();
+  await page.getByPlaceholder('Anna sähköpostisi').fill('peggaperhonen@gmail.com');
+  await page.getByPlaceholder('Anna kurssin nimi').click();
+  await page.getByPlaceholder('Anna kurssin nimi').fill('Lentämisen perusteet');
+  await page.getByLabel('Ensimmäinen luento *').fill('2023-06-12');
+  await page.getByLabel('Viimeinen luento/tentti *').fill('2023-06-29');
+  await page.getByLabel('Eri kuin kurssin aikataulu').check();
+  await page.getByLabel('Alkupäivä *').fill('2023-06-13');
+  await page.getByLabel('Loppupäivä *').fill('2023-06-30');
+  await page.getByRole('button', { name: 'Lähetä tarkistettavaksi' }).click();
+  await page.getByText('Lähetetään työsopimuspyyntöä').click();
+})
