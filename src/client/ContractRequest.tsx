@@ -1,8 +1,9 @@
-import { Box, Button, Checkbox, FormControl, FormLabel, Input, Radio, RadioGroup, Sheet, Typography } from "@mui/joy";
+import { Box, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Sheet, Typography } from "@mui/joy";
 import { sendContract } from "./api";
 import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
 import React from "react";
+import dayjs from "dayjs"
 
 interface FormElements extends HTMLFormControlsCollection {
   firstname: HTMLInputElement;
@@ -23,8 +24,8 @@ interface SignInFormElement extends HTMLFormElement {
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
-    <Box>
-      {label && <Typography sx={{ mb: "1rem" }} endDecorator={endAdornment}>{label}</Typography>}
+    <Box py="0.5rem">
+      {label && <Typography level="body2" sx={{ mb: "1rem" }} endDecorator={endAdornment}>{label}</Typography>}
       <Box display="flex" gap="1rem" sx={theme => ({ 
         flexDirection: orientation === "horizontal" ? "row" : "column", 
         [theme.breakpoints.down("md")]: { flexDirection: "column" }
@@ -38,7 +39,7 @@ const InputSection = ({ label, endAdornment, children, orientation = "horizontal
 const ContractForm = () => {
   const [courseStartDate, setCourseStartDate] = React.useState<string>("")
   const [courseEndDate, setCourseEndDate] = React.useState<string>("")
-  const [isSeparateContractDates, setIsSeparateContractDates] = React.useState(false)
+  const [isCustomContractDates, setIsCustomContractDates] = React.useState(false)
   const [contractStartDate, setContractStartDate] = React.useState<string>("")
   const [contractEndDate, setContractEndDate] = React.useState<string>("")
 
@@ -66,6 +67,13 @@ const ContractForm = () => {
       error: "Työsopimuspyynnön lähettäminen epäonnistui"
     })
   }
+
+  const currentContractStartDate = isCustomContractDates 
+    ? contractStartDate 
+    : (courseStartDate ? dayjs(courseStartDate).subtract(7, "days").format("YYYY-MM-DD") : "")
+  const currentContractEndDate = isCustomContractDates 
+    ? contractEndDate 
+    : (courseEndDate ? dayjs(courseEndDate).add(14, "days").format("YYYY-MM-DD") : "")
 
   return (
     <Sheet sx={{
@@ -112,22 +120,22 @@ const ContractForm = () => {
               </InputSection>
               <InputSection label="Sopimuksen kesto" orientation="vertical">
                 <RadioGroup name="contractDuration"
-                  value={isSeparateContractDates ? "separate" : "same"} 
-                  onChange={e => setIsSeparateContractDates(e.target.value === "separate")}
+                  value={isCustomContractDates ? "custom" : "recommended"} 
+                  onChange={e => setIsCustomContractDates(e.target.value === "custom")}
                 >
-                  <Radio value="same" label="Sama kuin kurssin aikataulu" />
-                  <Radio value="separate" label="Eri kuin kurssin aikataulu" />
+                  <Radio value="recommended" label="Suositeltu: alkaa viikkoa ennen kurssin alkua ja jatkuu kaksi viikkoa sen loputtua" />
+                  <Radio value="custom" label="Muu aikaväli" />
                 </RadioGroup>
-                {isSeparateContractDates && <InputSection>
-                  <FormControl sx={{ flex: 1 }} disabled={!isSeparateContractDates} required={isSeparateContractDates}>
-                    <FormLabel>Alkupäivä</FormLabel>
-                    <Input type="date" name="contractStartDate" value={isSeparateContractDates ? contractStartDate : courseStartDate} onChange={e => setContractStartDate(e.target.value)} />
+                <InputSection>
+                  <FormControl sx={{ flex: 1 }} required={isCustomContractDates}>
+                    <FormLabel>{isCustomContractDates ? "Valitse" : "Suositeltu"} alkupäivä</FormLabel>
+                    <Input type="date" name="contractStartDate" readOnly={!isCustomContractDates} value={currentContractStartDate} onChange={e => setContractStartDate(e.target.value)} />
                   </FormControl>
-                  <FormControl sx={{ flex: 1 }} disabled={!isSeparateContractDates} required={isSeparateContractDates}>
-                    <FormLabel>Loppupäivä</FormLabel>
-                    <Input type="date" name="contractEndDate" value={isSeparateContractDates ? contractEndDate : courseEndDate} onChange={e => setContractEndDate(e.target.value)} />
+                  <FormControl sx={{ flex: 1 }} required={isCustomContractDates}>
+                    <FormLabel>{isCustomContractDates ? "Valitse" : "Suositeltu"} loppupäivä</FormLabel>
+                    <Input type="date" name="contractEndDate" readOnly={!isCustomContractDates} value={currentContractEndDate} onChange={e => setContractEndDate(e.target.value)} />
                   </FormControl>
-                </InputSection>}
+                </InputSection>
               </InputSection>
               <Button type="submit" fullWidth>
                 Lähetä tarkistettavaksi
