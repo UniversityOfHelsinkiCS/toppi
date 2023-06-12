@@ -18,7 +18,7 @@ type ContractRequest = {
 }
 
 export const sendContract = async (contract: ContractRequest) => {
-  const { data } = await client.post("/contract", contract)
+  const { data } = await client.post("/contracts", contract)
 
   return data
 }
