@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Sheet, Typography } from "@mui/joy";
+import { Alert, Box, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Sheet, Typography } from "@mui/joy";
 import { sendContract } from "./api";
 import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
@@ -159,6 +159,7 @@ const ContractRequest = () => (
         <CalculatorPreview />
       </Box>
     </Box>
+    <Alert>Toppi on vielä testi- ja esittelykäytössä, joten lomakkeesta lähetettyjä työsopimuspyyntöjä ei käsitellä.</Alert>
   </Box>
 )
 
