@@ -1,24 +1,19 @@
 import axios from "axios";
 import { PUBLIC_URL } from "../config";
+import { ContractRequestCreateParams } from "./types";
 
 const client = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
 })
 
-type ContractRequest = {
-  firstname: string;
-  lastname: string;
-  email: string;
-  courseName: string;
-  courseStartDate: string;
-  courseEndDate: string;
-  contractDuration: string;
-  contractStartDate?: string;
-  contractEndDate?: string;
+export const sendContract = async (contract: ContractRequestCreateParams) => {
+  const { data } = await client.post("/contract-requests", contract)
+
+  return data
 }
 
-export const sendContract = async (contract: ContractRequest) => {
-  const { data } = await client.post("/contracts", contract)
+export const getContractRequests = async () => {
+  const { data } = await client.get("/contract-requests")
 
   return data
 }

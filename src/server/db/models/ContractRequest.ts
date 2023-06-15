@@ -13,6 +13,19 @@ class ContractRequest extends Model<
   declare formData: object
 
   declare status: CreationOptional<ContractRequestStatus>
+
+  declare createdAt: CreationOptional<Date>;
+
+  declare updatedAt: CreationOptional<Date>;
+
+  toPublic() {
+    return {
+      id: this.dataValues.id,
+      status: this.dataValues.status,
+      createdAt: this.dataValues.createdAt,
+      updatedAt: this.dataValues.updatedAt,
+    }
+  }
 }
 
 ContractRequest.init(
@@ -30,6 +43,12 @@ ContractRequest.init(
       type: DataTypes.ENUM,
       values: contractRequestStatuses,
       defaultValue: "waiting",
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
     }
   },
   {

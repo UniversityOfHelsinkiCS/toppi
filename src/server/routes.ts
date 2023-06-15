@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/ping', (_, res) => { res.send('pong')  })
 
-router.use('/contracts', contractsRouter)
+router.use('/contract-requests', contractsRouter)
 
 router.use('/', (_, res) => res.sendStatus(404))
 

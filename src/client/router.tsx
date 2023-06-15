@@ -4,6 +4,8 @@ import {
 } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
+import ContractRequests from "./pages/ContractRequests";
+import { getContractRequests } from "./api";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +15,11 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />
+      },
+      {
+        path: "/contract-requests",
+        element: <ContractRequests />,
+        loader: getContractRequests,
       }
     ]
   },

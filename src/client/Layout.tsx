@@ -27,12 +27,13 @@ const Header = () => (
 
 const Footer = () => (
   <Sheet sx={{
+    mt: "auto",
     p: "1rem",
+    pt: "10rem",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     columnGap: "5rem",
-    mt: "10rem",
     borderRadius: "1rem",
   }}>
     <Box>
@@ -48,9 +49,11 @@ const Footer = () => (
 const Layout = () => (
   <CssBaseline>
     <Toaster />
-    <Header />
-    <Outlet />
-    <Footer />
+    <Box display="flex" flexDirection="column" minHeight="100vh">
+      <Header />
+      <Outlet />
+      <Footer />
+    </Box>
   </CssBaseline>
 )
 
