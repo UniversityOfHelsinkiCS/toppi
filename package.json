@@ -31,6 +31,7 @@
     "pg-hstore": "^2.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.13.0",
     "sequelize": "^6.31.1",
     "sonner": "^0.3.5",
     "umzug": "^3.2.1",

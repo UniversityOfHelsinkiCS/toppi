@@ -1,6 +1,6 @@
 import { Box, Sheet, Table, Typography } from "@mui/joy"
-import useContractStore, { useTotalHours } from "./store"
-import { getPreparationHours } from "./calculatorConfig"
+import useContractStore, { useTotalHours } from "../store"
+import { getPreparationHours } from "../calculatorConfig"
 
 const CalculatorPreview = () => {
   const teachingHours = useContractStore(state => state.teachingHours)
