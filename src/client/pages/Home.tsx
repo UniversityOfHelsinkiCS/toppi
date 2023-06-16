@@ -1,12 +1,12 @@
 import Calculator from "../components/Calculator"
-import ContractRequest from "../components/ContractRequest"
+import ContractRequestForm from "../components/ContractRequestForm"
 import { SectionDivider } from "../components/common"
 
 const Home = () => (
   <>
     <Calculator />
     <SectionDivider />
-    <ContractRequest />
+    <ContractRequestForm />
   </>
 )
 

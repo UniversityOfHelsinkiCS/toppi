@@ -1,17 +1,17 @@
-import { Box } from "@mui/joy";
+import { Box, Typography } from "@mui/joy";
 import { useLoaderData } from "react-router-dom";
 import { ContractRequest } from "../types";
+import ContractRequestItem from "../components/ContractRequestItem";
 
 const ContractRequests = () => {
   const contracts = useLoaderData() as ContractRequest[]
 
   return (
     <>
-      <Box m="1rem">
+      <Box p="2rem">
+        <Typography level="h4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
         {contracts.map(c => (
-          <Box key={c.id} m="0.5rem">
-            # {c.id}, status: {c.status}, createdAt: {c.createdAt}
-          </Box>
+          <ContractRequestItem contractRequest={c} key={c.id}/>
         ))}
       </Box>
     </>

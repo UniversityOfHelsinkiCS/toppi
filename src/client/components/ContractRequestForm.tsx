@@ -148,7 +148,7 @@ const ContractForm = () => {
   )
 }
 
-const ContractRequest = () => (
+const ContractRequestForm = () => (
   <Box p="2rem">
     <Typography level="h4">Työsopimuspyyntö</Typography>
     <Box sx={theme => ({ display: "flex", gap: "4rem", py: "4rem", [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse', } })}>
@@ -163,4 +163,4 @@ const ContractRequest = () => (
   </Box>
 )
 
-export default ContractRequest
+export default ContractRequestForm
