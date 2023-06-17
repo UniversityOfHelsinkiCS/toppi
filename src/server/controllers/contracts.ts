@@ -1,10 +1,10 @@
 import { Request, Router } from "express";
 import ContractRequest from "../db/models/ContractRequest";
+import { inDevelopment } from "../../config";
 
 const contractsRouter = Router()
 
 contractsRouter.post('/', async (req, res) => {
-  console.log(req.body)
   const formData = req.body
 
   const contractRequest = await ContractRequest.create({
@@ -16,8 +16,8 @@ contractsRouter.post('/', async (req, res) => {
   res.send(contractRequest)
 })
 
-contractsRouter.get('/', async (req: Request<{ page?: number }>, res) => {
-  const page = req.params.page ?? 0
+contractsRouter.get('/', async (req, res) => {
+  const page = Number(req.query.page) || 0
 
   const contractRequests = await ContractRequest.findAll({
     limit: 20,
@@ -26,5 +26,17 @@ contractsRouter.get('/', async (req: Request<{ page?: number }>, res) => {
 
   return res.send(contractRequests.map(cr => cr.toPublic()))
 })
+
+contractsRouter.get('/:id', async (req, res) => {
+  const id = req.params.id
+
+  const contractRequest = await ContractRequest.findByPk(id)
+
+  // Absolute tietoturva
+  const publicObj = inDevelopment ? contractRequest : contractRequest?.toPublic()
+
+  return res.send(publicObj)
+})
+
 
 export default contractsRouter

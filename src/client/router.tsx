@@ -5,7 +5,8 @@ import {
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import ContractRequests from "./pages/ContractRequests";
-import { getContractRequests } from "./api";
+import { getContractRequest, getContractRequests } from "./api";
+import ContractRequestView from "./pages/ContractRequestView";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,13 @@ const router = createBrowserRouter([
         path: "/contract-requests",
         element: <ContractRequests />,
         loader: getContractRequests,
+        children: [
+          {
+            path: ":id",
+            element: <ContractRequestView />,
+            loader: getContractRequest,
+          }
+        ]
       }
     ]
   },

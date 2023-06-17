@@ -1,9 +1,11 @@
 import { Box, Chip, Sheet, Typography, Button } from "@mui/joy"
-import { Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink, useMatch } from "react-router-dom"
 import { ContractRequest } from "../types"
 import { Search } from "@mui/icons-material"
 
 const ContractRequestItem = ({ contractRequest }: { contractRequest: ContractRequest }) => {
+  const open = useMatch(`/contract-requests/${contractRequest.id}`)
+
   return (
     <Sheet sx={{
       display: "flex",
@@ -11,7 +13,7 @@ const ContractRequestItem = ({ contractRequest }: { contractRequest: ContractReq
       columnGap: "0.5rem",
       my: "1rem",
       p: "0.5rem",
-    }}>
+    }} variant={open ? "soft" : "plain"}>
       <Typography level="body2" pr="1rem">#{contractRequest.id}</Typography>
       <Typography level="body2">Lähetetty:</Typography> 
       <Typography level="body1">{contractRequest.createdAt}</Typography>
