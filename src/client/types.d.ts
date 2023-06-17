@@ -1,3 +1,5 @@
+import { ContractRequestStatus } from "../shared/types";
+
 export type Option = { label: string, value: number }
 
 export type ContractRequestCreateParams = {
@@ -14,7 +16,7 @@ export type ContractRequestCreateParams = {
 
 export type ContractRequest = {
   id: number;
-  status: string;
+  status: ContractRequestStatus;
   formData: ContractRequestCreateParams;
   createdAt: string;
   updatedAt: string;

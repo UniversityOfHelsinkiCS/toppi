@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize'
 
 import { Migration } from '../connection'
-import { contractRequestStatuses } from '../models/ContractRequest'
+import { contractRequestStatuses } from '../../../shared/types'
 
 export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.createTable("contract_requests", {

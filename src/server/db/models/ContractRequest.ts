@@ -1,8 +1,7 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
 import { sequelize } from '../connection'
+import { ContractRequestStatus, contractRequestStatuses } from "../../../shared/types";
 
-export const contractRequestStatuses = ["waiting", "assigned", "checked", "handled", "rejected"] as const
-export type ContractRequestStatus = typeof contractRequestStatuses[number]
 
 class ContractRequest extends Model<
   InferAttributes<ContractRequest>,
