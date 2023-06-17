@@ -5,28 +5,32 @@ import { GitHub } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
 import toskaLogo from "./assets/toska13.png"
 import { Link as RouterLink, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const Header = () => (
-  <Sheet sx={{
-    p: "1rem",
-    mb: "4rem",
-    columnGap: "1rem",
-    alignItems: "center",
-    display: "flex",
-    borderRadius: "1rem",
-  }}>
-    <RouterLink to="/" style={{ textDecoration: "none" }}>
-      <Box display="flex" alignItems="center" columnGap="1rem">
-        <Box width="2rem">
-          <img src={hyLogo} alt="hy logo" />
+const Header = () => {
+  const { t } = useTranslation()
+
+  return (
+    <Sheet sx={{
+      p: "1rem",
+      mb: "4rem",
+      columnGap: "1rem",
+      alignItems: "center",
+      display: "flex",
+      borderRadius: "1rem",
+    }}>
+      <RouterLink to="/" style={{ textDecoration: "none" }}>
+        <Box display="flex" alignItems="center" columnGap="1rem">
+          <Box width="2rem">
+            <img src={hyLogo} alt="hy logo" />
+          </Box>
+          <Typography>TOPPI</Typography>
         </Box>
-        <Typography>TOPPI</Typography>
-      </Box>
-    </RouterLink>
-    <Typography level="body2" sx={{ userSelect: "none" }}>– TYÖKALU ULKOPUOLISTEN TUNTIOPETTAJIEN TYÖAIKOJEN JA PALKKIOIDEN LASKEMISEEN</Typography>
-  </Sheet>
-)
-
+      </RouterLink>
+      <Typography level="body2" sx={{ userSelect: "none" }}>{t("navbar.description")}</Typography>
+    </Sheet>
+  )
+}
 const Footer = () => (
   <Sheet sx={{
     mt: "auto",
