@@ -4,6 +4,7 @@ import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from '..
 import { Option } from '../types'
 import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions } from '../calculatorConfig'
 import { SectionDivider } from './common'
+import FeedbackTargetContainer from '../feedback/FeedbackTargetContainer'
 
 const HoursChip = ({ hours }: { hours: number }) => (
   <Chip variant="soft">{`${hours} tuntia`}</Chip>
@@ -16,7 +17,7 @@ const SalaryChip = ({ salary, unit='€/h' }: { salary: number, unit?: string })
 
 
 const InputContainer = ({ children, resultName, resultChip, infoBox, sx }: { children: React.ReactNode, resultName?: string, resultChip?: React.ReactNode, infoBox?: React.ReactNode, sx?: SxProps }) => (
-  <Box display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
+  <FeedbackTargetContainer feedbackId="asd" display="flex" flexDirection="column" alignItems="stretch" sx={sx} >
     <Sheet sx={{
       flexGrow: 1,
       display: "flex",
@@ -41,7 +42,7 @@ const InputContainer = ({ children, resultName, resultChip, infoBox, sx }: { chi
       }
       
     </Sheet>
-  </Box>
+  </FeedbackTargetContainer>
 )
 
 

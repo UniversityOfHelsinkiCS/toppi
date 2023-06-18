@@ -1,14 +1,15 @@
-import { Box, CssBaseline, Link, Sheet, Typography } from "@mui/joy";
-import React from "react";
+import { Box, Button, CssBaseline, Link, Sheet, Typography } from "@mui/joy";
 import { Toaster } from "sonner";
 import { GitHub } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
 import toskaLogo from "./assets/toska13.png"
 import { Link as RouterLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FeedbackProvider, useFeedback } from "./feedback/FeedbackProvider";
 
 const Header = () => {
   const { t } = useTranslation()
+  const { mode, setMode } = useFeedback()
 
   return (
     <Sheet sx={{
@@ -28,9 +29,13 @@ const Header = () => {
         </Box>
       </RouterLink>
       <Typography level="body2" sx={{ userSelect: "none" }}>{t("navbar.description")}</Typography>
+      <Box ml="auto">
+        <Button variant={mode === "disabled" ? "plain" : "solid"} onClick={() => setMode(mode === "disabled" ? "edit" : "disabled")}>Palautetila</Button>
+      </Box>
     </Sheet>
   )
 }
+
 const Footer = () => (
   <Sheet sx={{
     mt: "auto",
@@ -55,11 +60,13 @@ const Footer = () => (
 const Layout = () => (
   <CssBaseline>
     <Toaster />
-    <Box display="flex" flexDirection="column" minHeight="100vh">
-      <Header />
-      <Outlet />
-      <Footer />
-    </Box>
+    <FeedbackProvider>
+      <Box display="flex" flexDirection="column" minHeight="100vh">
+        <Header />
+        <Outlet />
+        <Footer />
+      </Box>
+    </FeedbackProvider>
   </CssBaseline>
 )
 
