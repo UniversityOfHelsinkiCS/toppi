@@ -1,11 +1,12 @@
-import { Request, Router } from "express";
+import { Router } from "express";
 import ContractRequest from "../db/models/ContractRequest";
 import { inDevelopment } from "../../config";
+import { ContractRequestFormParams, ContractRequestStatusEnum } from "../../shared/types";
 
 const contractsRouter = Router()
 
 contractsRouter.post('/', async (req, res) => {
-  const formData = req.body
+  const formData = ContractRequestFormParams.parse(req.body)
 
   const contractRequest = await ContractRequest.create({
     formData,
@@ -36,6 +37,22 @@ contractsRouter.get('/:id', async (req, res) => {
   const publicObj = inDevelopment ? contractRequest : contractRequest?.toPublic()
 
   return res.send(publicObj)
+})
+
+contractsRouter.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const status = ContractRequestStatusEnum.parse(req.body.status)
+
+  const contractRequest = await ContractRequest.findByPk(id)
+  if (!contractRequest) {
+    throw new Error("NOT FOUND")
+  }
+
+  contractRequest.status = status
+
+  await contractRequest.save()
+
+  return res.send(contractRequest)
 })
 
 
