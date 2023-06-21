@@ -1,9 +1,7 @@
 name: Test and deploy to production
 
 on:
-  push:
-    branches:
-      - master
+  release:
 
 jobs:
 
