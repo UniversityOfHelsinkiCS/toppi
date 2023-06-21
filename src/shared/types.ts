@@ -15,8 +15,8 @@ export type ContractDurationOption = z.infer<typeof ContractDurationOptionsEnum>
 export const zDate = z.custom<string>((dateString) => typeof dateString === "string" && dayjs(dateString, "YYYY-MM-DD", true).isValid())
 
 export const ContractRequestFormParams = z.object({
-  firstname: z.string(),
-  lastname: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   email: z.string().email(),
   birthDate: zDate,
   courseName: z.string(),

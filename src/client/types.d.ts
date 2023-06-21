@@ -3,9 +3,10 @@ import { ContractRequestStatus } from "../shared/types";
 export type Option = { label: string, value: number }
 
 export type ContractRequestCreateParams = {
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  birthDate: string;
   courseName: string;
   courseStartDate: string;
   courseEndDate: string;

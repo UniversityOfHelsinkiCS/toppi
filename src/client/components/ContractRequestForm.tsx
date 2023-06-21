@@ -4,23 +4,10 @@ import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
 import React from "react";
 import dayjs from "dayjs"
-
-interface FormElements extends HTMLFormControlsCollection {
-  firstname: HTMLInputElement;
-  lastname: HTMLInputElement;
-  birthDate: HTMLInputElement;
-  email: HTMLInputElement;
-  courseName: HTMLInputElement;
-  courseStartDate: HTMLInputElement;
-  courseEndDate: HTMLInputElement;
-  contractDuration: HTMLInputElement;
-  contractStartDate?: HTMLInputElement;
-  contractEndDate?: HTMLInputElement;
-}
-
-interface SignInFormElement extends HTMLFormElement {
-  readonly elements: FormElements;
-}
+import { Controller, useForm } from "react-hook-form";
+import type { DefaultValues, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ContractDurationOption, ContractRequestFormParams } from "../../shared/types";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -36,30 +23,35 @@ const InputSection = ({ label, endAdornment, children, orientation = "horizontal
   )
 }
 
+const getRecommendedStartDate = (courseStartDate?: string) => {
+  return courseStartDate ? dayjs(courseStartDate).subtract(7, "days").format("YYYY-MM-DD") : ""
+}
+
+const getRecommendedEndDate = (courseEndDate?: string) => {
+  return courseEndDate ? dayjs(courseEndDate).add(14, "days").format("YYYY-MM-DD") : ""
+}
+
+const defaultValues: typeof ContractRequestFormParams._type = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  birthDate: "",
+  courseName: "",
+  courseStartDate: "",
+  courseEndDate: "",
+  contractDuration: "recommended",
+  contractStartDate: "",
+  contractEndDate: "",
+}
+
 const ContractForm = () => {
-  const [courseStartDate, setCourseStartDate] = React.useState<string>("")
-  const [courseEndDate, setCourseEndDate] = React.useState<string>("")
-  const [isCustomContractDates, setIsCustomContractDates] = React.useState(false)
-  const [contractStartDate, setContractStartDate] = React.useState<string>("")
-  const [contractEndDate, setContractEndDate] = React.useState<string>("")
+  const { control, handleSubmit, setValue, getValues, watch, formState: { errors } } = useForm({
+    resolver: zodResolver(ContractRequestFormParams),
+    defaultValues,
+  })
 
-  const handleSubmit = async (event: React.FormEvent<SignInFormElement>) => {
-    event.preventDefault()
-    const formElements = event.currentTarget.elements
-    const data = {
-      firstname: formElements.firstname.value,
-      lastname: formElements.lastname.value,
-      email: formElements.email.value,
-      birthDate: formElements.birthDate.value,
-      courseName: formElements.courseName.value,
-      courseStartDate: new Date(formElements.courseStartDate.value).toISOString(),
-      courseEndDate: new Date(formElements.courseEndDate.value).toISOString(),
-      contractDuration: formElements.contractDuration.value,
-      contractStartDate: formElements.contractStartDate?.value,
-      contractEndDate: formElements.contractEndDate?.value,
-    }
-
-    const req = sendContract(data)
+  const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
+    const req = sendContract(formData)
 
     toast.promise(req, {
       loading: "Lähetetään työsopimuspyyntöä",
@@ -68,12 +60,7 @@ const ContractForm = () => {
     })
   }
 
-  const currentContractStartDate = isCustomContractDates 
-    ? contractStartDate 
-    : (courseStartDate ? dayjs(courseStartDate).subtract(7, "days").format("YYYY-MM-DD") : "")
-  const currentContractEndDate = isCustomContractDates 
-    ? contractEndDate 
-    : (courseEndDate ? dayjs(courseEndDate).add(14, "days").format("YYYY-MM-DD") : "")
+  const isRecommendedContractDates = watch("contractDuration") === "recommended"
 
   return (
     <Sheet sx={{
@@ -82,64 +69,124 @@ const ContractForm = () => {
       <Box>
         <Typography level="h5">Työsopimusta varten tarvittavat muut tiedot</Typography>
         <Box mt="2rem">
-          <form
-            onSubmit={handleSubmit}
-          >
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputSection>
                 <FormControl required>
                   <FormLabel>Etunimi</FormLabel>
-                  <Input type="text" name="firstname" slotProps={{ input: { maxLength: 50 }}}/>
+                  <Controller
+                    name="firstName"
+                    control={control}
+                    render={({ field }) => <Input {...field} />}
+                  />
                 </FormControl>
                 <FormControl required>
                   <FormLabel>Sukunimi</FormLabel>
-                  <Input type="text" name="lastname" slotProps={{ input: { maxLength: 50 }}}/>
+                  <Controller
+                    name="lastName"
+                    control={control}
+                    render={({ field }) => <Input {...field} />}
+                  />
                 </FormControl>
               </InputSection>
               <FormControl required>
                 <FormLabel>Syntymäaika</FormLabel>
-                <Input type="date" name="birthDate"/>
+                <Controller
+                  name="birthDate"
+                  control={control}
+                  render={({ field }) => <Input {...field} type="date"/>}
+                />
               </FormControl>
-              <FormControl required>
+              <FormControl required error={!!errors.email}>  
                 <FormLabel>Sähköposti</FormLabel>
-                <Input placeholder="Anna sähköpostisi" type="email" name="email" slotProps={{ input: { maxLength: 50 }}}/>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => <Input {...field} type="email"/>}
+                />
               </FormControl>
-              <FormControl required>
+              <FormControl required error={!!errors.courseName}>
                 <FormLabel>Kurssin nimi</FormLabel>
-                <Input placeholder="Anna kurssin nimi" type="text" name="courseName"  slotProps={{ input: { maxLength: 100 }}}/>
+                <Controller
+                  name="courseName"
+                  control={control}
+                  render={({ field }) => <Input {...field} />}
+                />
               </FormControl>
               <InputSection label="Kurssin aikataulu">
                 <FormControl required sx={{ flex: 1 }}>
                   <FormLabel>Ensimmäinen luento</FormLabel>
-                  <Input type="date" name="courseStartDate" value={courseStartDate} onChange={e => setCourseStartDate(e.target.value)} />
+                  <Controller
+                    name="courseStartDate"
+                    control={control}
+                    rules={{
+                      onChange: (ev) => {
+                        if (isRecommendedContractDates) {
+                          const v = ev.target.value
+                          setValue("contractStartDate", getRecommendedStartDate(v))
+                        }
+                      }
+                    }}
+                    render={({ field }) => <Input {...field} type="date"/>}
+                  />
                 </FormControl>
-                <FormControl required sx={{ flex: 1 }}>
+                <FormControl required sx={{ flex: 1 }} error={!!errors.courseEndDate}>
                   <FormLabel>Viimeinen luento/tentti</FormLabel>
-                  <Input type="date" name="courseEndDate" value={courseEndDate} onChange={e => setCourseEndDate(e.target.value)} />
+                  <Controller
+                    name="courseEndDate"
+                    control={control}
+                    rules={{
+                      onChange: (ev) => {
+                        if (isRecommendedContractDates) {
+                          const v = ev.target.value
+                          setValue("contractEndDate", getRecommendedEndDate(v))
+                        }
+                      }
+                    }}
+                    render={({ field }) => <Input {...field} type="date"/>}
+                  />
                 </FormControl>
               </InputSection>
               <InputSection label="Sopimuksen kesto" orientation="vertical">
-                <RadioGroup name="contractDuration"
-                  value={isCustomContractDates ? "custom" : "recommended"} 
-                  onChange={e => setIsCustomContractDates(e.target.value === "custom")}
-                >
-                  <Radio value="recommended" label="Suositeltu: alkaa viikkoa ennen kurssin alkua ja jatkuu kaksi viikkoa sen loputtua" />
-                  <Radio value="custom" label="Muu aikaväli" />
-                </RadioGroup>
+                <Controller
+                  name="contractDuration"
+                  control={control}
+                  rules={{
+                    onChange: (ev) => {
+                      if (ev.target.value === "recommended") {
+                        const { courseStartDate, courseEndDate } = getValues()
+                        setValue("contractStartDate", getRecommendedStartDate(courseStartDate))
+                        setValue("contractEndDate", getRecommendedEndDate(courseEndDate))
+                      } 
+                    }
+                  }}
+                  render={({ field }) => (
+                    <RadioGroup {...field}>
+                      <Radio value="recommended" label="Suositeltu: alkaa viikkoa ennen kurssin alkua ja jatkuu kaksi viikkoa sen loputtua" />
+                      <Radio value="custom" label="Muu aikaväli" />
+                    </RadioGroup>
+                  )}
+                />
                 <InputSection>
-                  <FormControl sx={{ flex: 1 }} required={isCustomContractDates}>
-                    <FormLabel>{isCustomContractDates ? "Valitse" : "Suositeltu"} alkupäivä</FormLabel>
-                    <Input type="date" name="contractStartDate" readOnly={!isCustomContractDates} value={currentContractStartDate} onChange={e => setContractStartDate(e.target.value)} />
+                  <FormControl sx={{ flex: 1 }} required={!isRecommendedContractDates}>
+                    <FormLabel>{!isRecommendedContractDates ? "Valitse" : "Suositeltu"} alkupäivä</FormLabel>
+                    <Controller
+                      name="contractStartDate"
+                      control={control}
+                      render={({ field }) => <Input {...field} type="date" readOnly={isRecommendedContractDates} />}
+                    />
                   </FormControl>
-                  <FormControl sx={{ flex: 1 }} required={isCustomContractDates}>
-                    <FormLabel>{isCustomContractDates ? "Valitse" : "Suositeltu"} loppupäivä</FormLabel>
-                    <Input type="date" name="contractEndDate" readOnly={!isCustomContractDates} value={currentContractEndDate} onChange={e => setContractEndDate(e.target.value)} />
+                  <FormControl sx={{ flex: 1 }} required={!isRecommendedContractDates}>
+                    <FormLabel>{!isRecommendedContractDates ? "Valitse" : "Suositeltu"} loppupäivä</FormLabel>
+                    <Controller
+                      name="contractEndDate"
+                      control={control}
+                      render={({ field }) => <Input {...field} type="date" readOnly={isRecommendedContractDates} />}
+                    />
                   </FormControl>
                 </InputSection>
               </InputSection>
-              <Button type="submit" fullWidth>
-                Lähetä tarkistettavaksi
-              </Button>
+              <Button type="submit">Lähetä käsiteltäväksi</Button>
             </Box>
           </form>
         </Box>
