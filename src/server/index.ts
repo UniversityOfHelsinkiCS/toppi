@@ -4,9 +4,11 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import { connectToDatabase } from './db/connection';
-import router from './routes';
+import { apiRouter } from './routes';
 import { PORT, inProduction, inTesting } from '../config';
 import { initSentry } from './util/sentry';
+import { shibbolethHeaders } from './middleware/shibbolethHeaders';
+import { getCurrentUser } from './middleware/authentication';
 
 const app = express()
 
@@ -19,7 +21,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan("short"))
 
-app.use('/api', router)
+app.use('/private/api', shibbolethHeaders, getCurrentUser, apiRouter)
+app.use('/api', apiRouter)
 
 if (inProduction || inTesting) {
   const DIST_PATH = path.resolve(__dirname, '../../dist')

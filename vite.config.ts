@@ -19,6 +19,11 @@ export default defineConfig(() => {
           changeOrigin: true,
           secure: false,
         },
+        '/private/api/': {
+          target: 'http://localhost:8000',
+          changeOrigin: true,
+          secure: false,
+        },
       },
       watch: {
         usePolling: true,
