@@ -26,3 +26,12 @@ export const ContractRequestFormParams = z.object({
   contractStartDate: zDate.optional(),
   contractEndDate: zDate.optional(),
 })
+
+export const UserParamsValidator = z.object({
+  id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+})
+
+export type UserParams = z.infer<typeof UserParamsValidator>

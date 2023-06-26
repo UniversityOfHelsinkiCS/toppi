@@ -6,15 +6,19 @@ import cors from 'cors'
 import { connectToDatabase } from './db/connection';
 import { apiRouter } from './routes';
 import { PORT, inProduction, inTesting } from '../config';
-import { initSentry } from './util/sentry';
+import { initSentry, sentryErrorHandler, sentryRequestHandler } from './middleware/sentry';
 import { shibbolethHeaders } from './middleware/shibbolethHeaders';
 import { getCurrentUser } from './middleware/authentication';
+import { errorHandler } from './middleware/error';
 
 const app = express()
 
 if (inProduction) {
   initSentry(app)
 }
+
+// Must be before all other middleware
+app.use(sentryRequestHandler)
 
 app.use(cors())
 app.use(express.json())
@@ -23,6 +27,9 @@ app.use(morgan("short"))
 
 app.use('/private/api', shibbolethHeaders, getCurrentUser, apiRouter)
 app.use('/api', apiRouter)
+
+app.use(sentryErrorHandler)
+app.use(errorHandler)
 
 if (inProduction || inTesting) {
   const DIST_PATH = path.resolve(__dirname, '../../dist')
