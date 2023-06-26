@@ -1,9 +1,13 @@
+import { ZodError } from "zod";
+
 export class ApplicationError extends Error {
   status: number;
+  errors: any[];
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, errors: any[] = []) {
     super(message)
     this.status = status
+    this.errors = errors
   }
 
   static Forbidden(msg = "Forbidden") {
@@ -12,5 +16,9 @@ export class ApplicationError extends Error {
 
   static Unauthorized(msg = "Unauthorized") {
     throw new ApplicationError(401, msg)
+  }
+
+  static FromZod(err: ZodError) {
+    return new ApplicationError(400, "Validation failed", err.errors)
   }
 }
