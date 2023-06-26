@@ -1,7 +1,5 @@
 import { Router } from "express";
 import contractsRouter from "./controllers/contracts";
-import { shibbolethHeaders } from "./middleware/shibbolethHeaders";
-import { getCurrentUser } from "./middleware/authentication";
 
 /**
  * apiRouter handles the business side of requests. 

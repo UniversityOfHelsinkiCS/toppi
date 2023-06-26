@@ -2,6 +2,7 @@ import { Router } from "express";
 import ContractRequest from "../db/models/ContractRequest";
 import { inDevelopment } from "../../config";
 import { ContractRequestFormParams, ContractRequestStatusEnum } from "../../shared/types";
+import { requireAuthenticated } from "../middleware/authentication";
 
 const contractsRouter = Router()
 
@@ -17,7 +18,7 @@ contractsRouter.post('/', async (req, res) => {
   res.send(contractRequest)
 })
 
-contractsRouter.get('/', async (req, res) => {
+contractsRouter.get('/', requireAuthenticated, async (req, res) => {
   const page = Number(req.query.page) || 0
 
   const contractRequests = await ContractRequest.findAll({

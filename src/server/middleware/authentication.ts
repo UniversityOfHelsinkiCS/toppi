@@ -2,8 +2,9 @@ import { RequestHandler } from "express";
 import { ShibbolethHeaders } from "./shibbolethHeaders";
 import { UserParamsValidator } from "../../shared/types";
 import { ApplicationError } from "../errors";
+import { RequestWithUser } from "../types";
 
-export const getCurrentUser: RequestHandler = (req, res, next) => {
+export const getCurrentUser: RequestHandler = (req: RequestWithUser, res, next) => {
   const headers = req.headers as ShibbolethHeaders
 
   const userParams = {
@@ -20,7 +21,7 @@ export const getCurrentUser: RequestHandler = (req, res, next) => {
   next()
 }
 
-export const requireAuthenticated: RequestHandler = (req, res, next) => {
+export const requireAuthenticated: RequestHandler = (req: RequestWithUser, res, next) => {
   if (!req.user) {
     ApplicationError.Unauthorized()
   }

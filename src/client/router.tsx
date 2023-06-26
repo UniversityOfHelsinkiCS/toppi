@@ -1,5 +1,6 @@
 import {
   createBrowserRouter,
+  RouteObject,
   RouterProvider,
 } from "react-router-dom";
 import Layout from "./Layout";
@@ -9,16 +10,28 @@ import { getContractRequest, getContractRequests } from "./api";
 import ContractRequestView from "./pages/ContractRequestView";
 
 const router = createBrowserRouter([
+
   {
     path: "/",
     element: <Layout />,
     children: [
       {
-        path: "/",
+        path: "",
+        element: <Home />
+      },
+    ]
+  },
+
+  {
+    path: "/private",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
         element: <Home />
       },
       {
-        path: "/contract-requests",
+        path: "contract-requests",
         element: <ContractRequests />,
         loader: getContractRequests,
         children: [
@@ -30,7 +43,7 @@ const router = createBrowserRouter([
         ]
       }
     ]
-  },
+  }
 ]);
 
 const Router = () => <RouterProvider router={router} />
