@@ -1,6 +1,7 @@
 import path from 'path'
 
 import express from 'express'
+import 'express-async-errors'
 import morgan from 'morgan'
 import cors from 'cors'
 import { connectToDatabase } from './db/connection';
