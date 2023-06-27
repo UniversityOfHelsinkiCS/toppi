@@ -1,5 +1,5 @@
 export const inProduction = process.env.NODE_ENV === 'production';
-export const inStaging = process.env.NODE_ENV === 'staging';
+export const inStaging = process.env.STAGING === 'true';
 export const inTesting = process.env.NODE_ENV === 'test';
 export const inDevelopment = process.env.NODE_ENV === "development";
 export const GIT_SHA = process.env.GIT_SHA || 'unknown';

@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
+import { inStaging } from './src/config'
+
+const base = inStaging ? '/toppi' : '/'
 
 export default defineConfig(() => {
 
@@ -11,7 +14,7 @@ export default defineConfig(() => {
     plugins: [
       react(),
     ],
-    base: '/',
+    base,
     server: {
       proxy: {
         '/api/': {

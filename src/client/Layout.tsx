@@ -1,11 +1,11 @@
 import { Box, CssBaseline, Link, Sheet, Typography } from "@mui/joy";
-import React from "react";
 import { Toaster } from "sonner";
 import { GitHub } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
 import toskaLogo from "./assets/toska13.png"
 import { Link as RouterLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { inStaging } from "../config";
 
 const Header = () => {
   const { t } = useTranslation()
@@ -28,6 +28,7 @@ const Header = () => {
         </Box>
       </RouterLink>
       <Typography level="body2" sx={{ userSelect: "none" }}>{t("navbar.description")}</Typography>
+      {inStaging && <Typography sx={{ ml: "1rem" }}>STAGING</Typography>}
     </Sheet>
   )
 }
