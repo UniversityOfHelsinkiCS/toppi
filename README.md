@@ -1,4 +1,4 @@
-# TOPPI [![CI/CD](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml)
+# TOPPI [![Production](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/production.yml) [![Staging](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/staging.yml/badge.svg)](https://github.com/UniversityOfHelsinkiCS/toppi/actions/workflows/staging.yml)
 
 Production @ https://toppi.ext.ocp-prod-0.k8s.it.helsinki.fi/
 
