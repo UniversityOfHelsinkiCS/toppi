@@ -1,5 +1,6 @@
 import { Router } from "express";
 import contractsRouter from "./controllers/contracts";
+import loginRouter from "./controllers/login";
 
 /**
  * apiRouter handles the business side of requests. 
@@ -8,6 +9,7 @@ import contractsRouter from "./controllers/contracts";
  */
 const apiRouter = Router()
 apiRouter.use('/contract-requests', contractsRouter)
+apiRouter.use('/', loginRouter)
 apiRouter.use('/', (_req, res) => res.sendStatus(404))
 
 export { apiRouter }

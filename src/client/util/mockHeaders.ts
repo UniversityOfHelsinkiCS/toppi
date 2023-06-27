@@ -1,14 +1,21 @@
+import { ShibbolethHeaders } from "../../shared/types"
+
 const ITEM_NAME = 'fakeUser'
 
-export const setHeaders = (uid: string) => {
-  localStorage.setItem(ITEM_NAME, JSON.stringify({ uid }))
+const fakeUser: ShibbolethHeaders = {
+  hypersonsisuid: 'hy-fake-user',
+  firstname: 'Topias',
+  lastname: 'Testaaja',
+  mail: 'topias.testaaja@helsinki.fi'
+}
+
+export const setHeaders = () => {
+  localStorage.setItem(ITEM_NAME, JSON.stringify(fakeUser))
 }
 
 export const getHeaders = () => {
   const user = JSON.parse(localStorage.getItem(ITEM_NAME) || '{}')
-  const en = localStorage.getItem('employeenumber')
-  const employeenumber = String(en)
-  return { ...user, employeenumber }
+  return user
 }
 
 export const clearHeaders = () => {

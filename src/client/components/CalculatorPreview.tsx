@@ -1,5 +1,5 @@
 import { Box, Sheet, Table, Typography } from "@mui/joy"
-import useContractStore, { useTotalHours } from "../store"
+import useContractStore, { useTotalHours } from "../store/calculatorStore"
 import { getPreparationHours } from "../calculatorConfig"
 
 const CalculatorPreview = () => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import { Option } from './types'
-import { courseTypeOptions, creditOptions, getPreparationHours, studentCountOptions } from './calculatorConfig'
+import { Option } from '../types'
+import { courseTypeOptions, creditOptions, getPreparationHours, studentCountOptions } from '../calculatorConfig'
 
 interface ContractState {
   teachingHours: number

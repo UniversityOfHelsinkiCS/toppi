@@ -7,10 +7,3 @@ export const shibbolethHeaders = headersMiddleware([
   'lastname',
   'mail',
 ])
-
-export interface ShibbolethHeaders {
-  hypersonsisuid?: string
-  firstname?: string
-  lastname?: string
-  mail?: string
-}

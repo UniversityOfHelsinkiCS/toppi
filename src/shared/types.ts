@@ -35,3 +35,10 @@ export const UserParamsValidator = z.object({
 })
 
 export type UserParams = z.infer<typeof UserParamsValidator>
+
+export interface ShibbolethHeaders {
+  hypersonsisuid?: string
+  firstname?: string
+  lastname?: string
+  mail?: string
+}

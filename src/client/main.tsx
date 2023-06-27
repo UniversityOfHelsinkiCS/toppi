@@ -1,23 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { inDevelopment, inProduction } from '../config.ts';
+import { inDevelopment, inProduction, inTesting } from '../config.ts';
 import Router from './router.tsx';
 import initializeSentry from './util/sentry.ts';
 import { initi18n } from './util/i18n.ts';
-import { getHeaders, setHeaders } from './util/mockHeaders.ts';
+import { getHeaders, setHeaders as setMockHeaders } from './util/mockHeaders.ts';
 
 if (inProduction) {
   initializeSentry()
 }
 
 const ensureDevUser = () => {
-  if (!inDevelopment) return
+  if (!inDevelopment && !inTesting) return
   const headers = getHeaders()
-  if (headers.uid) return
+  if (headers.email) return
 
   localStorage.clear()
-  setHeaders('mluukkai')
+  setMockHeaders()
 }
 
 ensureDevUser()

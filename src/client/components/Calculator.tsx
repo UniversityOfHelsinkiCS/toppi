@@ -1,6 +1,6 @@
 import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
 import { SxProps } from '@mui/joy/styles/types'
-import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from '../store'
+import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from '../store/calculatorStore'
 import { Option } from '../types'
 import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions } from '../calculatorConfig'
 import { SectionDivider } from './common'

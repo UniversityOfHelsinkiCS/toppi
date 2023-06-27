@@ -1,15 +1,20 @@
 import axios from "axios";
-import { PUBLIC_URL, inProduction, inTesting } from "../config";
+import { PUBLIC_URL, inDevelopment, inTesting } from "../config";
 import { ContractRequestCreateParams } from "./types";
 import { LoaderFunctionArgs } from "react-router-dom";
 import { getHeaders } from "./util/mockHeaders";
+import { UserParams } from "../shared/types";
 
-const client = axios.create({
+const publicClient = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
 })
 
-client.interceptors.request.use(config => {
-  const headers = inProduction && !inTesting ? {} : getHeaders()
+const privateClient = axios.create({
+  baseURL: `${PUBLIC_URL}/private/api`,
+})
+
+privateClient.interceptors.request.use(config => {
+  const headers = (inDevelopment || inTesting) ? getHeaders() : {}
 
   const adminLoggedInAs = localStorage.getItem('adminLoggedInAs') // id
   if (adminLoggedInAs) headers['x-admin-logged-in-as'] = adminLoggedInAs
@@ -20,19 +25,25 @@ client.interceptors.request.use(config => {
 })
 
 export const sendContract = async (contract: ContractRequestCreateParams) => {
-  const { data } = await client.post("/contract-requests", contract)
+  const { data } = await publicClient.post("/contract-requests", contract)
 
   return data
 }
 
 export const getContractRequests = async () => {
-  const { data } = await client.get("/contract-requests")
+  const { data } = await privateClient.get("/contract-requests")
 
   return data
 }
 
 export const getContractRequest = async ({ params }: LoaderFunctionArgs) => {
-  const { data } = await client.get(`/contract-requests/${params.id}`)
+  const { data } = await privateClient.get(`/contract-requests/${params.id}`)
 
   return data
+}
+
+export const login = async () => {
+  const { data } = await privateClient.get('/login')
+
+  return data as UserParams
 }

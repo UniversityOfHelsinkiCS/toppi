@@ -1,10 +1,10 @@
 import { RequestHandler } from "express";
-import { ShibbolethHeaders } from "./shibbolethHeaders";
-import { UserParamsValidator } from "../../shared/types";
+import { ShibbolethHeaders, UserParamsValidator } from "../../shared/types";
 import { ApplicationError } from "../errors";
 import { RequestWithUser } from "../types";
+import User from "../db/models/User";
 
-export const getCurrentUser: RequestHandler = (req: RequestWithUser, res, next) => {
+export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, next) => {
   const headers = req.headers as ShibbolethHeaders
 
   const userParams = {
@@ -17,6 +17,15 @@ export const getCurrentUser: RequestHandler = (req: RequestWithUser, res, next) 
   const user = UserParamsValidator.parse(userParams)
 
   req.user = user
+
+  const loginAsId = req.headers['x-admin-logged-in-as']
+  if (typeof loginAsId === "string") {
+    const loggedInAsUser = await User.findByPk(loginAsId)
+    if (loggedInAsUser) {
+      req.user = loggedInAsUser
+      req.loginAs = true
+    }
+  }
 
   next()
 }
