@@ -1,6 +1,5 @@
 import {
   createBrowserRouter,
-  RouteObject,
   RouterProvider,
 } from "react-router-dom";
 import Layout from "./Layout";
@@ -8,6 +7,7 @@ import Home from "./pages/Home";
 import ContractRequests from "./pages/ContractRequests";
 import { getContractRequest, getContractRequests } from "./api";
 import ContractRequestView from "./pages/ContractRequestView";
+import { BASE_PATH } from "../config";
 
 const router = createBrowserRouter([
 
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       }
     ]
   }
-]);
+], { basename: BASE_PATH });
 
 const Router = () => <RouterProvider router={router} />
 

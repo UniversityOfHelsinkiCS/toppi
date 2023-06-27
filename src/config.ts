@@ -6,3 +6,5 @@ export const GIT_SHA = process.env.GIT_SHA || 'unknown';
 export const PUBLIC_URL = process.env.PUBLIC_URL || "";
 export const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "";
 export const PORT = process.env.PORT || 8000
+
+export const BASE_PATH = inStaging ? '/toppi' : '/'
