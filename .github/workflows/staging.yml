@@ -80,6 +80,9 @@ jobs:
           tags: staging ${{ github.sha }}
           containerfiles: |
             ./Containerfile
+          build-args: |
+            BASE_PATH=/toppi
+            STAGING=true
 
       - name: Push to quay.io
         uses: redhat-actions/push-to-registry@v2
