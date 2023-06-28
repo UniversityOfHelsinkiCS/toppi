@@ -47,3 +47,9 @@ export const login = async () => {
 
   return data as UserParams
 }
+
+export const logout = async () => {
+  const { data } = await privateClient.get('/logout')
+
+  return data as { url: string }
+}

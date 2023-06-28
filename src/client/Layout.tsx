@@ -1,12 +1,13 @@
-import { Box, CssBaseline, Link, Sheet, Typography } from "@mui/joy";
+import { Box, Button, CssBaseline, Link, Sheet, Typography } from "@mui/joy";
 import { Toaster } from "sonner";
-import { GitHub } from "@mui/icons-material"
+import { GitHub, Login, Logout } from "@mui/icons-material"
 import hyLogo from "./assets/hy_logo.svg"
 import toskaLogo from "./assets/toska13.png"
 import { Link as RouterLink, Outlet, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { inStaging } from "../config";
 import { UserParams } from "../shared/types";
+import { handleLogout } from "./util/logout";
 
 const Header = () => {
   const { t } = useTranslation()
@@ -29,9 +30,15 @@ const Header = () => {
           <Typography>TOPPI</Typography>
         </Box>
       </RouterLink>
-      <Typography level="body2" sx={{ userSelect: "none" }}>{t("navbar.description")}</Typography>
+      <Typography level="body2" sx={{ userSelect: "none", mr: "auto" }}>{t("navbar.description")}</Typography>
       {inStaging && <Typography sx={{ ml: "1rem" }}>STAGING</Typography>}
-      {user && <Typography>logged in as {user.email}</Typography>}
+      {user 
+      ? <Box display="flex" gap="1rem">
+          <Typography variant="soft">kirjautunut: {user.email}</Typography>
+          <Button onClick={handleLogout} variant="soft" size="sm" endDecorator={<Logout />}>Kirjaudu ulos</Button>
+        </Box>
+      : <Link href="/private"><Typography endDecorator={<Login />}>Kirjaudu</Typography></Link>
+      }
     </Sheet>
   )
 }

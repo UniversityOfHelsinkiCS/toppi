@@ -20,4 +20,14 @@ loginRouter.get('/login', requireAuthenticated, async (req: RequestWithUser, res
   })
 })
 
+loginRouter.get('/logout', requireAuthenticated, async (req, res) => {
+  const {
+    headers: { shib_logout_url: shibLogoutUrl },
+  } = req
+
+  return res.send({
+    url: shibLogoutUrl,
+  })
+})
+
 export default loginRouter

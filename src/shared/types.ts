@@ -42,4 +42,5 @@ export interface ShibbolethHeaders {
   sn?: string
   mail?: string
   hygroupcn?: string
+  shib_logout_url?: string
 }

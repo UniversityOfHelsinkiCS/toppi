@@ -22,7 +22,7 @@ const ContractRequestItem = ({ contractRequest }: { contractRequest: ContractReq
           {contractRequest.status}
         </Chip>
       </Box>
-      <Button sx={{ ml: "auto" }} size="sm" variant="soft" component={RouterLink} to={`/contract-requests/${contractRequest.id}`} endDecorator={<Search fontSize="small"/>}>
+      <Button sx={{ ml: "auto" }} size="sm" variant="soft" component={RouterLink} to={`/private/contract-requests/${contractRequest.id}`} endDecorator={<Search fontSize="small"/>}>
         Käsittele
       </Button>
     </Sheet>
