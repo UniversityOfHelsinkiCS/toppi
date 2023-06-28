@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { ShibbolethHeaders, UserParamsValidator } from "../../shared/types";
+import { UserParamsValidator } from "../../shared/types";
 import { ApplicationError } from "../errors";
 import { RequestWithUser } from "../types";
 import User from "../db/models/User";
@@ -11,7 +11,7 @@ const parseShibDateOfBirth = (dob: string|undefined) => {
 }
 
 export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, next) => {
-  const headers = req.headers as ShibbolethHeaders
+  const { headers } = req
 
   const userParams = {
     id: headers.hypersonsisuid,

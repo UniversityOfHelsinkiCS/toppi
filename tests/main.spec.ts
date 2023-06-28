@@ -52,3 +52,11 @@ test('Fill full contract request form', async ({ page }) => {
   await page.getByRole('button', { name: 'Lähetä käsiteltäväksi' }).click();
   await page.getByText('Lähetetään työsopimuspyyntöä').click();
 })
+
+test('User can login and gets the form prefilled', async ({ page }) => {
+  await page.getByRole('link', { name: 'Kirjaudu' }).click();
+  await expect(page.getByText('kirjautunut: topias.testaaja@helsinki.fi')).toBeVisible();
+  await expect(page.getByLabel('Etunimi *')).toHaveValue("Topias")
+  await expect(page.getByLabel('Sukunimi *')).toHaveValue("Testaaja")
+  await expect(page.getByLabel('Syntymäaika *')).toHaveValue("1991-01-01")
+});

@@ -37,7 +37,7 @@ const Header = () => {
           <Typography variant="soft">kirjautunut: {user.email}</Typography>
           <Button onClick={handleLogout} variant="soft" size="sm" endDecorator={<Logout />}>Kirjaudu ulos</Button>
         </Box>
-      : <Link component={RouterLink} to="/private"><Typography endDecorator={<Login />}>Kirjaudu</Typography></Link>
+      : <Link href="/private"><Typography endDecorator={<Login />}>Kirjaudu</Typography></Link>
       }
     </Sheet>
   )

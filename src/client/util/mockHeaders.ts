@@ -1,3 +1,4 @@
+import { PUBLIC_URL } from "../../config"
 import { ShibbolethHeaders } from "../../shared/types"
 
 const ITEM_NAME = 'fakeUser'
@@ -8,6 +9,7 @@ const fakeUser: ShibbolethHeaders = {
   sn: 'Testaaja',
   mail: 'topias.testaaja@helsinki.fi',
   schacdateofbirth: '19910101',
+  shib_logout_url: `${PUBLIC_URL}/`,
 }
 
 export const setHeaders = () => {
