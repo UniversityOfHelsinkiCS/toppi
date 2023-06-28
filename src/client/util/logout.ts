@@ -4,7 +4,7 @@ import { clearHeaders } from "./mockHeaders"
 
 const devLogout = () => {
   clearHeaders()
-  window.location.reload()
+  window.location.pathname = "/"
 }
 
 export const handleLogout = async () => {

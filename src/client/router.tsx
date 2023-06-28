@@ -26,6 +26,7 @@ const router = createBrowserRouter([
 
   {
     path: "/private",
+    id: "privateRoot",
     element: <Layout />,
     loader: login,
     errorElement: <Error />,

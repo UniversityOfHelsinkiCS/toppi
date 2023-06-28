@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ContractRequestFormParams } from "../../shared/types";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -31,17 +32,23 @@ const getRecommendedEndDate = (courseEndDate?: string) => {
   return courseEndDate ? dayjs(courseEndDate).add(14, "days").format("YYYY-MM-DD") : ""
 }
 
-const defaultValues: typeof ContractRequestFormParams._type = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  birthDate: "",
-  courseName: "",
-  courseStartDate: "",
-  courseEndDate: "",
-  contractDuration: "recommended",
-  contractStartDate: "",
-  contractEndDate: "",
+const useDefaultValues = () => {
+  const user = useCurrentUser()
+
+  const defaultValues: typeof ContractRequestFormParams._type = React.useMemo(() => ({
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    birthDate: "",
+    courseName: "",
+    courseStartDate: "",
+    courseEndDate: "",
+    contractDuration: "recommended",
+    contractStartDate: "",
+    contractEndDate: "",
+  }), [user])
+
+  return defaultValues
 }
 
 const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
@@ -57,7 +64,7 @@ const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formDat
 const ContractForm = () => {
   const { control, handleSubmit, setValue, getValues, watch, formState: { errors } } = useForm({
     resolver: zodResolver(ContractRequestFormParams),
-    defaultValues,
+    defaultValues: useDefaultValues(),
   })
 
   const isRecommendedContractDates = watch("contractDuration") === "recommended"
