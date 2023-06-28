@@ -8,12 +8,14 @@ import ContractRequests from "./pages/ContractRequests";
 import { getContractRequest, getContractRequests, login } from "./api";
 import ContractRequestView from "./pages/ContractRequestView";
 import { BASE_PATH } from "../config";
+import { Error } from "./Error";
 
 const router = createBrowserRouter([
 
   {
     path: "/",
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       {
         path: "",
@@ -26,6 +28,7 @@ const router = createBrowserRouter([
     path: "/private",
     element: <Layout />,
     loader: login,
+    errorElement: <Error />,
     children: [
       {
         path: "",
@@ -35,11 +38,13 @@ const router = createBrowserRouter([
         path: "contract-requests",
         element: <ContractRequests />,
         loader: getContractRequests,
+        errorElement: <Error />,
         children: [
           {
             path: ":id",
             element: <ContractRequestView />,
             loader: getContractRequest,
+            errorElement: <Error />,
           }
         ]
       }
