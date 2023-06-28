@@ -2,6 +2,7 @@ import { Router } from "express";
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
 import User from "../db/models/User";
+import { ApplicationError } from "../errors";
 
 const loginRouter = Router()
 
@@ -20,10 +21,12 @@ loginRouter.get('/login', requireAuthenticated, async (req: RequestWithUser, res
   })
 })
 
-loginRouter.get('/logout', requireAuthenticated, async (req, res) => {
-  const {
-    headers: { shib_logout_url: shibLogoutUrl },
-  } = req
+loginRouter.get('/logout', requireAuthenticated, async (req: RequestWithUser, res) => {
+  const { shib_logout_url: shibLogoutUrl } = req.headers
+
+  if (!shibLogoutUrl) {
+    return ApplicationError.BadRequest("Shibboleth logout url missing")
+  }
 
   return res.send({
     url: shibLogoutUrl,

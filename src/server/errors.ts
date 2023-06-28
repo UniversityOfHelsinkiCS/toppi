@@ -18,6 +18,10 @@ export class ApplicationError extends Error {
     throw new ApplicationError(401, msg)
   }
 
+  static BadRequest(msg = "Bad request", errors = []) {
+    throw new ApplicationError(400, msg, errors)
+  }
+
   static FromZod(err: ZodError) {
     return new ApplicationError(400, "Validation failed", err.errors)
   }
