@@ -39,7 +39,7 @@ const useDefaultValues = () => {
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     email: user?.email || "",
-    birthDate: "",
+    birthDate: user?.birthDate || "",
     courseName: "",
     courseStartDate: "",
     courseEndDate: "",

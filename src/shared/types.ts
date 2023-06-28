@@ -31,6 +31,7 @@ export const UserParamsValidator = z.object({
   id: z.string(),
   firstName: z.string(),
   lastName: z.string(),
+  birthDate: zDate.optional(),
   email: z.string().email(),
 })
 
@@ -42,5 +43,6 @@ export interface ShibbolethHeaders {
   sn?: string
   mail?: string
   hygroupcn?: string
+  schacdateofbirth?: string
   shib_logout_url?: string
 }

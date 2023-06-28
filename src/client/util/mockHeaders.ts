@@ -6,7 +6,8 @@ const fakeUser: ShibbolethHeaders = {
   hypersonsisuid: 'hy-fake-user',
   givenname: 'Topias',
   sn: 'Testaaja',
-  mail: 'topias.testaaja@helsinki.fi'
+  mail: 'topias.testaaja@helsinki.fi',
+  schacdateofbirth: '19910101',
 }
 
 export const setHeaders = () => {

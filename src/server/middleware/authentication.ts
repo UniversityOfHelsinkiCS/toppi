@@ -3,6 +3,12 @@ import { ShibbolethHeaders, UserParamsValidator } from "../../shared/types";
 import { ApplicationError } from "../errors";
 import { RequestWithUser } from "../types";
 import User from "../db/models/User";
+import dayjs from "dayjs";
+
+const parseShibDateOfBirth = (dob: string|undefined) => {
+  const parsed = dob ? dayjs(dob, 'YYYYMMDD', true).format('YYYY-MM-DD') : dob
+  return parsed
+}
 
 export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, next) => {
   const headers = req.headers as ShibbolethHeaders
@@ -11,6 +17,7 @@ export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, 
     id: headers.hypersonsisuid,
     firstName: headers.givenname,
     lastName: headers.sn,
+    birthDate: parseShibDateOfBirth(headers.schacdateofbirth),
     email: headers.mail
   }
 
