@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { inDevelopment, inProduction, inTesting } from '../config.ts';
+import { inProduction } from '../config.ts';
 import Router from './router.tsx';
 import initializeSentry from './util/sentry.ts';
 import { initi18n } from './util/i18n.ts';
@@ -12,9 +12,9 @@ if (inProduction) {
 }
 
 const ensureDevUser = () => {
-  if (!inDevelopment && !inTesting) return
+  if (inProduction) return
   const headers = getHeaders()
-  if (headers.email) return
+  if (headers) return
 
   localStorage.clear()
   setMockHeaders()

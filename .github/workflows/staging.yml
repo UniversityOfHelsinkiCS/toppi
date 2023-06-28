@@ -23,6 +23,8 @@ jobs:
         with:
           context: .
           file: ./Containerfile
+          build-args: |
+            E2E=true
           push: false
           load: true
           tags: toppi:latest

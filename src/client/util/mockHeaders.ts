@@ -18,7 +18,10 @@ export const setHeaders = () => {
 
 export const getHeaders = () => {
   const user = JSON.parse(localStorage.getItem(ITEM_NAME) || '{}')
-  return user
+  if (user.sn) {
+    return user as ShibbolethHeaders
+  }
+  return undefined
 }
 
 export const clearHeaders = () => {
