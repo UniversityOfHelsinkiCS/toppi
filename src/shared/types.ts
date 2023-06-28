@@ -38,7 +38,8 @@ export type UserParams = z.infer<typeof UserParamsValidator>
 
 export interface ShibbolethHeaders {
   hypersonsisuid?: string
-  displayname?: string
+  givenname?: string
   sn?: string
   mail?: string
+  hygroupcn?: string
 }

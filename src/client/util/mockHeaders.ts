@@ -4,7 +4,7 @@ const ITEM_NAME = 'fakeUser'
 
 const fakeUser: ShibbolethHeaders = {
   hypersonsisuid: 'hy-fake-user',
-  displayname: 'Topias',
+  givenname: 'Topias',
   sn: 'Testaaja',
   mail: 'topias.testaaja@helsinki.fi'
 }

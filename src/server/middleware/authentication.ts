@@ -9,7 +9,7 @@ export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, 
 
   const userParams = {
     id: headers.hypersonsisuid,
-    firstName: headers.displayname,
+    firstName: headers.givenname,
     lastName: headers.sn,
     email: headers.mail
   }
