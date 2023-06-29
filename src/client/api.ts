@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PUBLIC_URL, inDevelopment, inTesting } from "../config";
+import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
 import { ContractRequestCreateParams } from "./types";
 import { LoaderFunctionArgs } from "react-router-dom";
 import { getHeaders } from "./util/mockHeaders";
@@ -14,12 +14,15 @@ const privateClient = axios.create({
 })
 
 privateClient.interceptors.request.use(config => {
-  const headers = (inDevelopment || inTesting) ? getHeaders() : {}
+  let headers = (inDevelopment || inTesting || inE2E) ? getHeaders() : undefined
+  headers ||= {}
 
   const adminLoggedInAs = localStorage.getItem('adminLoggedInAs') // id
   if (adminLoggedInAs) headers['x-admin-logged-in-as'] = adminLoggedInAs
 
-  const newConfig = { ...config, headers }
+  const newHeaders = Object.assign(config.headers, headers)
+
+  const newConfig = { ...config, headers: newHeaders }
 
   return newConfig
 })

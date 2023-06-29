@@ -45,4 +45,5 @@ export interface ShibbolethHeaders {
   hygroupcn?: string
   schacdateofbirth?: string
   shib_logout_url?: string
+  "x-admin-logged-in-as"?: string
 }

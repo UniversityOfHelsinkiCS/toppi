@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { inProduction } from '../config.ts';
+import { inE2E, inProduction } from '../config.ts';
 import Router from './router.tsx';
 import initializeSentry from './util/sentry.ts';
 import { initi18n } from './util/i18n.ts';
@@ -12,7 +12,7 @@ if (inProduction) {
 }
 
 const ensureDevUser = () => {
-  if (inProduction) return
+  if (inProduction && !inE2E) return
   const headers = getHeaders()
   if (headers) return
 
