@@ -1,5 +1,4 @@
 import { Alert, Box, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Sheet, Typography } from "@mui/joy";
-import { sendContract } from "../api";
 import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
 import React from "react";
@@ -9,6 +8,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ContractRequestFormParams } from "../../shared/types";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useSendContract } from "../hooks/useSendContract";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -51,21 +51,23 @@ const useDefaultValues = () => {
   return defaultValues
 }
 
-const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
-  const req = sendContract(formData)
-
-  toast.promise(req, {
-    loading: "Lähetetään työsopimuspyyntöä",
-    success: "Työsopimuspyyntö lähetetty",
-    error: "Työsopimuspyynnön lähettäminen epäonnistui"
-  })
-}
-
 const ContractForm = () => {
   const { control, handleSubmit, setValue, getValues, watch, formState: { errors } } = useForm({
     resolver: zodResolver(ContractRequestFormParams),
     defaultValues: useDefaultValues(),
   })
+
+  const sendContract = useSendContract()
+
+  const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
+    const req = sendContract(formData)
+  
+    toast.promise(req, {
+      loading: "Lähetetään työsopimuspyyntöä",
+      success: "Työsopimuspyyntö lähetetty",
+      error: "Työsopimuspyynnön lähettäminen epäonnistui"
+    })
+  }
 
   const isRecommendedContractDates = watch("contractDuration") === "recommended"
 

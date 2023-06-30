@@ -1,4 +1,4 @@
-import { ContractRequestStatus } from "../shared/types";
+import { ContractRequestStatus, UserParams } from "../shared/types";
 
 export type Option = { label: string, value: number }
 
@@ -19,6 +19,7 @@ export type ContractRequest = {
   id: number;
   status: ContractRequestStatus;
   formData: ContractRequestCreateParams;
+  User?: UserParams
   createdAt: string;
   updatedAt: string;
 }

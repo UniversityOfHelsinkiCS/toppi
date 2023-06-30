@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
-import User from "../db/models/User";
+import { User } from "../db/models";
 import { ApplicationError } from "../errors";
 
 const loginRouter = Router()
