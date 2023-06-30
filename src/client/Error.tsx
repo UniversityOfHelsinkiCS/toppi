@@ -1,14 +1,20 @@
 import { Box, Button, Typography } from "@mui/joy"
 import { useEffect } from "react";
-import { useNavigate, useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router-dom";
 import * as Sentry from '@sentry/browser'
 
 export const Error = () => {
   const error = useRouteError() as any
   const navigate = useNavigate()
+
   console.error(error)
+
   useEffect(() => {
-    Sentry.captureException(error)
+    if (isRouteErrorResponse(error)) {
+      Sentry.captureException(error.error)
+    } else {
+      Sentry.captureException(error)
+    }
   }, [error])
 
   return (
