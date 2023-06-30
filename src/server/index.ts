@@ -6,11 +6,12 @@ import morgan from 'morgan'
 import cors from 'cors'
 import { connectToDatabase } from './db/connection';
 import { apiRouter } from './routes';
-import { PORT, inProduction, inTesting } from '../config';
+import { PORT, inProduction, inStaging, inTesting } from '../config';
 import { initSentry, sentryErrorHandler, sentryRequestHandler } from './middleware/sentry';
 import { shibbolethHeaders } from './middleware/shibbolethHeaders';
 import { getCurrentUser } from './middleware/authentication';
 import { errorHandler } from './middleware/error';
+import testRouter from './controllers/test'
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use(morgan("short"))
 
 app.use('/private/api', shibbolethHeaders, getCurrentUser, apiRouter)
 app.use('/api', apiRouter)
+if (inStaging) app.use('/test', testRouter)
 
 app.use(sentryErrorHandler)
 app.use(errorHandler)
