@@ -25,6 +25,7 @@ export const ContractRequestFormParams = z.object({
   contractDuration: ContractDurationOptionsEnum,
   contractStartDate: zDate.optional(),
   contractEndDate: zDate.optional(),
+  additionalInfo: z.string().optional(),
 })
 
 export const UserParamsValidator = z.object({

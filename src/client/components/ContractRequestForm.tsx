@@ -1,4 +1,4 @@
-import { Alert, Box, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Sheet, Typography } from "@mui/joy";
+import { Alert, Box, Button, FormControl, FormHelperText, FormLabel, Input, Radio, RadioGroup, Sheet, Textarea, Typography } from "@mui/joy";
 import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
 import React from "react";
@@ -46,6 +46,7 @@ const useDefaultValues = () => {
     contractDuration: "recommended",
     contractStartDate: "",
     contractEndDate: "",
+    additionalInfo: "",
   }), [user])
 
   return defaultValues
@@ -195,6 +196,15 @@ const ContractForm = () => {
                   </FormControl>
                 </InputSection>
               </InputSection>
+              <FormControl>
+                <FormLabel>Lisätietoja</FormLabel>
+                <FormHelperText>Kerro tässä esimerkiksi sovituista poikkeuksista</FormHelperText>
+                <Controller
+                  name="additionalInfo"
+                  control={control}
+                  render={({ field }) => <Textarea {...field} />}
+                />
+              </FormControl>
               <Button type="submit">Lähetä käsiteltäväksi</Button>
             </Box>
           </form>
