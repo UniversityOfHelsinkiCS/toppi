@@ -13,6 +13,7 @@ export type ContractRequestCreateParams = {
   contractDuration: string;
   contractStartDate?: string;
   contractEndDate?: string;
+  additionalInfo?: string;
 }
 
 export type ContractRequest = {
