@@ -9,11 +9,16 @@ const ContractRequestItem = ({ contractRequest }: { contractRequest: ContractReq
   return (
     <Sheet sx={{
       display: "flex",
-      my: "1rem",
       p: "0.5rem",
       px: "1.5rem",
       borderRadius: "0.5rem",
-    }} variant="outlined">
+      '&:hover': {
+        backgroundColor: theme => theme.palette.background.level1,
+      },
+      ...(open ? {
+        backgroundColor: theme => theme.palette.background.level1,
+      } : {})
+    }}>
       <Typography level="body2" pr="1rem">#{contractRequest.id}</Typography>
       <Box display="flex" flexDirection="column" alignItems="start">
         <Box display="flex" alignItems="center" gap="0.5rem">

@@ -22,7 +22,7 @@ const Header = () => {
       display: "flex",
       borderRadius: "1rem",
     }}>
-      <RouterLink to="/" style={{ textDecoration: "none" }}>
+      <RouterLink to={user ? "/private" : "/"} style={{ textDecoration: "none" }}>
         <Box display="flex" alignItems="center" columnGap="1rem">
           <Box width="2rem">
             <img src={hyLogo} alt="hy logo" />
@@ -33,11 +33,16 @@ const Header = () => {
       <Typography level="body2" sx={{ userSelect: "none", mr: "auto" }}>{t("navbar.description")}</Typography>
       {inStaging && <Typography sx={{ ml: "1rem" }}>STAGING</Typography>}
       {user 
-      ? <Box display="flex" gap="1rem">
+      ? 
+      <>
+        <Link component={RouterLink} to="/private/contract-requests">Työsopimuspyynnöt</Link>
+        <Box display="flex" gap="1rem">
           <Typography variant="soft">kirjautunut: {user.email}</Typography>
           <Button onClick={handleLogout} variant="soft" size="sm" endDecorator={<Logout />}>Kirjaudu ulos</Button>
         </Box>
-      : <Link href="/private"><Typography endDecorator={<Login />}>Kirjaudu</Typography></Link>
+      </>
+      : 
+      <Link href="/private"><Typography endDecorator={<Login />}>Kirjaudu</Typography></Link>
       }
     </Sheet>
   )
