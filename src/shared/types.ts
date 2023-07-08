@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { z } from "zod"
 
-export const contractRequestStatuses = ["waiting", "assigned", "checked", "handled", "rejected"] as const
+export const contractRequestStatuses = ["waiting", "handled", "rejected"] as const
 export const ContractRequestStatusEnum = z.enum(contractRequestStatuses)
 export type ContractRequestStatus = z.infer<typeof ContractRequestStatusEnum>
 

@@ -21,7 +21,7 @@ const copyToClipboard = (text: string) => {
 
 const TableItem = ({ label, value }: { label: string, value?: string }) => {
   return (
-    <tr onClick={() => value && copyToClipboard(value)} style={{ cursor: value ? 'pointer' : 'inherit' }}>
+    <tr onClick={() => value && copyToClipboard(value)} style={{ cursor: value ? 'copy' : 'inherit' }}>
       <td>{label}</td>
       <td>{value ? value : <Typography level="body3">Puuttuu</Typography>}</td>
     </tr>
@@ -73,7 +73,7 @@ const ContractRequestView = () => {
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
-    <Sheet sx={{ p: "1rem",}}>
+    <Sheet sx={{ p: "1rem", flex: 0.5 }}>
       <Typography level="h1" fontSize="xl4">
         Pyynnön #{contractRequest.id} tiedot
       </Typography>
