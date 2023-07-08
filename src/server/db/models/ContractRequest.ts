@@ -17,15 +17,6 @@ class ContractRequest extends Model<
   declare createdAt: CreationOptional<Date>;
 
   declare updatedAt: CreationOptional<Date>;
-
-  toPublic() {
-    return {
-      id: this.dataValues.id,
-      status: this.dataValues.status,
-      createdAt: this.dataValues.createdAt,
-      updatedAt: this.dataValues.updatedAt,
-    }
-  }
 }
 
 ContractRequest.init(

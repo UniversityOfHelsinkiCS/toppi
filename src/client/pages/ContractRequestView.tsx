@@ -73,8 +73,8 @@ const ContractRequestView = () => {
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
-    <Sheet sx={{ p: "1rem", flex: 0.5 }}>
-      <Typography level="h1" fontSize="xl4">
+    <Sheet sx={{ px: "2rem", flex: 0.5 }}>
+      <Typography level="h4">
         Pyynnön #{contractRequest.id} tiedot
       </Typography>
       <Box display="flex">
@@ -88,7 +88,7 @@ const ContractRequestView = () => {
         <Formatted contractRequest={contractRequest} />
       )}
       <SectionDivider />
-      <Typography level="h2" fontSize="xl">
+      <Typography level="h4">
         Päivitä pyynnön tila
       </Typography>
       <Typography>

@@ -14,6 +14,10 @@ export class ApplicationError extends Error {
     throw new ApplicationError(403, msg)
   }
 
+  static NotFound(msg = "Not found") {
+    throw new ApplicationError(404, msg)
+  }
+
   static Unauthorized(msg = "Unauthorized") {
     throw new ApplicationError(401, msg)
   }

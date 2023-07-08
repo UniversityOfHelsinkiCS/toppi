@@ -34,6 +34,7 @@ export const UserParamsValidator = z.object({
   lastName: z.string(),
   birthDate: zDate.optional(),
   email: z.string().email(),
+  iamGroups: z.array(z.string()).optional(),
 })
 
 export type UserParams = z.infer<typeof UserParamsValidator>
@@ -47,4 +48,39 @@ export interface ShibbolethHeaders {
   schacdateofbirth?: string
   shib_logout_url?: string
   "x-admin-logged-in-as"?: string
+}
+
+export type Locale = {
+  fi: string
+  en: string
+  sv: string
+}
+
+export type Programme = {
+  key: string
+  name: Locale
+  level: string
+  companionFaculties: Array<string>
+  international: Boolean
+}
+
+export interface OrganisationData {
+  code: string
+  name: Locale
+  programmes: Array<Programme>
+}
+
+export const specialGroups = ["kosu", "superAdmin"] as const
+export type SpecialGroup = typeof specialGroups[number]
+
+export type UserOrganisationAccess = {
+  specialGroup?: {
+    [group in SpecialGroup]?: boolean
+  }
+} & {
+  [code: string]: {
+    read: boolean,
+    write: boolean,
+    admin: boolean,
+  },
 }

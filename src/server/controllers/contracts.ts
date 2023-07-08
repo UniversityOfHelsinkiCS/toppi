@@ -4,12 +4,14 @@ import { inDevelopment } from "../../config";
 import { ContractRequestFormParams, ContractRequestStatusEnum } from "../../shared/types";
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
+import { ApplicationError } from "../errors";
+import { getUserAccess } from "../services/access";
 
 const contractsRouter = Router()
 
 contractsRouter.post('/', async (req: RequestWithUser, res) => {
   const formData = ContractRequestFormParams.parse(req.body)
-  console.log(req.user)
+
   const contractRequest = await ContractRequest.create({
     formData,
     userId: req.user?.id
@@ -20,8 +22,11 @@ contractsRouter.post('/', async (req: RequestWithUser, res) => {
   res.send(contractRequest)
 })
 
-contractsRouter.get('/', requireAuthenticated, async (req, res) => {
+contractsRouter.get('/', requireAuthenticated("kosu"), async (req: RequestWithUser, res) => {
   const page = Number(req.query.page) || 0
+
+  const access = await getUserAccess(req.user!)
+  console.log(access)
 
   const contractRequests = await ContractRequest.findAll({
     include: User,
@@ -33,24 +38,22 @@ contractsRouter.get('/', requireAuthenticated, async (req, res) => {
   return res.send(contractRequests)
 })
 
-contractsRouter.get('/:id', requireAuthenticated, async (req, res) => {
+contractsRouter.get('/:id', requireAuthenticated("kosu"), async (req, res) => {
   const id = req.params.id
 
   const contractRequest = await ContractRequest.findByPk(id, { include: User, })
 
-  // Absolute tietoturva
-  const publicObj = inDevelopment ? contractRequest : contractRequest?.toPublic()
-
-  return res.send(publicObj)
+  return res.send(contractRequest)
 })
 
-contractsRouter.put('/:id', requireAuthenticated, async (req, res) => {
+contractsRouter.put('/:id', requireAuthenticated("kosu"), async (req, res) => {
   const { id } = req.params
   const status = ContractRequestStatusEnum.parse(req.body.status)
 
   const contractRequest = await ContractRequest.findByPk(id)
+
   if (!contractRequest) {
-    throw new Error("NOT FOUND")
+    return ApplicationError.NotFound()
   }
 
   contractRequest.status = status

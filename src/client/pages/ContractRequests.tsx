@@ -73,7 +73,7 @@ const ContractRequests = () => {
 
   return (
     <Box p="2rem">
-      <Typography level="h1" fontSize="xl4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
+      <Typography level="h4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
       <Box display="flex">
         <ContractRequestList />
         <Outlet />

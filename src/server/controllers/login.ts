@@ -6,7 +6,7 @@ import { ApplicationError } from "../errors";
 
 const loginRouter = Router()
 
-loginRouter.get('/login', requireAuthenticated, async (req: RequestWithUser, res) => {
+loginRouter.get('/login', requireAuthenticated(), async (req: RequestWithUser, res) => {
   const { user, loginAs } = req
 
   let newUser = false
@@ -21,7 +21,7 @@ loginRouter.get('/login', requireAuthenticated, async (req: RequestWithUser, res
   })
 })
 
-loginRouter.get('/logout', requireAuthenticated, async (req: RequestWithUser, res) => {
+loginRouter.get('/logout', requireAuthenticated(), async (req: RequestWithUser, res) => {
   const { shib_logout_url: shibLogoutUrl } = req.headers
 
   if (!shibLogoutUrl) {
