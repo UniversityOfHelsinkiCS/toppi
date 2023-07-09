@@ -1,11 +1,9 @@
 import { Router } from "express";
 import { ContractRequest, User } from "../db/models";
-import { inDevelopment } from "../../config";
 import { ContractRequestFormParams, ContractRequestStatusEnum } from "../../shared/types";
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
 import { ApplicationError } from "../errors";
-import { getUserAccess } from "../services/access";
 
 const contractsRouter = Router()
 
@@ -24,9 +22,6 @@ contractsRouter.post('/', async (req: RequestWithUser, res) => {
 
 contractsRouter.get('/', requireAuthenticated("kosu"), async (req: RequestWithUser, res) => {
   const page = Number(req.query.page) || 0
-
-  const access = await getUserAccess(req.user!)
-  console.log(access)
 
   const contractRequests = await ContractRequest.findAll({
     include: User,
