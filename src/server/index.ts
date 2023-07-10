@@ -2,37 +2,13 @@ import path from 'path'
 
 import express from 'express'
 import 'express-async-errors'
-import morgan from 'morgan'
-import cors from 'cors'
 import { connectToDatabase } from './db/connection';
-import { apiRouter } from './routes';
-import { PORT, inProduction, inStaging, inTesting } from '../config';
-import { initSentry, sentryErrorHandler, sentryRequestHandler } from './middleware/sentry';
-import { shibbolethHeaders } from './middleware/shibbolethHeaders';
-import { getCurrentUser } from './middleware/authentication';
-import { errorHandler } from './middleware/error';
-import testRouter from './controllers/test'
+import { router } from './routes';
+import { PORT, inProduction, inTesting } from '../config';
 
 const app = express()
 
-if (inProduction) {
-  initSentry(app)
-}
-
-// Must be before all other middleware
-app.use(sentryRequestHandler)
-
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(morgan("short"))
-
-app.use('/private/api', shibbolethHeaders, getCurrentUser, apiRouter)
-app.use('/api', apiRouter)
-if (inStaging) app.use('/test', testRouter)
-
-app.use(sentryErrorHandler)
-app.use(errorHandler)
+app.use('/', router)
 
 if (inProduction || inTesting) {
   const DIST_PATH = path.resolve(__dirname, '../../dist')

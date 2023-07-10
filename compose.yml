@@ -34,13 +34,13 @@ services:
       - POSTGRES_DATABASE=postgres
     ports:
       - 3003:3003
-    container_name: jami
+    container_name: toppi-jami
   jami-db:
     image: postgres:15-alpine
     environment:
       - PGDATA=/data
       - POSTGRES_PASSWORD=postgres
-    container_name: jami-db
+    container_name: toppi-jami-db
     ports:
       - 5433:5432
     volumes:
