@@ -19,6 +19,7 @@ export const ContractRequestFormParams = z.object({
   lastName: z.string(),
   email: z.string().email(),
   birthDate: zDate,
+  faculty: z.string().optional(),
   courseName: z.string(),
   courseStartDate: zDate,
   courseEndDate: zDate,

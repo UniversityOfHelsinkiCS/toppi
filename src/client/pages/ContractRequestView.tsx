@@ -1,8 +1,7 @@
 import { useLoaderData } from "react-router-dom"
 import { ContractRequest } from "../types"
-import { Box, Button, IconButton, Sheet, Table, Typography } from "@mui/joy"
+import { Box, Button, Sheet, Table, Typography } from "@mui/joy"
 import React from "react"
-import { ContentCopy, Explicit, Info, Warning } from "@mui/icons-material"
 import { toast } from "sonner"
 import { SectionDivider } from "../components/common"
 
@@ -47,6 +46,7 @@ const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"]
           <TableItem label="Sukunimi" value={formData.lastName} />
           <TableItem label="Sähköposti" value={formData.email} />
           <TableItem label="Syntymäaika" value={formData.birthDate} />
+          <TableItem label="Tiedekunta" value={formData.faculty} />
           <TableItem label="Kurssin nimi" value={formData.courseName} />
           <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
           <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />

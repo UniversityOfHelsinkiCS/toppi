@@ -3,7 +3,7 @@ import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
 import { ContractRequestCreateParams } from "./types";
 import { LoaderFunctionArgs } from "react-router-dom";
 import { getMockHeaders } from "./util/mockHeaders";
-import { UserParams } from "../shared/types";
+import { OrganisationData, UserParams } from "../shared/types";
 
 export const publicClient = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
@@ -55,4 +55,10 @@ export const logout = async () => {
   const { data } = await privateClient.get('/logout')
 
   return data as { url: string }
+}
+
+export const getOrganisationData = async () => {
+  const { data } = await publicClient.get('/organisations')
+
+  return data as OrganisationData[]
 }

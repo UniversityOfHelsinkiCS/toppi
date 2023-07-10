@@ -9,6 +9,7 @@ import { initSentry, sentryErrorHandler, sentryRequestHandler } from "./middlewa
 import { shibbolethHeaders } from "./middleware/shibbolethHeaders";
 import { getCurrentUser } from "./middleware/authentication";
 import { errorHandler } from "./middleware/error";
+import organisationsRouter from "./controllers/organisations";
 
 /**
  * apiRouter handles the business side of requests. 
@@ -18,6 +19,7 @@ import { errorHandler } from "./middleware/error";
 const apiRouter = Router()
 
 apiRouter.use('/contract-requests', contractsRouter)
+apiRouter.use('/organisations', organisationsRouter)
 if (inStaging) apiRouter.use('/test', testRouter)
 apiRouter.use('/', loginRouter)
 apiRouter.use('/', (_req, res) => res.sendStatus(404))

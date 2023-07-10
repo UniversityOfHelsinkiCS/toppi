@@ -1,4 +1,4 @@
-import { Alert, Box, Button, FormControl, FormHelperText, FormLabel, Input, Radio, RadioGroup, Sheet, Textarea, Typography } from "@mui/joy";
+import { Alert, Box, Button, FormControl, FormHelperText, FormLabel, Input, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from "@mui/joy";
 import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
 import React from "react";
@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { ContractRequestFormParams } from "../../shared/types";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useSendContract } from "../hooks/useSendContract";
+import { useFaculties } from "../hooks/useFaculties";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -40,6 +41,7 @@ const useDefaultValues = () => {
     lastName: user?.lastName || "",
     email: user?.email || "",
     birthDate: user?.birthDate || "",
+    faculty: "",
     courseName: "",
     courseStartDate: "",
     courseEndDate: "",
@@ -59,6 +61,8 @@ const ContractForm = () => {
   })
 
   const sendContract = useSendContract()
+
+  const faculties = useFaculties()
 
   const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
     const req = sendContract(formData)
@@ -113,6 +117,31 @@ const ContractForm = () => {
                   name="email"
                   control={control}
                   render={({ field }) => <Input {...field} type="email"/>}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Tiedekunta</FormLabel>
+                <Controller 
+                  name="faculty"
+                  control={control}
+                  render={({ field }) => (
+                    <Select 
+                      {...field}
+                      placeholder="Valitse tiedekunta"
+                      onChange={(e, val) => val && setValue("faculty", val)}
+                    >
+                      {faculties ? (
+                        faculties.map(f => (
+                          <Option key={f.code} value={f.code}>{f.name.fi}</Option>
+                        ))
+                      ) : (
+                        <Option value={""}>
+                          Ladataan...
+                        </Option>
+                      )}
+                      <Option value="don't know">En tiedä</Option>
+                    </Select>
+                  )}
                 />
               </FormControl>
               <FormControl required error={!!errors.courseName}>

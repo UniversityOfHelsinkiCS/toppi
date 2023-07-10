@@ -27,7 +27,7 @@ const get = async (url: string) => {
   return data
 }
 
-const post = async (url: string, body: any) => {
+const post = async (url: string, body: object) => {
   if (!jamiAvailable) {
     return undefined
   }
@@ -35,8 +35,19 @@ const post = async (url: string, body: any) => {
   return data
 }
 
+/**
+ * High-performance caching solution:
+ */ 
+let organisationData: OrganisationData[]|null = null
+
 export const getOrganisationData = async (): Promise<OrganisationData[]> => {
+  if (organisationData) return organisationData
+
   const data = await get('/organisation-data')
+
+  if (data) {
+    organisationData = data
+  }
 
   return data || []
 }
