@@ -1,6 +1,6 @@
 import { ErrorRequestHandler, Response } from "express"
 import { ZodError } from "zod"
-import Sentry from "@sentry/node"
+import * as Sentry from "@sentry/node";
 import { ApplicationError } from "../errors"
 import { inProduction } from "../../config"
 
