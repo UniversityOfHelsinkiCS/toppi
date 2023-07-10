@@ -61,7 +61,7 @@ export type Programme = {
   name: Locale
   level: string
   companionFaculties: Array<string>
-  international: Boolean
+  international: boolean
 }
 
 export interface OrganisationData {
@@ -84,3 +84,15 @@ export type UserOrganisationAccess = {
     admin: boolean,
   },
 }
+
+/**
+ * Higher gives access to lower
+ */
+export const UserRoles = {
+  AdUser: 0,
+  Faculty: 1,
+  University: 2,
+  Admin: 3,
+} as const
+
+export type UserRole = typeof UserRoles[keyof typeof UserRoles]

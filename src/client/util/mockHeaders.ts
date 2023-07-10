@@ -10,7 +10,7 @@ const fakeUser: ShibbolethHeaders = {
   mail: 'topias.testaaja@helsinki.fi',
   schacdateofbirth: '19910101',
   shib_logout_url: `${PUBLIC_URL}/`,
-  hygroupcn: 'hy-ypa-opa-kosu-kumpula',
+  hygroupcn: 'grp-toska',
 }
 
 export const setHeaders = () => {

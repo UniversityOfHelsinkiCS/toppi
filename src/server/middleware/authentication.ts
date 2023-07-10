@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
-import { SpecialGroup, UserParamsValidator } from "../../shared/types";
+import { UserParamsValidator, UserRole, UserRoles } from "../../shared/types";
 import { ApplicationError } from "../errors";
-import { RequestWithUser } from "../types";
+import { RequestUser, RequestWithUser } from "../types";
 import User from "../db/models/User";
 import dayjs from "dayjs";
 import { getUserAccess } from "../services/access";
+import { getUserRoles } from "../services/roles";
 
 const parseShibDateOfBirth = (dob: string|undefined) => {
   const parsed = dob ? dayjs(dob, 'YYYYMMDD', true).format('YYYY-MM-DD') : dob
@@ -39,9 +40,24 @@ export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, 
   next()
 }
 
+const populateUserRoles = async (user: RequestUser) => {
+  let { access, roles } = user
 
+  if (!access) {
+    access = await getUserAccess(user)
+  }
 
-export const requireAuthenticated = (...specialGroups: SpecialGroup[]) => {
+  if (!roles) {
+    roles = getUserRoles(user.id, access)
+  }
+
+  user.access = access
+  user.roles = roles
+
+  return roles
+}
+
+export const requireAuthenticated = (minimumRole: UserRole = UserRoles.AdUser) => {
 
   const authMiddleware: RequestHandler = async (req: RequestWithUser, res, next) => {
     const user = req.user
@@ -50,13 +66,12 @@ export const requireAuthenticated = (...specialGroups: SpecialGroup[]) => {
       return ApplicationError.Unauthorized("Must be logged in")
     }
 
-    if (!user.access) {
-      user.access = await getUserAccess(user)
-      console.log(user.access)
-    }
+    const roles = await populateUserRoles(user)
 
-    if (!specialGroups.every(group => user.access!.specialGroup?.[group])) {
-      return ApplicationError.Forbidden(`Must have special group(s) ${specialGroups.join(", ")}. Got ${JSON.stringify(user.access?.specialGroup)} from IAM-groups ${user.iamGroups}`)
+    const hasAccess = roles.some(role => role >= minimumRole)
+
+    if (!hasAccess) {
+      return ApplicationError.Forbidden(`Must have minimum role of ${minimumRole}. Got ${roles} from IAM-groups ${user.iamGroups}`)
     }
 
     next()
