@@ -10,19 +10,15 @@ const fakeUser: ShibbolethHeaders = {
   mail: 'topias.testaaja@helsinki.fi',
   schacdateofbirth: '19910101',
   shib_logout_url: `${PUBLIC_URL}/`,
-  hygroupcn: 'grp-toska',
+  hygroupcn: '',
 }
 
-export const setHeaders = () => {
+export const updateMockHeaders = () => {
   localStorage.setItem(ITEM_NAME, JSON.stringify(fakeUser))
 }
 
-export const getHeaders = () => {
-  const user = JSON.parse(localStorage.getItem(ITEM_NAME) || '{}')
-  if (user.sn) {
-    return user as ShibbolethHeaders
-  }
-  return undefined
+export const getMockHeaders = () => {
+  return JSON.parse(localStorage.getItem(ITEM_NAME) || '{}')
 }
 
 export const clearHeaders = () => {

@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
 import { ContractRequestCreateParams } from "./types";
 import { LoaderFunctionArgs } from "react-router-dom";
-import { getHeaders } from "./util/mockHeaders";
+import { getMockHeaders } from "./util/mockHeaders";
 import { UserParams } from "../shared/types";
 
 export const publicClient = axios.create({
@@ -14,7 +14,7 @@ export const privateClient = axios.create({
 })
 
 privateClient.interceptors.request.use(config => {
-  let headers = (inDevelopment || inTesting || inE2E) ? getHeaders() : undefined
+  let headers = (inDevelopment || inTesting || inE2E) ? getMockHeaders() : undefined
   headers ||= {}
 
   const adminLoggedInAs = localStorage.getItem('adminLoggedInAs') // id

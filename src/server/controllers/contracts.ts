@@ -20,7 +20,7 @@ contractsRouter.post('/', async (req: RequestWithUser, res) => {
   res.send(contractRequest)
 })
 
-contractsRouter.get('/', requireAuthenticated(UserRoles.AdUser), async (req: RequestWithUser, res) => {
+contractsRouter.get('/', requireAuthenticated(UserRoles.Faculty), async (req: RequestWithUser, res) => {
   const page = Number(req.query.page) || 0
 
   const contractRequests = await ContractRequest.findAll({

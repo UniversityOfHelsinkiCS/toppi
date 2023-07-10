@@ -57,6 +57,8 @@ const populateUserRoles = async (user: RequestUser) => {
   return roles
 }
 
+const nameOfRole = (role: UserRole) => Object.entries(UserRoles).filter(([, v]) => v === role)?.[0]?.[0]
+
 export const requireAuthenticated = (minimumRole: UserRole = UserRoles.AdUser) => {
 
   const authMiddleware: RequestHandler = async (req: RequestWithUser, res, next) => {
@@ -71,7 +73,7 @@ export const requireAuthenticated = (minimumRole: UserRole = UserRoles.AdUser) =
     const hasAccess = roles.some(role => role >= minimumRole)
 
     if (!hasAccess) {
-      return ApplicationError.Forbidden(`Must have minimum role of ${minimumRole}. Got ${roles} from IAM-groups ${user.iamGroups}`)
+      return ApplicationError.Forbidden(`Must have minimum role of ${nameOfRole(minimumRole)}. Got ${roles.map(nameOfRole)} from IAM-groups ${user.iamGroups}`)
     }
 
     next()
