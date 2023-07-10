@@ -4,6 +4,7 @@ import { Box, Button, Sheet, Table, Typography } from "@mui/joy"
 import React from "react"
 import { toast } from "sonner"
 import { SectionDivider } from "../components/common"
+import { useFaculties } from "../hooks/useFaculties"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
@@ -28,6 +29,12 @@ const TableItem = ({ label, value }: { label: string, value?: string }) => {
 }
 
 const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"] }) => {
+  const faculties = useFaculties()
+  const facultyDisplay = (code: string|undefined) => {
+    const faculty = faculties?.find(f => f.code === code)
+    return faculty ? `${faculty.code} ${faculty.name.fi}` : undefined
+  }
+
   return (
     <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
       <Table hoverRow sx={{
@@ -46,7 +53,7 @@ const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"]
           <TableItem label="Sukunimi" value={formData.lastName} />
           <TableItem label="Sähköposti" value={formData.email} />
           <TableItem label="Syntymäaika" value={formData.birthDate} />
-          <TableItem label="Tiedekunta" value={formData.faculty} />
+          <TableItem label="Tiedekunta" value={facultyDisplay(formData.faculty)} />
           <TableItem label="Kurssin nimi" value={formData.courseName} />
           <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
           <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />
