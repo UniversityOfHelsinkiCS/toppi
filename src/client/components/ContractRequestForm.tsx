@@ -88,7 +88,7 @@ const ContractForm = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputSection>
-                <FormControl required>
+                <FormControl required sx={{ flex: 1 }}>
                   <FormLabel>Etunimi</FormLabel>
                   <Controller
                     name="firstName"
@@ -96,7 +96,7 @@ const ContractForm = () => {
                     render={({ field }) => <Input {...field} />}
                   />
                 </FormControl>
-                <FormControl required>
+                <FormControl required sx={{ flex: 1 }}>
                   <FormLabel>Sukunimi</FormLabel>
                   <Controller
                     name="lastName"
@@ -122,7 +122,7 @@ const ContractForm = () => {
                 />
               </FormControl>
               <InputSection label="Kurssin järjestäjä">
-                <FormControl>
+                <FormControl sx={{ flex: 1 }}>
                   <FormLabel>Tiedekunta</FormLabel>
                   <Controller 
                     name="faculty"
@@ -147,7 +147,7 @@ const ContractForm = () => {
                     )}
                   />
                 </FormControl>
-                <FormControl disabled={!faculty}>
+                <FormControl disabled={!faculty} sx={{ flex: 1 }}>
                   <FormLabel>Koulutusohjelma</FormLabel>
                   <Controller 
                     name="programme"
