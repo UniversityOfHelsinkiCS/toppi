@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { Option } from '../types'
 import { courseTypeOptions, creditOptions, getPreparationHours, studentCountOptions } from '../calculatorConfig'
+import { CalculatorParams } from '../../shared/types'
 
 interface ContractState {
   teachingHours: number
@@ -55,5 +56,26 @@ export const useWorkHourCalculatorFields = () => ({
   preparationHours: usePreparationHours(),
   totalHours: useTotalHours(),
 })
+
+export const useCalculatorParams: () => CalculatorParams = () => {
+
+  const calculatorState = useContractStore(state => ({
+    teachingHours: state.teachingHours,
+    courseType: state.courseType,
+    credits: state.credits,
+    studentCount: state.studentCount,
+    hourlyRate: state.hourlyRate,
+  }))
+  
+  return {
+    teachingHours: calculatorState.teachingHours,
+    courseType: calculatorState.courseType.label,
+    credits: calculatorState.credits.label,
+    studentCount: calculatorState.studentCount.label,
+    hourlyRate: calculatorState.hourlyRate,
+    preparationHours: usePreparationHours(),
+    totalHours: useTotalHours(),
+  }
+}
 
 export default useContractStore

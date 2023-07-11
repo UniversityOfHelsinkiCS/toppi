@@ -11,7 +11,7 @@ const ContractRequestItem = ({ contractRequest }: { contractRequest: ContractReq
   return (
     <tr>
       <td scope="row">#{contractRequest.id}</td>
-      <td>{contractRequest.formData.email}</td>
+      <td>{contractRequest.formData.formData.email}</td>
       <td>{new Date(contractRequest.createdAt).toLocaleDateString()}</td>
       <td><StatusChip status={contractRequest.status} /></td>
       <td>

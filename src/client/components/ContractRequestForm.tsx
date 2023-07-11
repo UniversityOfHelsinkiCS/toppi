@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 import { Controller, useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ContractRequestFormParams } from "../../shared/types";
+import { ContractRequestFormParams, ContractRequestFormParamsValidator } from "../../shared/types";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useSendContract } from "../hooks/useSendContract";
 import { useFaculties, useProgrammes } from "../hooks/useFaculties";
@@ -36,7 +36,7 @@ const getRecommendedEndDate = (courseEndDate?: string) => {
 const useDefaultValues = () => {
   const user = useCurrentUser()
 
-  const defaultValues: typeof ContractRequestFormParams._type = React.useMemo(() => ({
+  const defaultValues: ContractRequestFormParams = React.useMemo(() => ({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     email: user?.email || "",
@@ -56,7 +56,7 @@ const useDefaultValues = () => {
 
 const ContractForm = () => {
   const { control, handleSubmit, setValue, getValues, watch, formState: { errors } } = useForm({
-    resolver: zodResolver(ContractRequestFormParams),
+    resolver: zodResolver(ContractRequestFormParamsValidator),
     defaultValues: useDefaultValues(),
   })
 
@@ -66,7 +66,7 @@ const ContractForm = () => {
   const faculties = useFaculties()
   const programmes = useProgrammes(faculty)
 
-  const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
+  const onSubmit: SubmitHandler<typeof ContractRequestFormParamsValidator._type> = (formData) => {
     const req = sendContract(formData)
   
     toast.promise(req, {

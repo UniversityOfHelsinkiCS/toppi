@@ -1,10 +1,10 @@
 import { useLoaderData } from "react-router-dom"
-import { ContractRequest } from "../types"
 import { Box, Button, Sheet, Table, Typography } from "@mui/joy"
 import React from "react"
 import { toast } from "sonner"
 import { SectionDivider, StatusChip } from "../components/common"
 import { useFaculties, useProgrammes } from "../hooks/useFaculties"
+import { ContractRequest } from "../types"
 import { ContractDurationOption } from "../../shared/types"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
@@ -36,7 +36,8 @@ const TableItem = ({ label, value, extra }: { label: string, value?: string, ext
   )
 }
 
-const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"] }) => {
+const FormattedFormData = ({ contractRequest }: { contractRequest: ContractRequest }) => {
+  const { formData } = contractRequest.formData // sorry
   const faculties = useFaculties()
   const programmes = useProgrammes(formData.faculty)
 
@@ -87,7 +88,7 @@ const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) =>
   return (
     <Box>
       <Typography level="body3">Klikkaa riviä kopioidaksesi kentän arvon</Typography>
-      <FormattedFormData formData={contractRequest.formData} />
+      <FormattedFormData contractRequest={contractRequest} />
     </Box>
   )
 }

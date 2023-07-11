@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ContractRequest, User } from "../db/models";
-import { ContractRequestFormParams, ContractRequestStatusEnum, UserRoles } from "../../shared/types";
+import { ContractRequestParamsValidator, ContractRequestStatusEnum, UserRoles } from "../../shared/types";
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
 import { ApplicationError } from "../errors";
@@ -8,7 +8,7 @@ import { ApplicationError } from "../errors";
 const contractsRouter = Router()
 
 contractsRouter.post('/', async (req: RequestWithUser, res) => {
-  const formData = ContractRequestFormParams.parse(req.body)
+  const formData = ContractRequestParamsValidator.parse(req.body)
 
   const contractRequest = await ContractRequest.create({
     formData,

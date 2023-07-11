@@ -14,7 +14,7 @@ export type ContractDurationOption = z.infer<typeof ContractDurationOptionsEnum>
  */
 export const zDate = z.custom<string>((dateString) => typeof dateString === "string" && dayjs(dateString, "YYYY-MM-DD", true).isValid())
 
-export const ContractRequestFormParams = z.object({
+export const ContractRequestFormParamsValidator = z.object({
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),
@@ -30,6 +30,8 @@ export const ContractRequestFormParams = z.object({
   additionalInfo: z.string().optional(),
 })
 
+export type ContractRequestFormParams = z.infer<typeof ContractRequestFormParamsValidator>
+
 export const UserParamsValidator = z.object({
   id: z.string(),
   firstName: z.string(),
@@ -40,6 +42,25 @@ export const UserParamsValidator = z.object({
 })
 
 export type UserParams = z.infer<typeof UserParamsValidator>
+
+export const CalculatorParamsValidator = z.object({
+  teachingHours: z.number(),
+  courseType: z.string(),
+  credits: z.string(),
+  studentCount: z.string(),
+  hourlyRate: z.number(),
+  preparationHours: z.number(),
+  totalHours: z.number(),
+})
+
+export type CalculatorParams = z.infer<typeof CalculatorParamsValidator>
+
+export const ContractRequestParamsValidator = z.object({
+  calculatorData: CalculatorParamsValidator,
+  formData: ContractRequestFormParamsValidator
+})
+
+export type ContractRequestParams = z.infer<typeof ContractRequestParamsValidator>
 
 export interface ShibbolethHeaders {
   hypersonsisuid?: string

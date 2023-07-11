@@ -1,9 +1,8 @@
 import axios, { AxiosInstance } from "axios";
 import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
-import { ContractRequestCreateParams } from "./types";
 import { LoaderFunctionArgs } from "react-router-dom";
 import { getMockHeaders } from "./util/mockHeaders";
-import { OrganisationData, UserParams } from "../shared/types";
+import { ContractRequestParams, OrganisationData, UserParams } from "../shared/types";
 
 export const publicClient = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
@@ -27,7 +26,7 @@ privateClient.interceptors.request.use(config => {
   return newConfig
 })
 
-export const sendContract = async (client: AxiosInstance, contract: ContractRequestCreateParams) => {
+export const sendContract = async (client: AxiosInstance, contract: ContractRequestParams) => {
   const { data } = await client.post("/contract-requests", contract)
 
   return data
