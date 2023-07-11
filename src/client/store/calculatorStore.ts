@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import { Option } from '../types'
 import { courseTypeOptions, creditOptions, getPreparationHours, studentCountOptions } from '../calculatorConfig'
 import { CalculatorParams } from '../../shared/types'
@@ -16,7 +17,7 @@ interface ContractState {
   setHourlyRate: (hourlyRate: number) => void
 }
 
-const useContractStore = create<ContractState>((set) => ({
+const useContractStore = create<ContractState>()(persist((set) => ({
   teachingHours: 0,
   setTeachingHours: (teachingHours: number) => set({ teachingHours }),
   courseType: courseTypeOptions[0],
@@ -27,6 +28,8 @@ const useContractStore = create<ContractState>((set) => ({
   setStudentCount: (studentCount: Option) => set({ studentCount }),
   hourlyRate: 0,
   setHourlyRate: (hourlyRate: number) => set({ hourlyRate }),
+}), {
+  name: "calculator-state",
 }))
 
 export const usePreparationHours = () => {

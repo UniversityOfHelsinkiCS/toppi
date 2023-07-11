@@ -66,9 +66,11 @@ const DropDownMenu = ({ options, value, onChange }: { options: Option[], value: 
 
 
 const TeachingHoursInput = () => {
-  const setTeachingHours = useContractStore(state => state.setTeachingHours)
+  const { teachingHours, setTeachingHours } 
+    = useContractStore(state => ({ teachingHours: state.teachingHours, setTeachingHours: state.setTeachingHours }))
+
   return (
-    <Input onChange={e => setTeachingHours(e.target.valueAsNumber)} type="number"
+    <Input value={teachingHours} onChange={e => setTeachingHours(e.target.valueAsNumber)} type="number"
       placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
       endDecorator={<Typography level="body2">tuntia</Typography>}
     />
@@ -219,10 +221,13 @@ const SalaryTable = ({ sx }: { sx: SxProps }) => (
 )
 
 const SalaryInput = () => {
-  const setHourlyRate = useContractStore(state => state.setHourlyRate)
+  const { 
+    setHourlyRate,
+    hourlyRate,
+  } = useContractStore(state => ({ setHourlyRate: state.setHourlyRate, hourlyRate: state.hourlyRate, }))
 
   return (
-    <Input onChange={e => setHourlyRate(e.target.valueAsNumber)} type="number"
+    <Input value={hourlyRate} onChange={e => setHourlyRate(e.target.valueAsNumber)} type="number"
       placeholder="0" slotProps={{ input: { min: 0, max: 1000 } }}
       endDecorator={<Typography level="body2">€/h</Typography>}
     />
