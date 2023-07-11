@@ -4,7 +4,7 @@ import { Box, Button, Sheet, Table, Typography } from "@mui/joy"
 import React from "react"
 import { toast } from "sonner"
 import { SectionDivider, StatusChip } from "../components/common"
-import { useFaculties } from "../hooks/useFaculties"
+import { useFaculties, useProgrammes } from "../hooks/useFaculties"
 import { ContractDurationOption } from "../../shared/types"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
@@ -38,9 +38,15 @@ const TableItem = ({ label, value, extra }: { label: string, value?: string, ext
 
 const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"] }) => {
   const faculties = useFaculties()
+  const programmes = useProgrammes(formData.faculty)
+
   const facultyDisplay = (code: string|undefined) => {
     const faculty = faculties?.find(f => f.code === code)
     return faculty ? faculty.name.fi : undefined
+  }
+  const programmeDisplay = (code: string|undefined) => {
+    const programme = programmes?.find(p => p.key === code)
+    return programme ? programme.name.fi : undefined
   }
   const contractDisplay = (duration: ContractDurationOption) => 
     duration === "custom" ? "Itse merkattu" : "Suositeltu"
@@ -64,6 +70,7 @@ const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"]
           <TableItem label="Sähköposti" value={formData.email} />
           <TableItem label="Syntymäaika" value={formData.birthDate} />
           <TableItem label="Tiedekunta" value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
+          <TableItem label="Koulutusohjelma" value={formData.programme} extra={programmeDisplay(formData.programme)} />
           <TableItem label="Kurssin nimi" value={formData.courseName} />
           <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
           <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />
@@ -97,7 +104,7 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
         Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
       </Typography>
       <Button>
-        
+
       </Button>
     </Box>
   )

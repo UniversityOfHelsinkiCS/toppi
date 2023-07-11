@@ -5,15 +5,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { Search } from "@mui/icons-material";
 import { StatusChip } from "../components/common";
 
-const Sender = ({ contractRequest }: { contractRequest: ContractRequest }) => {
-  return (
-    <Box>
-      <Typography level="body2">{contractRequest.formData.firstName} {contractRequest.formData.lastName}</Typography>
-      <Typography level="body2">{contractRequest.formData.email}</Typography>
-    </Box>
-  )
-}
-
 const ContractRequestItem = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   const open = useMatch(`private/contract-requests/${contractRequest.id}`)
 

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { ContractRequestFormParams } from "../../shared/types";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useSendContract } from "../hooks/useSendContract";
-import { useFaculties } from "../hooks/useFaculties";
+import { useFaculties, useProgrammes } from "../hooks/useFaculties";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -62,7 +62,9 @@ const ContractForm = () => {
 
   const sendContract = useSendContract()
 
+  const faculty = watch("faculty")
   const faculties = useFaculties()
+  const programmes = useProgrammes(faculty)
 
   const onSubmit: SubmitHandler<typeof ContractRequestFormParams._type> = (formData) => {
     const req = sendContract(formData)
@@ -119,31 +121,58 @@ const ContractForm = () => {
                   render={({ field }) => <Input {...field} type="email"/>}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel>Tiedekunta</FormLabel>
-                <Controller 
-                  name="faculty"
-                  control={control}
-                  render={({ field }) => (
-                    <Select 
-                      {...field}
-                      placeholder="Valitse tiedekunta"
-                      onChange={(e, val) => val && setValue("faculty", val)}
-                    >
-                      {faculties ? (
-                        faculties.map(f => (
-                          <Option key={f.code} value={f.code}>{f.name.fi}</Option>
-                        ))
-                      ) : (
-                        <Option value={""}>
-                          Ladataan...
-                        </Option>
-                      )}
-                      <Option value="don't know">En tiedä</Option>
-                    </Select>
-                  )}
-                />
-              </FormControl>
+              <InputSection label="Kurssin järjestäjä">
+                <FormControl>
+                  <FormLabel>Tiedekunta</FormLabel>
+                  <Controller 
+                    name="faculty"
+                    control={control}
+                    render={({ field }) => (
+                      <Select 
+                        {...field}
+                        placeholder="Valitse tiedekunta"
+                        onChange={(e, val) => val && setValue("faculty", val)}
+                      >
+                        {faculties ? (
+                          faculties.map(f => (
+                            <Option key={f.code} value={f.code}>{f.name.fi}</Option>
+                          ))
+                        ) : (
+                          <Option value={""}>
+                            Ladataan...
+                          </Option>
+                        )}
+                        <Option value="">En tiedä</Option>
+                      </Select>
+                    )}
+                  />
+                </FormControl>
+                <FormControl disabled={!faculty}>
+                  <FormLabel>Koulutusohjelma</FormLabel>
+                  <Controller 
+                    name="programme"
+                    control={control}
+                    render={({ field }) => (
+                      <Select 
+                        {...field}
+                        placeholder="Valitse koulutusohjelma"
+                        onChange={(e, val) => val && setValue("programme", val)}
+                      >
+                        {programmes ? (
+                          programmes.map(f => (
+                            <Option key={f.key} value={f.key}>{f.name.fi}</Option>
+                          ))
+                        ) : (
+                          <Option value="">
+                            Ladataan...
+                          </Option>
+                        )}
+                        <Option value="">En tiedä</Option>
+                      </Select>
+                    )}
+                  />
+                </FormControl>
+              </InputSection>
               <FormControl required error={!!errors.courseName}>
                 <FormLabel>Kurssin nimi</FormLabel>
                 <Controller

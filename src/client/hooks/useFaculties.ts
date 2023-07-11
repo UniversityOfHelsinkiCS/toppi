@@ -19,3 +19,11 @@ export const useFaculties = () => {
 
   return organisations?.map(org => ({ code: org.code, name: org.name }))
 }
+
+export const useProgrammes = (facultyCode?: string) => {
+  const organisations = useOrganisations()
+    
+  const programmes = organisations?.find(o => o.code === facultyCode)?.programmes
+
+  return programmes
+}

@@ -8,6 +8,7 @@ export type ContractRequestCreateParams = {
   email: string;
   birthDate: string;
   faculty?: string;
+  programme?: string;
   courseName: string;
   courseStartDate: string;
   courseEndDate: string;
