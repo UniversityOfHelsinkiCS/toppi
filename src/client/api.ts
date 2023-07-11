@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
-import { LoaderFunctionArgs } from "react-router-dom";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router-dom";
 import { getMockHeaders } from "./util/mockHeaders";
 import { ContractRequestParams, OrganisationData, UserParams } from "../shared/types";
 
@@ -42,6 +42,20 @@ export const getContractRequest = async ({ params }: LoaderFunctionArgs) => {
   const { data } = await privateClient.get(`/contract-requests/${params.id}`)
 
   return data
+}
+
+const updateStatus = async (id: string|undefined, updates: any) => {
+  const { data } = await privateClient.put(`/contract-requests/${id}`, updates)
+
+  return data
+}
+
+export const updateStatusAction = async ({ request, params }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  console.log(formData)
+  const updates = Object.fromEntries(formData);
+  await updateStatus(params.id, updates);
+  return redirect(`/private/contract-requests/${params.id}`);
 }
 
 export const login = async () => {

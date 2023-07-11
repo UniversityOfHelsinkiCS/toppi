@@ -1,11 +1,12 @@
-import { useLoaderData } from "react-router-dom"
-import { Box, Button, Sheet, Table, Typography } from "@mui/joy"
+import { Form, useLoaderData } from "react-router-dom"
+import { Box, Button, FormControl, FormLabel, Sheet, Table, Textarea, Typography } from "@mui/joy"
 import React from "react"
 import { toast } from "sonner"
 import { SectionDivider, StatusChip } from "../components/common"
 import { useFaculties, useProgrammes } from "../hooks/useFaculties"
 import { ContractRequest } from "../types"
-import { ContractDurationOption } from "../../shared/types"
+import { ContractDurationOption, contractRequestStatuses } from "../../shared/types"
+import { useTranslation } from "react-i18next"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
@@ -94,20 +95,44 @@ const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) =>
 }
 
 const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest }) => {
+  const { t } = useTranslation()
+
+  const actions = contractRequestStatuses.map(status => ({
+    status: status,
+    buttonProps: {
+      key: status,
+      name: "status",
+      value: status,
+      type: "submit",
+      disabled: status === contractRequest.status,
+      color: status === "rejected" ? "danger" : "primary" as "danger"|"primary",
+      variant: status === "handled" ? "solid" : "plain" as "solid"|"plain",
+    },
+  }))
 
   return (
-    <Box>
-      <Typography level="h4">
-        Päivitä pyynnön tila: <StatusChip status={contractRequest.status} />
-      </Typography>
-      <Typography>
-        Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi.
-        Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
-      </Typography>
-      <Button>
-
-      </Button>
-    </Box>
+    <Form method="put" id="contract-request-status">
+      <Box display="flex" flexDirection="column" gap="1rem">
+        <Typography level="h4">
+          Päivitä pyynnön tila: <StatusChip status={contractRequest.status} />
+        </Typography>
+        <Typography>
+          Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi.
+          Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
+        </Typography>
+        <Box py="1rem" display="flex" flexDirection="column" gap="1rem">
+          <FormControl>
+            <FormLabel>Viesti</FormLabel>
+            <Textarea placeholder="Vapaamuotoinen lisätieto tilan päivitykselle"/>
+          </FormControl>
+          <Box display="flex" gap="1rem">
+            {actions.map(action => (
+              <Button {...action.buttonProps}>{t(`setStatusAction.${action.status}`)}</Button>
+            ))}
+          </Box>
+        </Box>
+      </Box>
+    </Form>
   )
 }
 

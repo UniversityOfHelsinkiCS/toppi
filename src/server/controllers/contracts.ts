@@ -41,7 +41,7 @@ contractsRouter.get('/:id', requireAuthenticated(UserRoles.AdUser), async (req, 
   return res.send(contractRequest)
 })
 
-contractsRouter.put('/:id', requireAuthenticated(UserRoles.Faculty), async (req, res) => {
+contractsRouter.put('/:id', requireAuthenticated(UserRoles.University), async (req, res) => {
   const { id } = req.params
   const status = ContractRequestStatusEnum.parse(req.body.status)
 

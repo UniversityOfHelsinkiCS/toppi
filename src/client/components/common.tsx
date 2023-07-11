@@ -8,7 +8,7 @@ export const StatusChip = ({ status }: { status: ContractRequest["status"] }) =>
   const { t } = useTranslation()
 
   return (
-    <Chip variant={status === "waiting" ? "solid" : "outlined"} size="sm">
+    <Chip variant={status === "waiting" ? "solid" : "outlined"} size="sm" color={status === "rejected" ? "danger" : "primary"}>
       {t(`status.${status}`)}
     </Chip>
   )

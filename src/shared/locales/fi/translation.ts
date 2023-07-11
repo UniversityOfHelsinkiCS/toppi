@@ -7,6 +7,11 @@ const translations = {
     "handled": "Käsitelty",
     "rejected": "Hylätty",
   },
+  "setStatusAction": {
+    "waiting": "Merkkaa odottavaksi",
+    "handled": "Merkkaa käsitellyksi",
+    "rejected": "Merkkaa hylätyksi", 
+  }
 } as const
 
 export default translations
