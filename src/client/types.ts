@@ -1,4 +1,4 @@
-import { ContractRequestStatus, UserParams } from "../shared/types";
+import { ContractDurationOption, ContractRequestStatus, UserParams } from "../shared/types";
 
 export type Option = { label: string, value: number }
 
@@ -11,7 +11,7 @@ export type ContractRequestCreateParams = {
   courseName: string;
   courseStartDate: string;
   courseEndDate: string;
-  contractDuration: string;
+  contractDuration: ContractDurationOption;
   contractStartDate?: string;
   contractEndDate?: string;
   additionalInfo?: string;

@@ -3,8 +3,9 @@ import { ContractRequest } from "../types"
 import { Box, Button, Sheet, Table, Typography } from "@mui/joy"
 import React from "react"
 import { toast } from "sonner"
-import { SectionDivider } from "../components/common"
+import { SectionDivider, StatusChip } from "../components/common"
 import { useFaculties } from "../hooks/useFaculties"
+import { ContractDurationOption } from "../../shared/types"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
@@ -19,11 +20,18 @@ const copyToClipboard = (text: string) => {
   toast.success("Kopioitu leikepöydälle")
 }
 
-const TableItem = ({ label, value }: { label: string, value?: string }) => {
+const TableItem = ({ label, value, extra }: { label: string, value?: string, extra?: string }) => {
+  const shownExtra = value ? extra : "Puuttuu"
+
   return (
     <tr onClick={() => value && copyToClipboard(value)} style={{ cursor: value ? 'copy' : 'inherit' }}>
       <td>{label}</td>
-      <td>{value ? value : <Typography level="body3">Puuttuu</Typography>}</td>
+      <td>
+        <Box display="flex" gap="1rem" alignItems="end">
+          {value && value}
+          {shownExtra && <Typography level="body3">{shownExtra}</Typography>}
+        </Box>
+      </td>
     </tr>
   )
 }
@@ -32,8 +40,10 @@ const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"]
   const faculties = useFaculties()
   const facultyDisplay = (code: string|undefined) => {
     const faculty = faculties?.find(f => f.code === code)
-    return faculty ? `${faculty.code} ${faculty.name.fi}` : undefined
+    return faculty ? faculty.name.fi : undefined
   }
+  const contractDisplay = (duration: ContractDurationOption) => 
+    duration === "custom" ? "Itse merkattu" : "Suositeltu"
 
   return (
     <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
@@ -53,12 +63,12 @@ const FormattedFormData = ({ formData }: { formData: ContractRequest["formData"]
           <TableItem label="Sukunimi" value={formData.lastName} />
           <TableItem label="Sähköposti" value={formData.email} />
           <TableItem label="Syntymäaika" value={formData.birthDate} />
-          <TableItem label="Tiedekunta" value={facultyDisplay(formData.faculty)} />
+          <TableItem label="Tiedekunta" value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
           <TableItem label="Kurssin nimi" value={formData.courseName} />
           <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
           <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />
-          <TableItem label="Sopimuksen alkupäivä" value={formData.contractStartDate} />
-          <TableItem label="Sopimuksen loppupäivä" value={formData.contractEndDate} />
+          <TableItem label="Sopimuksen alkupäivä" value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
+          <TableItem label="Sopimuksen loppupäivä" value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
           <TableItem label="Lisätiedot" value={formData.additionalInfo} />
         </tbody>
       </Table>
@@ -71,6 +81,24 @@ const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) =>
     <Box>
       <Typography level="body3">Klikkaa riviä kopioidaksesi kentän arvon</Typography>
       <FormattedFormData formData={contractRequest.formData} />
+    </Box>
+  )
+}
+
+const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest }) => {
+
+  return (
+    <Box>
+      <Typography level="h4">
+        Päivitä pyynnön tila: <StatusChip status={contractRequest.status} />
+      </Typography>
+      <Typography>
+        Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi.
+        Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
+      </Typography>
+      <Button>
+        
+      </Button>
     </Box>
   )
 }
@@ -95,13 +123,7 @@ const ContractRequestView = () => {
         <Formatted contractRequest={contractRequest} />
       )}
       <SectionDivider />
-      <Typography level="h4">
-        Päivitä pyynnön tila
-      </Typography>
-      <Typography>
-        Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi.
-        Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
-      </Typography>
+      <UpdateStatus contractRequest={contractRequest} />
     </Sheet>
   )
 }

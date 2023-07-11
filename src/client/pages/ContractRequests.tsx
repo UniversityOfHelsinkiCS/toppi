@@ -1,9 +1,9 @@
-import { Box, Button, Chip, Sheet, Table, Typography } from "@mui/joy";
+import { Box, Button, Sheet, Table, Typography } from "@mui/joy";
 import { Outlet, useLoaderData, useMatch } from "react-router-dom";
 import { ContractRequest } from "../types";
 import { Link as RouterLink } from "react-router-dom";
 import { Search } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
+import { StatusChip } from "../components/common";
 
 const Sender = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   return (
@@ -11,16 +11,6 @@ const Sender = ({ contractRequest }: { contractRequest: ContractRequest }) => {
       <Typography level="body2">{contractRequest.formData.firstName} {contractRequest.formData.lastName}</Typography>
       <Typography level="body2">{contractRequest.formData.email}</Typography>
     </Box>
-  )
-}
-
-const StatusChip = ({ status }: { status: ContractRequest["status"] }) => {
-  const { t } = useTranslation()
-
-  return (
-    <Chip variant={status === "waiting" ? "solid" : "outlined"} size="sm">
-      {t(`status.${status}`)}
-    </Chip>
   )
 }
 
