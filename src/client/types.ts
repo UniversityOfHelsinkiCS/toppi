@@ -21,7 +21,7 @@ export type ContractRequestCreateParams = {
 export type ContractRequest = {
   id: number;
   status: ContractRequestStatus;
-  formData: ContractRequestParams;
+  data: ContractRequestParams;
   User?: UserParams
   createdAt: string;
   updatedAt: string;

@@ -37,7 +37,7 @@ const TableItem = ({ label, value, extra }: { label: string, value?: string, ext
 }
 
 const FormattedFormData = ({ contractRequest }: { contractRequest: ContractRequest }) => {
-  const { formData } = contractRequest.formData // sorry
+  const { formData } = contractRequest.data
   const faculties = useFaculties()
   const programmes = useProgrammes(formData.faculty)
 

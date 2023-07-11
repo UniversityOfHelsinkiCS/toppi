@@ -8,10 +8,10 @@ import { ApplicationError } from "../errors";
 const contractsRouter = Router()
 
 contractsRouter.post('/', async (req: RequestWithUser, res) => {
-  const formData = ContractRequestParamsValidator.parse(req.body)
+  const data = ContractRequestParamsValidator.parse(req.body)
 
   const contractRequest = await ContractRequest.create({
-    formData,
+    data,
     userId: req.user?.id
   })
 

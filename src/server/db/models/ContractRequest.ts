@@ -8,7 +8,7 @@ class ContractRequest extends Model<
 > {
   declare id: CreationOptional<number>
 
-  declare formData: object
+  declare data: object
 
   declare status: CreationOptional<ContractRequestStatus>
 
@@ -26,7 +26,7 @@ ContractRequest.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    formData: {
+    data: {
       type: DataTypes.JSONB,
       allowNull: false,
     },
