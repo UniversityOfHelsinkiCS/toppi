@@ -1,12 +1,13 @@
 import { Form, useLoaderData } from "react-router-dom"
-import { Box, Button, FormControl, FormLabel, Sheet, Table, Textarea, Typography } from "@mui/joy"
+import { Box, Button, FormControl, FormLabel, Sheet, Textarea, Typography } from "@mui/joy"
 import React from "react"
-import { toast } from "sonner"
 import { SectionDivider, StatusChip } from "../components/common"
 import { useFaculties, useProgrammes } from "../hooks/useFaculties"
 import { ContractRequest } from "../types"
-import { ContractDurationOption, contractRequestStatuses } from "../../shared/types"
+import { ContractDurationOption, ContractRequestFormParams, contractRequestStatuses } from "../../shared/types"
 import { useTranslation } from "react-i18next"
+import { TableItem, DataTable } from "../components/CustomTable"
+import CalculatorPreview from "../components/CalculatorPreview"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
@@ -16,29 +17,7 @@ const Raw = ({ data }: { data: ContractRequest }) => {
   )
 }
 
-const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text)
-  toast.success("Kopioitu leikepöydälle")
-}
-
-const TableItem = ({ label, value, extra }: { label: string, value?: string, extra?: string }) => {
-  const shownExtra = value ? extra : "Puuttuu"
-
-  return (
-    <tr onClick={() => value && copyToClipboard(value)} style={{ cursor: value ? 'copy' : 'inherit' }}>
-      <td>{label}</td>
-      <td>
-        <Box display="flex" gap="1rem" alignItems="end">
-          {value && value}
-          {shownExtra && <Typography level="body3">{shownExtra}</Typography>}
-        </Box>
-      </td>
-    </tr>
-  )
-}
-
-const FormattedFormData = ({ contractRequest }: { contractRequest: ContractRequest }) => {
-  const { formData } = contractRequest.data
+const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }) => {
   const faculties = useFaculties()
   const programmes = useProgrammes(formData.faculty)
 
@@ -54,42 +33,38 @@ const FormattedFormData = ({ contractRequest }: { contractRequest: ContractReque
     duration === "custom" ? "Itse merkattu" : "Suositeltu"
 
   return (
-    <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
-      <Table hoverRow sx={{
-        '--TableCell-headBackground': (theme) => theme.vars.palette.background.level1,
-        '--Table-headerUnderlineThickness': '1px',
-        '--TableRow-hoverBackground': (theme) => theme.vars.palette.background.level1,
-      }}>
-        <thead>
-          <tr>
-            <th scope="col">Kentän nimi</th>
-            <th scope="col">Arvo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TableItem label="Etunimi" value={formData.firstName} />
-          <TableItem label="Sukunimi" value={formData.lastName} />
-          <TableItem label="Sähköposti" value={formData.email} />
-          <TableItem label="Syntymäaika" value={formData.birthDate} />
-          <TableItem label="Tiedekunta" value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
-          <TableItem label="Koulutusohjelma" value={formData.programme} extra={programmeDisplay(formData.programme)} />
-          <TableItem label="Kurssin nimi" value={formData.courseName} />
-          <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
-          <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />
-          <TableItem label="Sopimuksen alkupäivä" value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
-          <TableItem label="Sopimuksen loppupäivä" value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
-          <TableItem label="Lisätiedot" value={formData.additionalInfo} />
-        </tbody>
-      </Table>
-    </Sheet>
+    <DataTable copy>
+      <thead>
+        <tr>
+          <th scope="col">Kentän nimi</th>
+          <th scope="col">Arvo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <TableItem label="Etunimi" value={formData.firstName} />
+        <TableItem label="Sukunimi" value={formData.lastName} />
+        <TableItem label="Sähköposti" value={formData.email} />
+        <TableItem label="Syntymäaika" value={formData.birthDate} />
+        <TableItem label="Tiedekunta" value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
+        <TableItem label="Koulutusohjelma" value={formData.programme} extra={programmeDisplay(formData.programme)} />
+        <TableItem label="Kurssin nimi" value={formData.courseName} />
+        <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
+        <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />
+        <TableItem label="Sopimuksen alkupäivä" value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
+        <TableItem label="Sopimuksen loppupäivä" value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
+        <TableItem label="Lisätiedot" value={formData.additionalInfo} />
+      </tbody>
+    </DataTable>
   )
 }
 
 const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   return (
     <Box>
-      <Typography level="body3">Klikkaa riviä kopioidaksesi kentän arvon</Typography>
-      <FormattedFormData contractRequest={contractRequest} />
+      <Typography level="body3">Klikkaa riviä kopioidaksesi kentän arvo</Typography>
+      <FormattedFormData formData={contractRequest.data.formData} />
+      <Typography level="h6" mt="2rem" mb="0.5rem">Laskuriin merkatut tiedot</Typography>
+      <CalculatorPreview {...contractRequest.data.calculatorData} copy />
     </Box>
   )
 }
@@ -141,7 +116,7 @@ const ContractRequestView = () => {
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
-    <Sheet sx={{ px: "2rem", flex: 0.5 }}>
+    <Sheet sx={{ px: "3rem", flex: 0.5 }}>
       <Typography level="h4">
         Pyynnön #{contractRequest.id} tiedot
       </Typography>

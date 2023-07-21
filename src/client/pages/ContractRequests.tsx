@@ -27,26 +27,29 @@ const ContractRequestList = () => {
   const contracts = useLoaderData() as ContractRequest[]
 
   return (
-    <Sheet variant="outlined" sx={{ borderRadius: "sm", flex: 0.5 }}>
-      <Table hoverRow sx={{
-        '--TableCell-headBackground': (theme) => theme.vars.palette.background.level1,
-        '--Table-headerUnderlineThickness': '1px',
-        '--TableRow-hoverBackground': (theme) => theme.vars.palette.background.level1,
-      }}>
-        <thead>
-          <tr>
-            <th>Nro</th>
-            <th>Lähettäjä</th>
-            <th>Pvm</th>
-            <th>Pyynnön tila</th>
-            <th />
-          </tr>
-        </thead>
-        {contracts.map(c => (
-          <ContractRequestItem contractRequest={c} key={c.id}/>
-        ))}
-      </Table>
-    </Sheet>
+    <Box flex={0.5}>
+      <Typography level="h4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
+      <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
+        <Table hoverRow sx={{
+          '--TableCell-headBackground': (theme) => theme.vars.palette.background.level1,
+          '--Table-headerUnderlineThickness': '1px',
+          '--TableRow-hoverBackground': (theme) => theme.vars.palette.background.level1,
+        }}>
+          <thead>
+            <tr>
+              <th>Nro</th>
+              <th>Lähettäjä</th>
+              <th>Pvm</th>
+              <th>Pyynnön tila</th>
+              <th />
+            </tr>
+          </thead>
+          {contracts.map(c => (
+            <ContractRequestItem contractRequest={c} key={c.id}/>
+          ))}
+        </Table>
+      </Sheet>
+    </Box>
   )
 }
 
@@ -54,7 +57,6 @@ const ContractRequests = () => {
 
   return (
     <Box p="2rem">
-      <Typography level="h4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
       <Box display="flex">
         <ContractRequestList />
         <Outlet />

@@ -10,6 +10,7 @@ import { ContractRequestFormParams, ContractRequestFormParamsValidator } from ".
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useSendContract } from "../hooks/useSendContract";
 import { useFaculties, useProgrammes } from "../hooks/useFaculties";
+import { useCalculatorParams } from "../store/calculatorStore";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -272,6 +273,13 @@ const ContractForm = () => {
   )
 }
 
+const CalculatorPreviewContainer = () => {
+
+  const previewData = useCalculatorParams()
+
+  return <CalculatorPreview {...previewData} copy={false}/>
+}
+
 const ContractRequestForm = () => (
   <Box p="2rem">
     <Typography level="h4">Työsopimuspyyntö</Typography>
@@ -280,7 +288,11 @@ const ContractRequestForm = () => (
         <ContractForm />
       </Box>
       <Box flex={1}>
-        <CalculatorPreview />
+        <Box mb="2rem">
+          <Typography level="h5">Työaika ja palkka</Typography>
+          <Typography>Täyttämäsi laskurin tiedot lähetetään työsopimuspyynnön mukana. Tarkistathan vielä niiden oikeellisuuden.</Typography>
+        </Box>
+        <CalculatorPreviewContainer />
       </Box>
     </Box>
     <Alert>Toppi on vielä testi- ja esittelykäytössä, joten lomakkeesta lähetettyjä työsopimuspyyntöjä ei käsitellä.</Alert>

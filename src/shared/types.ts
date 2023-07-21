@@ -43,14 +43,20 @@ export const UserParamsValidator = z.object({
 
 export type UserParams = z.infer<typeof UserParamsValidator>
 
+export const OptionValidator = z.object({
+  label: z.string(),
+  value: z.number(),
+})
+
 export const CalculatorParamsValidator = z.object({
-  teachingHours: z.number(),
-  courseType: z.string(),
-  credits: z.string(),
-  studentCount: z.string(),
-  hourlyRate: z.number(),
-  preparationHours: z.number(),
-  totalHours: z.number(),
+  teachingHours: z.number().optional(),
+  courseType: OptionValidator.optional(),
+  credits: OptionValidator.optional(),
+  studentCount: OptionValidator.optional(),
+  hourlyRate: z.number().optional(),
+  preparationHours: z.number().optional(),
+  totalHours: z.number().optional(),
+  salary: z.number().optional(),
 })
 
 export type CalculatorParams = z.infer<typeof CalculatorParamsValidator>

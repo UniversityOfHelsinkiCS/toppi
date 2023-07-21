@@ -69,15 +69,18 @@ export const useCalculatorParams: () => CalculatorParams = () => {
     studentCount: state.studentCount,
     hourlyRate: state.hourlyRate,
   }))
+
+  const totalHours = useTotalHours()
   
   return {
     teachingHours: calculatorState.teachingHours,
-    courseType: calculatorState.courseType.label,
-    credits: calculatorState.credits.label,
-    studentCount: calculatorState.studentCount.label,
+    courseType: calculatorState.courseType,
+    credits: calculatorState.credits,
+    studentCount: calculatorState.studentCount,
     hourlyRate: calculatorState.hourlyRate,
     preparationHours: usePreparationHours(),
-    totalHours: useTotalHours(),
+    totalHours,
+    salary: totalHours * calculatorState.hourlyRate,
   }
 }
 
