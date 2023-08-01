@@ -12,4 +12,5 @@ HandlerAddress.belongsTo(User, {
 export {
   User,
   ContractRequest,
+  HandlerAddress,
 }

@@ -125,3 +125,9 @@ export const UserRoles = {
 } as const
 
 export type UserRole = typeof UserRoles[keyof typeof UserRoles]
+
+
+export const HandlerAddressParamsValidator = z.object({
+  address: z.string(),
+  facultyCode: z.string(),
+})
