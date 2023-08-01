@@ -1,6 +1,6 @@
 import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from "sequelize";
 import { sequelize } from '../connection'
-import { ContractRequestStatus, contractRequestStatuses } from "../../../shared/types";
+import { ContractRequestParams, ContractRequestStatus, contractRequestStatuses } from "../../../shared/types";
 
 class ContractRequest extends Model<
   InferAttributes<ContractRequest>,
@@ -8,7 +8,7 @@ class ContractRequest extends Model<
 > {
   declare id: CreationOptional<number>
 
-  declare data: object
+  declare data: ContractRequestParams
 
   declare status: CreationOptional<ContractRequestStatus>
 

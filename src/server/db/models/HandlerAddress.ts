@@ -16,6 +16,10 @@ class HandlerAddress extends Model<
   declare createdAt: CreationOptional<Date>;
 
   declare updatedAt: CreationOptional<Date>;
+
+  getFullAddress() {
+    return `${this.address}@helsinki.fi`
+  }
 }
 
 HandlerAddress.init(

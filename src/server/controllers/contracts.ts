@@ -4,6 +4,7 @@ import { ContractRequestParamsValidator, ContractRequestStatusEnum, UserRoles } 
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
 import { ApplicationError } from "../errors";
+import { notifyOnContractRequest } from "../services/notifications";
 
 const contractsRouter = Router()
 
@@ -15,7 +16,7 @@ contractsRouter.post('/', async (req: RequestWithUser, res) => {
     userId: req.user?.id
   })
 
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await notifyOnContractRequest(contractRequest)
 
   res.send(contractRequest)
 })
