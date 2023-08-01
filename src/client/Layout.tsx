@@ -6,8 +6,9 @@ import toskaLogo from "./assets/toska13.png"
 import { Link as RouterLink, Outlet, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { inStaging } from "../config";
-import { UserParams } from "../shared/types";
+import { UserParams, UserRoles } from "../shared/types";
 import { handleLogout } from "./util/logout";
+import { hasRight } from "./util/authorization";
 
 const Header = () => {
   const { t } = useTranslation()
@@ -36,6 +37,7 @@ const Header = () => {
       ? 
       <>
         <Link component={RouterLink} to="/private/contract-requests">Työsopimuspyynnöt</Link>
+        {hasRight(user, UserRoles.Admin) && <Link component={RouterLink} to="/private/handler-addresses">Kohdennusosoitteet</Link>}
         <Box display="flex" gap="1rem">
           <Typography variant="soft">kirjautunut: {user.email}</Typography>
           <Button onClick={handleLogout} variant="soft" size="sm" endDecorator={<Logout />}>Kirjaudu ulos</Button>

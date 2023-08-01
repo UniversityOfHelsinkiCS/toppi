@@ -5,8 +5,9 @@ import { Migration } from '../connection'
 export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.createTable("handler_addresses", {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     address: {
       type: DataTypes.STRING,

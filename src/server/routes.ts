@@ -10,6 +10,7 @@ import { shibbolethHeaders } from "./middleware/shibbolethHeaders";
 import { getCurrentUser } from "./middleware/authentication";
 import { errorHandler } from "./middleware/error";
 import organisationsRouter from "./controllers/organisations";
+import handlerAddressRouter from "./controllers/handlerAddresses";
 
 /**
  * apiRouter handles the business side of requests. 
@@ -19,6 +20,7 @@ import organisationsRouter from "./controllers/organisations";
 const apiRouter = Router()
 
 apiRouter.use('/contract-requests', contractsRouter)
+apiRouter.use('/handler-addresses', handlerAddressRouter)
 apiRouter.use('/organisations', organisationsRouter)
 if (inStaging) apiRouter.use('/test', testRouter)
 apiRouter.use('/', loginRouter)

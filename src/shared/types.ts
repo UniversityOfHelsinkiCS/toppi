@@ -41,7 +41,7 @@ export const UserParamsValidator = z.object({
   iamGroups: z.array(z.string()).optional(),
 })
 
-export type UserParams = z.infer<typeof UserParamsValidator>
+export type UserParams = z.infer<typeof UserParamsValidator> & { roles?: UserRole[] }
 
 export const OptionValidator = z.object({
   label: z.string(),
@@ -131,3 +131,5 @@ export const HandlerAddressParamsValidator = z.object({
   address: z.string(),
   facultyCode: z.string(),
 })
+
+export type HandlerAddressParams = z.infer<typeof HandlerAddressParamsValidator>

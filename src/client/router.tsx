@@ -5,10 +5,11 @@ import {
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import ContractRequests from "./pages/ContractRequests";
-import { getContractRequest, getContractRequests, login, updateStatusAction } from "./api";
+import { getContractRequest, getContractRequests, getHandlerAddresses, login, postHandlerAddress, updateStatusAction } from "./api";
 import ContractRequestView from "./pages/ContractRequestView";
 import { BASE_PATH } from "../config";
 import { Error } from "./Error";
+import HandlerAddressess from "./pages/HandlerAddresses";
 
 const router = createBrowserRouter([
 
@@ -50,6 +51,11 @@ const router = createBrowserRouter([
             errorElement: <Error />,
           }
         ]
+      },
+      {
+        path: "handler-addresses",
+        element: <HandlerAddressess />,
+        loader: getHandlerAddresses,
       }
     ]
   }

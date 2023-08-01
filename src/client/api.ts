@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router-dom";
 import { getMockHeaders } from "./util/mockHeaders";
-import { ContractRequestParams, OrganisationData, UserParams } from "../shared/types";
+import { ContractRequestParams, HandlerAddressParams, OrganisationData, UserParams } from "../shared/types";
 
 export const publicClient = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
@@ -74,4 +74,20 @@ export const getOrganisationData = async () => {
   const { data } = await publicClient.get('/organisations')
 
   return data as OrganisationData[]
+}
+
+export const getHandlerAddresses = async () => {
+  const { data } = await privateClient.get('/handler-addresses')
+
+  return data
+}
+
+export const postHandlerAddress = async (content: HandlerAddressParams) => {
+  const { data } = await privateClient.post('/handler-addresses', content)
+
+  return data
+}
+
+export const deleteHandlerAddress = async (id: number) => {
+  await privateClient.delete(`/handler-addresses/${id}`)
 }

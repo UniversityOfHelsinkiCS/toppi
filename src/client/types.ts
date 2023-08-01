@@ -26,3 +26,12 @@ export type ContractRequest = {
   createdAt: string;
   updatedAt: string;
 }
+
+export type HandlerAddress = {
+  id: number;
+  address: string;
+  facultyCode: string;
+  User?: UserParams;
+  createdAt: string;
+  updatedAt: string;
+}
