@@ -44,7 +44,7 @@ export const getContractRequest = async ({ params }: LoaderFunctionArgs) => {
   return data
 }
 
-const updateStatus = async (id: string|undefined, updates: any) => {
+const updateStatus = async (id: string|undefined, updates: object) => {
   const { data } = await privateClient.put(`/contract-requests/${id}`, updates)
 
   return data

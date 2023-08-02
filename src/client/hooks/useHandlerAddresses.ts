@@ -10,7 +10,7 @@ export const useHandlerAddresses = (query?: { facultyCode?: string, address?: st
     getHandlerAddresses(query).then(data => {
       setHandlerAddresses(data)
     })
-  }, [query])
+  }, [query?.facultyCode, query?.address])
 
   return handlerAddresses
 }

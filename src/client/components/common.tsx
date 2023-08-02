@@ -24,6 +24,7 @@ export const HandlerAddressChip = ({
   onDelete?: (a: HandlerAddress) => Promise<void> 
 }) => (
   <Chip
+    variant="soft"
     endDecorator={onDelete && <ChipDelete onDelete={() => onDelete(address)} />}
   >
     <Box display="flex" alignItems="center">{address.address}<SmallHelsinkiFi /></Box>

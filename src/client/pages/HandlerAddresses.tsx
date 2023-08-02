@@ -61,7 +61,7 @@ const HandlerAddressess = () => {
 
   const [handlerAddresses, setHandlerAddresses] = React.useState<{ [code: string]: HandlerAddress[] }>({})
   useEffect(() => {
-    if (!handlerAddressList || !faculties || Object.keys(handlerAddresses).length !== 0) return;
+    if (!faculties || Object.keys(handlerAddresses).length !== 0) return;
 
     const newHandlerAddresses: { [code: string]: HandlerAddress[] } = {}
 
@@ -73,7 +73,7 @@ const HandlerAddressess = () => {
     })
     setHandlerAddresses(newHandlerAddresses)
 
-  }, [faculties, handlerAddressList])
+  }, [faculties])
 
   const handleAddAddress = async (facultyCode: string, address: string) => {
     const res = await postHandlerAddress({ facultyCode, address }) as HandlerAddress
