@@ -5,7 +5,7 @@ import {
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import ContractRequests from "./pages/ContractRequests";
-import { getContractRequest, getContractRequests, getHandlerAddresses, login, updateStatusAction } from "./api";
+import { getContractRequest, getContractRequests, getHandlerAddressesLoader, login, updateStatusAction } from "./api";
 import ContractRequestView from "./pages/ContractRequestView";
 import { BASE_PATH } from "../config";
 import { Error } from "./Error";
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       {
         path: "handler-addresses",
         element: <HandlerAddressess />,
-        loader: getHandlerAddresses,
+        loader: getHandlerAddressesLoader,
       }
     ]
   }

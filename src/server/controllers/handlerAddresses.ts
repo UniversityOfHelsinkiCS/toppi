@@ -3,6 +3,7 @@ import { HandlerAddress, User } from "../db/models";
 import { HandlerAddressParamsValidator, UserRoles } from "../../shared/types";
 import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
+import { z } from "zod";
 
 const handlerAddressRouter = Router()
 
@@ -17,9 +18,23 @@ handlerAddressRouter.post('/', requireAuthenticated(UserRoles.Admin), async (req
   res.send(handlerAddress)
 })
 
+const getQueryParamsParser = z.object({
+  facultyCode: z.string().optional(),
+  address: z.string().optional(),
+})
+
 handlerAddressRouter.get('/', requireAuthenticated(UserRoles.Admin), async (req: RequestWithUser, res) => {
+  const {
+    facultyCode,
+    address
+  } = getQueryParamsParser.parse(req.query)
+
   const handlerAddresses = await HandlerAddress.findAll({
     include: User,
+    where: {
+      ...(facultyCode ? { facultyCode } : {}),
+      ...(address ? { address } : {}),
+    },
   })
 
   return res.send(handlerAddresses)

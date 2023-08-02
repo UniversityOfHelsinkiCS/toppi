@@ -46,7 +46,6 @@ export const getOrganisationData = async (): Promise<OrganisationData[]> => {
   if (data) {
     organisationData = data
   }
-  console.log(data)
 
   return data || []
 }

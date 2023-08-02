@@ -1,13 +1,15 @@
 import { Form, useLoaderData } from "react-router-dom"
-import { Box, Button, FormControl, FormLabel, Sheet, Textarea, Typography } from "@mui/joy"
+import { Alert, Box, Button, FormControl, FormLabel, Sheet, Textarea, Typography } from "@mui/joy"
 import React from "react"
-import { SectionDivider, StatusChip } from "../components/common"
+import { HandlerAddressChip, SectionDivider, StatusChip } from "../components/common"
 import { useFaculties, useProgrammes } from "../hooks/useFaculties"
-import { ContractRequest } from "../types"
+import { ContractRequest, HandlerAddress } from "../types"
 import { ContractDurationOption, ContractRequestFormParams, contractRequestStatuses } from "../../shared/types"
 import { useTranslation } from "react-i18next"
 import { TableItem, DataTable } from "../components/CustomTable"
 import CalculatorPreview from "../components/CalculatorPreview"
+import { useHandlerAddresses } from "../hooks/useHandlerAddresses"
+import { Warning } from "@mui/icons-material"
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
@@ -69,6 +71,24 @@ const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) =>
   )
 }
 
+const HandlerAddresses = ({ handlerAddresses }: { handlerAddresses: HandlerAddress[] }) => {
+  return (
+    <Box>
+      <Typography level="h4">Pyynnön käsittelyosoitteet</Typography>
+      <Box display="flex" pt="0.5rem" flexWrap="wrap" gap="0.5rem">
+        {handlerAddresses.length === 0 && 
+          <Alert color="warning" startDecorator={<Warning />}>Pyynnöllä ei käsittelijöitä. Joko pyynnön tiedekunta-kenttä puuttuu, tai tiedekunnalle ei ole vielä merkattu käsittelijöitä.</Alert>
+        }
+        {handlerAddresses.map(address => (
+          <Box key={address.id}>
+            <HandlerAddressChip address={address} />
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  )
+}
+
 const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   const { t } = useTranslation()
 
@@ -113,6 +133,7 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
 
 const ContractRequestView = () => {
   const contractRequest = useLoaderData() as ContractRequest
+  const handlerAddresses = useHandlerAddresses({ facultyCode: contractRequest.data.formData.faculty })
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
@@ -130,6 +151,8 @@ const ContractRequestView = () => {
       ) : (
         <Formatted contractRequest={contractRequest} />
       )}
+      <SectionDivider />
+      {handlerAddresses && <HandlerAddresses handlerAddresses={handlerAddresses}/>}
       <SectionDivider />
       <UpdateStatus contractRequest={contractRequest} />
     </Sheet>

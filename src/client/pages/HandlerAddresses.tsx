@@ -1,4 +1,4 @@
-import { Box, Button, Chip, ChipDelete, Input, Typography } from "@mui/joy"
+import { Box, Button, Input } from "@mui/joy"
 import React, { useEffect } from "react"
 import { deleteHandlerAddress, postHandlerAddress } from "../api"
 import { DataTable } from "../components/CustomTable"
@@ -7,6 +7,7 @@ import { useFaculties } from "../hooks/useFaculties"
 import { toast } from "sonner"
 import { useLoaderData } from "react-router-dom"
 import { z } from "zod"
+import { HandlerAddressChip, SmallHelsinkiFi } from "../components/common"
 
 const validator = z.string().email()
 const validateAddress = (address: string, addresses: HandlerAddress[]) => {
@@ -20,7 +21,6 @@ const validateAddress = (address: string, addresses: HandlerAddress[]) => {
   return true
 }
 
-const SmallHelsinkiFi = () => <Typography sx={{ userSelect: 'none' }} fontSize={10}>@helsinki.fi</Typography>
 
 const Row = ({ addresses, onAdd, onDelete }: { addresses: HandlerAddress[], onAdd: (address: string) => Promise<void>, onDelete: (address: HandlerAddress) => Promise<void> }) => {
   const [address, setAddress] = React.useState("")
@@ -34,11 +34,7 @@ const Row = ({ addresses, onAdd, onDelete }: { addresses: HandlerAddress[], onAd
     <Box p="0.5rem" display="flex" alignItems="center" gap="0.5rem" flexWrap="wrap">
       {addresses?.map(address => (
         <Box key={address.id}>
-          <Chip
-            endDecorator={<ChipDelete onDelete={() => onDelete(address)} />}
-          >
-            <Box display="flex" alignItems="center">{address.address}<SmallHelsinkiFi /></Box>
-          </Chip>
+          <HandlerAddressChip address={address} onDelete={onDelete} />
         </Box>
       ))}
       <Box display="flex" gap="0.5rem">

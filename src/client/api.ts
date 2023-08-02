@@ -76,11 +76,16 @@ export const getOrganisationData = async () => {
   return data as OrganisationData[]
 }
 
-export const getHandlerAddresses = async () => {
-  const { data } = await privateClient.get('/handler-addresses')
+export const getHandlerAddresses = async (query?: { facultyCode?: string, address?: string }) => {
+  const params = query ? query : {}
+  const { data } = await privateClient.get('/handler-addresses', {
+    params
+  })
 
   return data
 }
+
+export const getHandlerAddressesLoader = () => getHandlerAddresses()
 
 export const postHandlerAddress = async (content: HandlerAddressParams) => {
   const { data } = await privateClient.post('/handler-addresses', content)
