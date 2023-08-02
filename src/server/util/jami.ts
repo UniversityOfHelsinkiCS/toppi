@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { OrganisationData, UserOrganisationAccess } from '../../shared/types'
-
-const JAMI_URL = process.env.JAMI_URL
-const API_TOKEN = process.env.API_TOKEN
+import { API_TOKEN, JAMI_URL } from './config'
 
 export const jamiClient = axios.create({
   baseURL: JAMI_URL,
@@ -48,6 +46,7 @@ export const getOrganisationData = async (): Promise<OrganisationData[]> => {
   if (data) {
     organisationData = data
   }
+  console.log(data)
 
   return data || []
 }

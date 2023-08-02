@@ -11,7 +11,7 @@ services:
       - 8000:8000
     environment:
       DB_CONNECTION_STRING: postgres://toppi:toppi@db:5432/toppi
-      JAMI_URL: http://jami:3003
+      JAMI_URL: https://api-toska.apps.ocp-test-0.k8s.it.helsinki.fi/jami
     container_name: toppi_dev
   db:
     image: postgres:15-alpine
@@ -22,29 +22,8 @@ services:
     ports:
       - 5432:5432
     container_name: toppi_db
-
-  jami:
-    image: toska/jami:latest
-    environment:
-      - PORT=3003
-      - NODE_ENV=dev
-      - POSTGRES_HOST=jami-db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DATABASE=postgres
-    ports:
-      - 3003:3003
-    container_name: toppi-jami
-  jami-db:
-    image: postgres:15-alpine
-    environment:
-      - PGDATA=/data
-      - POSTGRES_PASSWORD=postgres
-    container_name: toppi-jami-db
-    ports:
-      - 5433:5432
     volumes:
-      - jami_data:/data
+      - toppi_dev_data:/data
 
 volumes:
-  jami_data:
+  toppi_dev_data:
