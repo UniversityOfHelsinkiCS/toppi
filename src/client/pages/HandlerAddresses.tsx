@@ -1,4 +1,4 @@
-import { Box, Button, Input } from "@mui/joy"
+import { Box, Button, IconButton, Input } from "@mui/joy"
 import React, { useEffect } from "react"
 import { deleteHandlerAddress, postHandlerAddress } from "../api"
 import { DataTable } from "../components/CustomTable"
@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import { useLoaderData } from "react-router-dom"
 import { z } from "zod"
 import { HandlerAddressChip, SmallHelsinkiFi } from "../components/common"
+import { Add, Close } from "@mui/icons-material"
 
 const validator = z.string().email()
 const validateAddress = (address: string, addresses: HandlerAddress[]) => {
@@ -23,6 +24,7 @@ const validateAddress = (address: string, addresses: HandlerAddress[]) => {
 
 
 const Row = ({ addresses, onAdd, onDelete }: { addresses: HandlerAddress[], onAdd: (address: string) => Promise<void>, onDelete: (address: HandlerAddress) => Promise<void> }) => {
+  const [open, setOpen] = React.useState(false)
   const [address, setAddress] = React.useState("")
   const [isPending, setIsPending] = React.useState(false)
 
@@ -38,18 +40,34 @@ const Row = ({ addresses, onAdd, onDelete }: { addresses: HandlerAddress[], onAd
         </Box>
       ))}
       <Box display="flex" gap="0.5rem">
-        <Input value={address} onChange={ev => setAddress(ev.target.value.toLowerCase())} placeholder="Uusi käsittelijän osoite/IAM" endDecorator={<SmallHelsinkiFi />} variant="soft"/>
-        <Button onClick={async () => {
-            setIsPending(true)
-            await onAdd(address)
-            setIsPending(false)
-            setAddress("")
-          }} 
-          loading={isPending}
-          disabled={!isValidAddress()}  
+        {open && <>
+          <Input 
+            value={address} 
+            onChange={ev => setAddress(ev.target.value.toLowerCase())} 
+            placeholder="Uusi käsittelijän osoite/IAM" endDecorator={<SmallHelsinkiFi />} 
+            variant="soft"
+            size="sm"
+          />
+          <Button onClick={async () => {
+              setIsPending(true)
+              await onAdd(address)
+              setIsPending(false)
+              setAddress("")
+            }} 
+            loading={isPending}
+            disabled={!isValidAddress()}  
+            size="sm"
+          >
+            Lisää
+          </Button>
+        </>}
+        <IconButton 
+          onClick={() => setOpen(!open)}
+          size="sm"
+          variant={addresses.length === 0 && !open ? 'solid' : 'plain'}
         >
-          Lisää
-        </Button>
+          {open ? <Close /> : <Add />}
+        </IconButton>
       </Box>
     </Box>
   )

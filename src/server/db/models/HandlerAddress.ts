@@ -7,6 +7,9 @@ class HandlerAddress extends Model<
 > {
   declare id: CreationOptional<number>
 
+  /**
+   * May be IAM or email (firstname.lastname)
+   */
   declare address: string
 
   declare facultyCode: string

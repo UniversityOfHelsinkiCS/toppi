@@ -152,9 +152,9 @@ const ContractRequestView = () => {
         <Formatted contractRequest={contractRequest} />
       )}
       <SectionDivider />
-      {handlerAddresses && <HandlerAddresses handlerAddresses={handlerAddresses}/>}
-      <SectionDivider />
       <UpdateStatus contractRequest={contractRequest} />
+      <SectionDivider />
+      {handlerAddresses && <HandlerAddresses handlerAddresses={handlerAddresses}/>}
     </Sheet>
   )
 }
