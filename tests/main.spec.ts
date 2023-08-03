@@ -35,7 +35,7 @@ test('Fill required contract request form', async ({ page }) => {
   await page.getByLabel('Ensimmäinen luento *').fill('2023-05-27');
   await page.getByLabel('Viimeinen luento/tentti *').fill('2023-05-19');
   await page.getByRole('button', { name: 'Lähetä käsiteltäväksi' }).click();
-  await page.getByText('Lähetetään työsopimuspyyntöä').click();
+  await page.getByText('Työsopimuspyyntö lähetetty').click();
 });
 
 test('Fill full contract request form', async ({ page }) => {
@@ -50,7 +50,7 @@ test('Fill full contract request form', async ({ page }) => {
   await page.getByLabel('Valitse alkupäivä *').fill('2023-06-01');
   await page.getByLabel('Valitse loppupäivä *').fill('2023-06-30');
   await page.getByRole('button', { name: 'Lähetä käsiteltäväksi' }).click();
-  await page.getByText('Lähetetään työsopimuspyyntöä').click();
+  await page.getByText('Työsopimuspyyntö lähetetty').click();
 })
 
 test('User can login and gets the form prefilled', async ({ page }) => {

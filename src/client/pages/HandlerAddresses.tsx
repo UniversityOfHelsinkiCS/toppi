@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import { useLoaderData } from "react-router-dom"
 import { z } from "zod"
 import { HandlerAddressChip, SmallHelsinkiFi } from "../components/common"
-import { Add, Close } from "@mui/icons-material"
+import { Add } from "@mui/icons-material"
 
 const validator = z.string().email()
 const validateAddress = (address: string, addresses: HandlerAddress[]) => {
@@ -23,8 +23,7 @@ const validateAddress = (address: string, addresses: HandlerAddress[]) => {
 }
 
 
-const Row = ({ addresses, onAdd, onDelete }: { addresses: HandlerAddress[], onAdd: (address: string) => Promise<void>, onDelete: (address: HandlerAddress) => Promise<void> }) => {
-  const [open, setOpen] = React.useState(false)
+const Row = ({ addresses, onAdd, onDelete, open, setOpen }: { addresses: HandlerAddress[], onAdd: (address: string) => Promise<void>, onDelete: (address: HandlerAddress) => Promise<void>, open: boolean, setOpen: () => void }) => {
   const [address, setAddress] = React.useState("")
   const [isPending, setIsPending] = React.useState(false)
 
@@ -61,19 +60,22 @@ const Row = ({ addresses, onAdd, onDelete }: { addresses: HandlerAddress[], onAd
             Lisää
           </Button>
         </>}
-        <IconButton 
-          onClick={() => setOpen(!open)}
-          size="sm"
-          variant={addresses.length === 0 && !open ? 'solid' : 'plain'}
-        >
-          {open ? <Close /> : <Add />}
-        </IconButton>
+        {!open && 
+          <IconButton 
+            onClick={setOpen}
+            size="sm"
+            variant={addresses?.length === 0 ? 'solid' : 'plain'}
+          >
+            <Add />
+          </IconButton>
+        }
       </Box>
     </Box>
   )
 }
 
 const HandlerAddressess = () => {
+  const [openFaculty, setOpenFaculty] = React.useState<string|null>(null)
   const faculties = useFaculties()
   const handlerAddressList = useLoaderData() as HandlerAddress[]
 
@@ -103,6 +105,7 @@ const HandlerAddressess = () => {
   }
 
   const handleDeleteAddress = async (facultyCode: string, address: HandlerAddress) => {
+    if (!window.confirm(`Haluatko varmasti poistaa osoitteen ${address.address} tiedekunnan ${facultyCode} käsittelijöistä?`)) return
     await deleteHandlerAddress(address.id)
     toast.success(`Poistettu: ${address.address}`)
     setHandlerAddresses({
@@ -124,7 +127,15 @@ const HandlerAddressess = () => {
             {faculties && faculties.map(faculty => (
               <tr key={faculty.code}>
                 <td>{faculty.name['fi']}</td>
-                <td><Row addresses={handlerAddresses[faculty.code]} onAdd={(address) => handleAddAddress(faculty.code, address)} onDelete={(address) => handleDeleteAddress(faculty.code, address)}/></td>
+                <td>
+                  <Row 
+                    open={faculty.code === openFaculty}
+                    setOpen={() => setOpenFaculty(faculty.code)}
+                    addresses={handlerAddresses[faculty.code]} 
+                    onAdd={(address) => handleAddAddress(faculty.code, address)} 
+                    onDelete={(address) => handleDeleteAddress(faculty.code, address)}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

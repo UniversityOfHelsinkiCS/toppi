@@ -27,7 +27,7 @@ export const TableItem = ({ label, value, extra, copy = true }: { label: string,
 
 export const DataTable = ({ children, copy = false }: { children: React.ReactNode, copy?: boolean }) => (
   <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
-    <Table hoverRow={copy} sx={{
+    <Table noWrap hoverRow={copy} sx={{
       '--TableCell-headBackground': (theme) => theme.vars.palette.background.level1,
       '--Table-headerUnderlineThickness': '1px',
       '--TableRow-hoverBackground': (theme) => theme.vars.palette.background.level1,
