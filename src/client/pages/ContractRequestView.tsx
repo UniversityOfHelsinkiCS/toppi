@@ -36,7 +36,7 @@ const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }
 
   return (
     <DataTable copy>
-      <thead>
+      <thead style={{ height: '3rem' }}>
         <tr>
           <th scope="col">Kentän nimi</th>
           <th scope="col">Arvo</th>

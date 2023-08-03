@@ -1,8 +1,6 @@
-import { Box, Button, Sheet, Tooltip, Typography } from "@mui/joy";
-import { Outlet, useLoaderData, useMatch } from "react-router-dom";
+import { Box, Sheet, Tooltip, Typography, useTheme } from "@mui/joy";
+import { Outlet, useLoaderData, useMatch, useNavigate } from "react-router-dom";
 import { ContractRequest } from "../types";
-import { Link as RouterLink } from "react-router-dom";
-import { Search } from "@mui/icons-material";
 import { StatusChip } from "../components/common";
 import { useFaculties } from "../hooks/useFaculties";
 import { currentLng } from "../util/i18n";
@@ -10,9 +8,14 @@ import { DataTable } from "../components/CustomTable";
 
 const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest: ContractRequest, facultyName: string }) => {
   const open = useMatch(`private/contract-requests/${contractRequest.id}`)
+  const navigate = useNavigate()
+  const theme = useTheme()
 
   return (
-    <tr>
+    <tr 
+      onClick={() => navigate(`/private/contract-requests/${contractRequest.id}`)} 
+      style={{ cursor: 'pointer', ...(open ? { background: theme.vars.palette.background.level3, } : {}) }}
+    >
       <td>{contractRequest.data.formData.email}</td>
       <td>{new Date(contractRequest.createdAt).toLocaleDateString()}</td>
       <td>
@@ -23,11 +26,6 @@ const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest
         </div>
       </td>
       <td><StatusChip status={contractRequest.status} /></td>
-      <td>
-        <Button size="sm" variant={open ? "solid" : "plain"} component={RouterLink} to={`/private/contract-requests/${contractRequest.id}`} endDecorator={<Search fontSize="small"/>}>
-          Käsittele
-        </Button>
-      </td>
     </tr>
   )
 }
@@ -37,26 +35,27 @@ const ContractRequestList = () => {
   const faculties = useFaculties()
 
   return (
-    <Box flex={0.5}>
+    <Box flex={0.4}>
       <Typography level="h4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
       <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
-        <DataTable>
-          <thead>
+        <DataTable hover>
+          <thead style={{ height: '3rem' }}>
             <tr>
-              <th>Lähettäjä</th>
-              <th style={{ width: '6rem' }}>Pvm</th>
-              <th style={{ width: '4rem' }}>TDK</th>
-              <th style={{ width: '6rem' }}>Pyynnön tila</th>
-              <th />
+              <th style={{ width: '14rem' }}>Lähettäjä</th>
+              <th>Pvm</th>
+              <th>TDK</th>
+              <th>Pyynnön tila</th>
             </tr>
           </thead>
-          {contracts.map(c => (
-            <ContractRequestItem 
-              contractRequest={c} 
-              key={c.id} 
-              facultyName={faculties?.find(f => f.code === c.data.formData.faculty)?.name?.[currentLng()] ?? ''}
-            />
-          ))}
+          <tbody>
+            {contracts.map(c => (
+              <ContractRequestItem 
+                contractRequest={c} 
+                key={c.id} 
+                facultyName={faculties?.find(f => f.code === c.data.formData.faculty)?.name?.[currentLng()] ?? ''}
+              />
+            ))}
+          </tbody>
         </DataTable>
       </Sheet>
     </Box>
