@@ -133,7 +133,7 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
 
 const ContractRequestView = () => {
   const contractRequest = useLoaderData() as ContractRequest
-  const handlerAddresses = useHandlerAddresses({ facultyCode: contractRequest.data.formData.faculty })
+  const handlerAddresses = useHandlerAddresses({ facultyCode: contractRequest.data.formData.faculty || 'missing' })
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
