@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { OrganisationData, UserOrganisationAccess } from '../../shared/types'
 import { API_TOKEN, JAMI_URL } from './config'
+import { inTesting } from '../../config'
 
 export const jamiClient = axios.create({
   baseURL: JAMI_URL,
@@ -33,6 +34,35 @@ const post = async (url: string, body: object) => {
   return data
 }
 
+
+const mockJami = {
+  getOrganisations(): OrganisationData[] {
+    return [
+      {
+        code: 'H50',
+        name: {
+          fi: 'Matemaattis-luonnontieteellinen tiedekunta',
+          en: 'Faculty of Science',
+          sv: 'Matematisk-naturvetenskapliga fakulteten',
+        },
+        programmes: [
+          {
+            key: 'KH50_001',
+            name: {
+              fi: 'Matemaattisten tieteiden kandiohjelma',
+              en: "Bachelor's Programme in Mathematical Sciences",
+              sv: 'Kandidatsprogrammet i matematiska vetenskaper',
+            },
+            level: 'bachelor',
+            companionFaculties: [],
+            international: false,
+          },
+        ]
+      }
+    ]
+  }
+}
+
 /**
  * High-performance caching solution:
  */ 
@@ -41,7 +71,7 @@ let organisationData: OrganisationData[]|null = null
 export const getOrganisationData = async (): Promise<OrganisationData[]> => {
   if (organisationData) return organisationData
 
-  const data = await get('/organisation-data')
+  const data = inTesting ? mockJami.getOrganisations() : await get('/organisation-data')
 
   if (data) {
     organisationData = data

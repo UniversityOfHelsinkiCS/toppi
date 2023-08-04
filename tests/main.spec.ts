@@ -31,6 +31,10 @@ test('Fill required contract request form', async ({ page }) => {
   await page.getByLabel('Sukunimi *').fill('Suhonen');
   await page.getByLabel('Syntymäaika *').fill('1984-02-03');
   await page.getByLabel('Sähköposti').fill('veijo@gmail.com');
+
+  await page.getByRole('combobox', { name: 'Tiedekunta' }).click();
+  await page.getByRole('option', { name: 'Matemaattis-luonnontieteellinen tiedekunta' }).click();
+
   await page.getByLabel('Kurssin nimi').fill('Dota 2 perusteet');
   await page.getByLabel('Ensimmäinen luento *').fill('2023-05-27');
   await page.getByLabel('Viimeinen luento/tentti *').fill('2023-05-19');
@@ -43,6 +47,10 @@ test('Fill full contract request form', async ({ page }) => {
   await page.getByLabel('Sukunimi *').fill('Perhonen');
   await page.getByLabel('Syntymäaika *').fill('1984-03-02');
   await page.getByLabel('Sähköposti').fill('peggoperhonen@buttermail.com');
+
+  await page.getByRole('combobox', { name: 'Tiedekunta' }).click();
+  await page.getByRole('option', { name: 'Matemaattis-luonnontieteellinen tiedekunta' }).click();
+
   await page.getByLabel('Kurssin nimi').fill('Lentämisen perusteet');
   await page.getByLabel('Ensimmäinen luento *').fill('2024-01-08');
   await page.getByLabel('Viimeinen luento/tentti *').fill('2024-01-10');
