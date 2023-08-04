@@ -13,6 +13,7 @@ import { useFaculties, useProgrammes } from "../hooks/useFaculties";
 import { useCalculatorParams } from "../store/calculatorStore";
 import { useTranslation } from "react-i18next";
 import { FormField, FormInputField } from "./formComponents";
+import { TFunction } from "i18next";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -34,6 +35,13 @@ const getRecommendedStartDate = (courseStartDate?: string) => {
 
 const getRecommendedEndDate = (courseEndDate?: string) => {
   return courseEndDate ? dayjs(courseEndDate).add(14, "days").format("YYYY-MM-DD") : ""
+}
+
+const getDateError = (t: TFunction, errorMessage?: string) => {
+  if (errorMessage === "mustBeAfter") return t('errors.mustBeAfter')
+  if (errorMessage === "mustBeBefore") return t('errors.mustBeBefore')
+  else if (errorMessage) return t('errors.required')
+  else return undefined
 }
 
 const useDefaultValues = () => {
@@ -84,7 +92,7 @@ const ContractForm = () => {
 
   const isRecommendedContractDates = watch("contractDuration") === "recommended"
 
-  console.log(faculty, formState.errors.faculty)
+  console.log(faculty, formState.errors)
 
   return (
     <Sheet sx={{
@@ -159,18 +167,20 @@ const ContractForm = () => {
               </InputSection>
               <FormInputField required error={formState.errors.courseName ? t('errors.required') : undefined} label="Kurssin nimi" name="courseName" control={control} sx={{ flex: 1 }}/>
               <InputSection label="Kurssin aikataulu">
-                <FormInputField required error={formState.errors.courseStartDate ? t('errors.required') : undefined} label="Ensimmäinen luento" name="courseStartDate" control={control} sx={{ flex: 1 }}
+                <FormInputField required error={getDateError(t, formState.errors.courseStartDate?.message)} label="Ensimmäinen luento" name="courseStartDate" control={control} sx={{ flex: 1 }}
                   type="date"
                   onChange={(ev) => {
+                    clearErrors("courseEndDate")
                     if (isRecommendedContractDates) {
                       const v = ev.target.value
                       setValue("contractStartDate", getRecommendedStartDate(v))
                     }
                   }}
                 />
-                <FormInputField required error={formState.errors.courseEndDate ? t('errors.required') : undefined} label="Viimeinen luento/tentti" name="courseEndDate" control={control} sx={{ flex: 1 }}
+                <FormInputField required error={getDateError(t, formState.errors.courseEndDate?.message)} label="Viimeinen luento/tentti" name="courseEndDate" control={control} sx={{ flex: 1 }}
                   type="date"
                   onChange={(ev) => {
+                    clearErrors("courseStartDate")
                     if (isRecommendedContractDates) {
                       const v = ev.target.value
                       setValue("contractEndDate", getRecommendedEndDate(v))
@@ -202,6 +212,7 @@ const ContractForm = () => {
                   <FormInputField 
                     sx={{ flex: 1 }} required={!isRecommendedContractDates}
                     name="contractStartDate" control={control}
+                    error={getDateError(t, formState.errors.contractStartDate?.message)}
                     type="date"
                     label={`${!isRecommendedContractDates ? "Valitse" : "Suositeltu"} alkupäivä`}
                     readOnly={isRecommendedContractDates}
@@ -209,6 +220,7 @@ const ContractForm = () => {
                   <FormInputField 
                     sx={{ flex: 1 }} required={!isRecommendedContractDates}
                     name="contractEndDate" control={control}
+                    error={getDateError(t, formState.errors.contractEndDate?.message)}
                     type="date"
                     label={`${!isRecommendedContractDates ? "Valitse" : "Suositeltu"} loppupäivä`}
                     readOnly={isRecommendedContractDates}

@@ -9,6 +9,8 @@ const translations = {
   },
   "errors": {
     "required": "Tämä kenttä on pakollinen",
+    "mustBeBefore": "On oltava lopetuspäivämäärää ennen",
+    "mustBeAfter": "On oltava aloituspäivämäärän jälkeen"
   },
   "setStatusAction": {
     "waiting": "Merkkaa odottavaksi",

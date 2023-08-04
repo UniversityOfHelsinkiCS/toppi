@@ -9,6 +9,8 @@ const translations = {
   },
   "errors": {
     "required": "This field is required",
+    "mustBeBefore": "Must be before ending date",
+    "mustBeAfter": "Must be after starting date",
   },
   "setStatusAction": {
     "waiting": "Mark as waiting",

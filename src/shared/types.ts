@@ -25,9 +25,35 @@ export const ContractRequestFormParamsValidator = z.object({
   courseStartDate: zDate,
   courseEndDate: zDate,
   contractDuration: ContractDurationOptionsEnum,
-  contractStartDate: zDate.optional(),
-  contractEndDate: zDate.optional(),
+  contractStartDate: zDate,
+  contractEndDate: zDate,
   additionalInfo: z.string().optional(),
+}).superRefine((form, ctx) => {
+  if (dayjs(form.courseStartDate).isAfter(dayjs(form.courseEndDate))) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["courseEndDate"],
+      message: 'mustBeAfter',
+    })
+    ctx.addIssue({
+      code: "custom",
+      path: ["courseStartDate"],
+      message: 'mustBeBefore',
+    })
+  }
+
+  if (dayjs(form.contractStartDate).isAfter(dayjs(form.contractEndDate))) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["contractEndDate"],
+      message: 'mustBeAfter',
+    })
+    ctx.addIssue({
+      code: "custom",
+      path: ["contractStartDate"],
+      message: 'mustBeBefore',
+    })
+  }
 })
 
 export type ContractRequestFormParams = z.infer<typeof ContractRequestFormParamsValidator>
