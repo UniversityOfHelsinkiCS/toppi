@@ -1,4 +1,4 @@
-import { Alert, Box, Button, FormControl, FormHelperText, FormLabel, Input, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from "@mui/joy";
+import { Alert, Box, Button, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from "@mui/joy";
 import CalculatorPreview from "./CalculatorPreview";
 import { toast } from "sonner";
 import React from "react";
@@ -11,6 +11,8 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useSendContract } from "../hooks/useSendContract";
 import { useFaculties, useProgrammes } from "../hooks/useFaculties";
 import { useCalculatorParams } from "../store/calculatorStore";
+import { useTranslation } from "react-i18next";
+import { FormField, FormInputField } from "./formComponents";
 
 const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
   return (
@@ -56,9 +58,12 @@ const useDefaultValues = () => {
 }
 
 const ContractForm = () => {
-  const { control, handleSubmit, setValue, getValues, watch, formState: { errors } } = useForm({
+  const { t } = useTranslation()
+
+  const { control, handleSubmit, setValue, clearErrors, getValues, watch, formState } = useForm({
     resolver: zodResolver(ContractRequestFormParamsValidator),
     defaultValues: useDefaultValues(),
+    mode: "onChange",
   })
 
   const sendContract = useSendContract()
@@ -79,6 +84,8 @@ const ContractForm = () => {
 
   const isRecommendedContractDates = watch("contractDuration") === "recommended"
 
+  console.log(faculty, formState.errors.faculty)
+
   return (
     <Sheet sx={{
       borderRadius: "1rem",
@@ -89,132 +96,87 @@ const ContractForm = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputSection>
-                <FormControl required sx={{ flex: 1 }}>
-                  <FormLabel>Etunimi</FormLabel>
-                  <Controller
-                    name="firstName"
-                    control={control}
-                    render={({ field }) => <Input {...field} />}
-                  />
-                </FormControl>
-                <FormControl required sx={{ flex: 1 }}>
-                  <FormLabel>Sukunimi</FormLabel>
-                  <Controller
-                    name="lastName"
-                    control={control}
-                    render={({ field }) => <Input {...field} />}
-                  />
-                </FormControl>
+                <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label="Etunimi" name="firstName" control={control} sx={{ flex: 1 }}/>
+                <FormInputField required error={formState.errors.lastName ? t('errors.required') : undefined} label="Sukunimi" name="lastName" control={control} sx={{ flex: 1 }}/>
               </InputSection>
-              <FormControl required>
-                <FormLabel>Syntymäaika</FormLabel>
-                <Controller
-                  name="birthDate"
-                  control={control}
-                  render={({ field }) => <Input {...field} type="date"/>}
-                />
-              </FormControl>
-              <FormControl required error={!!errors.email}>  
-                <FormLabel>Sähköposti</FormLabel>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => <Input {...field} type="email"/>}
-                />
-              </FormControl>
+              <FormInputField required error={formState.errors.birthDate ? t('errors.required') : undefined} label="Syntymäaika" name="birthDate" control={control} />
+              <FormInputField required error={formState.errors.email ? t('errors.required') : undefined} label="Sähköposti" name="email" type="email" control={control} />
               <InputSection label="Kurssin järjestäjä">
-                <FormControl sx={{ flex: 1 }}>
-                  <FormLabel>Tiedekunta</FormLabel>
-                  <Controller 
-                    name="faculty"
-                    control={control}
-                    render={({ field }) => (
-                      <Select 
-                        {...field}
-                        placeholder="Valitse tiedekunta"
-                        onChange={(e, val) => val && setValue("faculty", val)}
-                      >
-                        {faculties ? (
-                          faculties.map(f => (
-                            <Option key={f.code} value={f.code}>{f.name.fi}</Option>
-                          ))
-                        ) : (
-                          <Option value={""}>
-                            Ladataan...
-                          </Option>
-                        )}
-                        <Option value="">En tiedä</Option>
-                      </Select>
-                    )}
-                  />
-                </FormControl>
-                <FormControl disabled={!faculty} sx={{ flex: 1 }}>
-                  <FormLabel>Koulutusohjelma</FormLabel>
-                  <Controller 
-                    name="programme"
-                    control={control}
-                    render={({ field }) => (
-                      <Select 
-                        {...field}
-                        placeholder="Valitse koulutusohjelma"
-                        onChange={(e, val) => val && setValue("programme", val)}
-                      >
-                        {programmes ? (
-                          programmes.map(f => (
-                            <Option key={f.key} value={f.key}>{f.name.fi}</Option>
-                          ))
-                        ) : (
-                          <Option value="">
-                            Ladataan...
-                          </Option>
-                        )}
-                        <Option value="">En tiedä</Option>
-                      </Select>
-                    )}
-                  />
-                </FormControl>
-              </InputSection>
-              <FormControl required error={!!errors.courseName}>
-                <FormLabel>Kurssin nimi</FormLabel>
-                <Controller
-                  name="courseName"
+                <FormField 
+                  required
+                  error={formState.errors.faculty ? t('errors.required') : ''}
+                  sx={{ flex: 1}}
+                  name="faculty"
+                  label="Tiedekunta"
                   control={control}
-                  render={({ field }) => <Input {...field} />}
+                  render={(field) => (
+                    <Select 
+                      {...field}
+                      placeholder="Valitse tiedekunta"
+                      onChange={(_, val) => {
+                        if (!val) return
+                        setValue("faculty", val)
+                        clearErrors("faculty")
+                      }}
+                    >
+                      {faculties ? (
+                        faculties.map(f => (
+                          <Option key={f.code} value={f.code}>{f.name.fi}</Option>
+                        ))
+                      ) : (
+                        <Option value="">
+                          Ladataan...
+                        </Option>
+                      )}
+                    </Select>
+                  )}
                 />
-              </FormControl>
+                <FormField 
+                  sx={{ flex: 1}}
+                  name="programme"
+                  label="Koulutusohjelma"
+                  disabled={!faculty}
+                  control={control}
+                  render={(field) => (
+                    <Select 
+                      {...field}
+                      placeholder="Valitse koulutusohjelma"
+                      onChange={(e, val) => val && setValue("programme", val)}
+                    >
+                      {programmes ? (
+                        programmes.map(f => (
+                          <Option key={f.key} value={f.key}>{f.name.fi}</Option>
+                        ))
+                      ) : (
+                        <Option value="">
+                          Ladataan...
+                        </Option>
+                      )}
+                      <Option value="">En tiedä</Option>
+                    </Select>
+                  )}
+                />
+              </InputSection>
+              <FormInputField required error={formState.errors.courseName ? t('errors.required') : undefined} label="Kurssin nimi" name="courseName" control={control} sx={{ flex: 1 }}/>
               <InputSection label="Kurssin aikataulu">
-                <FormControl required sx={{ flex: 1 }}>
-                  <FormLabel>Ensimmäinen luento</FormLabel>
-                  <Controller
-                    name="courseStartDate"
-                    control={control}
-                    rules={{
-                      onChange: (ev) => {
-                        if (isRecommendedContractDates) {
-                          const v = ev.target.value
-                          setValue("contractStartDate", getRecommendedStartDate(v))
-                        }
-                      }
-                    }}
-                    render={({ field }) => <Input {...field} type="date"/>}
-                  />
-                </FormControl>
-                <FormControl required sx={{ flex: 1 }} error={!!errors.courseEndDate}>
-                  <FormLabel>Viimeinen luento/tentti</FormLabel>
-                  <Controller
-                    name="courseEndDate"
-                    control={control}
-                    rules={{
-                      onChange: (ev) => {
-                        if (isRecommendedContractDates) {
-                          const v = ev.target.value
-                          setValue("contractEndDate", getRecommendedEndDate(v))
-                        }
-                      }
-                    }}
-                    render={({ field }) => <Input {...field} type="date"/>}
-                  />
-                </FormControl>
+                <FormInputField required error={formState.errors.courseStartDate ? t('errors.required') : undefined} label="Ensimmäinen luento" name="courseStartDate" control={control} sx={{ flex: 1 }}
+                  type="date"
+                  onChange={(ev) => {
+                    if (isRecommendedContractDates) {
+                      const v = ev.target.value
+                      setValue("contractStartDate", getRecommendedStartDate(v))
+                    }
+                  }}
+                />
+                <FormInputField required error={formState.errors.courseEndDate ? t('errors.required') : undefined} label="Viimeinen luento/tentti" name="courseEndDate" control={control} sx={{ flex: 1 }}
+                  type="date"
+                  onChange={(ev) => {
+                    if (isRecommendedContractDates) {
+                      const v = ev.target.value
+                      setValue("contractEndDate", getRecommendedEndDate(v))
+                    }
+                  }}
+                />
               </InputSection>
               <InputSection label="Sopimuksen kesto" orientation="vertical">
                 <Controller
@@ -237,33 +199,29 @@ const ContractForm = () => {
                   )}
                 />
                 <InputSection>
-                  <FormControl sx={{ flex: 1 }} required={!isRecommendedContractDates}>
-                    <FormLabel>{!isRecommendedContractDates ? "Valitse" : "Suositeltu"} alkupäivä</FormLabel>
-                    <Controller
-                      name="contractStartDate"
-                      control={control}
-                      render={({ field }) => <Input {...field} type="date" readOnly={isRecommendedContractDates} />}
-                    />
-                  </FormControl>
-                  <FormControl sx={{ flex: 1 }} required={!isRecommendedContractDates}>
-                    <FormLabel>{!isRecommendedContractDates ? "Valitse" : "Suositeltu"} loppupäivä</FormLabel>
-                    <Controller
-                      name="contractEndDate"
-                      control={control}
-                      render={({ field }) => <Input {...field} type="date" readOnly={isRecommendedContractDates} />}
-                    />
-                  </FormControl>
+                  <FormInputField 
+                    sx={{ flex: 1 }} required={!isRecommendedContractDates}
+                    name="contractStartDate" control={control}
+                    type="date"
+                    label={`${!isRecommendedContractDates ? "Valitse" : "Suositeltu"} alkupäivä`}
+                    readOnly={isRecommendedContractDates}
+                  />
+                  <FormInputField 
+                    sx={{ flex: 1 }} required={!isRecommendedContractDates}
+                    name="contractEndDate" control={control}
+                    type="date"
+                    label={`${!isRecommendedContractDates ? "Valitse" : "Suositeltu"} loppupäivä`}
+                    readOnly={isRecommendedContractDates}
+                  />
                 </InputSection>
               </InputSection>
-              <FormControl>
-                <FormLabel>Lisätietoja</FormLabel>
-                <FormHelperText>Kerro tässä esimerkiksi sovituista poikkeuksista</FormHelperText>
-                <Controller
-                  name="additionalInfo"
-                  control={control}
-                  render={({ field }) => <Textarea {...field} />}
-                />
-              </FormControl>
+              <FormField 
+                label="Lisätietoja"
+                name="additionalInfo"
+                render={( field ) => <Textarea {...field} />}
+                control={control}
+                pretext="Kerro tässä esimerkiksi sovituista poikkeuksista"
+              />
               <Button type="submit">Lähetä käsiteltäväksi</Button>
             </Box>
           </form>

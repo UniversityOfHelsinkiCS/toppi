@@ -7,6 +7,9 @@ const translations = {
     "handled": "Käsitelty",
     "rejected": "Hylätty",
   },
+  "errors": {
+    "required": "Tämä kenttä on pakollinen",
+  },
   "setStatusAction": {
     "waiting": "Merkkaa odottavaksi",
     "handled": "Merkkaa käsitellyksi",

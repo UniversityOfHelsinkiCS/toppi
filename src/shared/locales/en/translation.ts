@@ -7,6 +7,9 @@ const translations = {
     "handled": "Handled",
     "rejected": "Rejected",
   },
+  "errors": {
+    "required": "This field is required",
+  },
   "setStatusAction": {
     "waiting": "Mark as waiting",
     "handled": "Mark as handled",
