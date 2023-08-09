@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { getOrganisationData } from "../util/jami";
+import { getOrganisations } from "../services/organisations";
 
 const organisationsRouter = Router()
 
 organisationsRouter.get('/', async (req, res) => {
-  const orgs = await getOrganisationData()
+  const orgs = await getOrganisations()
 
   return res.send(orgs)
 })

@@ -108,21 +108,35 @@ export interface ShibbolethHeaders {
 export type Locale = {
   fi: string
   en: string
-  sv: string
+  sv?: string
+}
+
+export const specialOrganisationCodes = ['doctoral'] as const
+
+/**
+ * Represent an organisation that handles contract requests in toppi.
+ * These are: faculties, and custom orgs such as the doctoral schools org
+ */
+export type OrganisationUnit = {
+  code: string
+  name: Locale
+  programmes?: Array<Programme>
+}
+
+export type Faculty = OrganisationUnit & {
+  programmes: Array<Programme>
+}
+
+export type SpecialOrganisation = OrganisationUnit & {
+  code: typeof specialOrganisationCodes[number]
 }
 
 export type Programme = {
   key: string
   name: Locale
-  level: string
+  level: 'bachelor'|'master'|'doctoral'
   companionFaculties: Array<string>
   international: boolean
-}
-
-export interface OrganisationData {
-  code: string
-  name: Locale
-  programmes: Array<Programme>
 }
 
 export const specialGroups = ["kosu", "superAdmin"] as const

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
-import { OrganisationData } from "../../shared/types"
+import { Faculty, OrganisationUnit, specialOrganisationCodes } from "../../shared/types"
 import { getOrganisationData } from "../api"
 
 export const useOrganisations = () => {
-  const [organisations, setOrganisations] = React.useState<OrganisationData[]>()
+  const [organisations, setOrganisations] = React.useState<OrganisationUnit[]>()
 
   useEffect(() => {
     getOrganisationData().then(data => {
@@ -17,7 +17,16 @@ export const useOrganisations = () => {
 export const useFaculties = () => {
   const organisations = useOrganisations()
 
-  return organisations?.map(org => ({ code: org.code, name: org.name }))
+  return organisations
+    ?.filter(org => !specialOrganisationCodes.some(c => c === org.code))
+    ?.map(org => ({ code: org.code, name: org.name })) as Faculty[]|undefined
+}
+
+export const useOrganisationUnits = () => {
+  const organisations = useOrganisations()
+
+  return organisations
+    ?.map(org => ({ code: org.code, name: org.name })) as OrganisationUnit[]|undefined
 }
 
 export const useProgrammes = (facultyCode?: string) => {

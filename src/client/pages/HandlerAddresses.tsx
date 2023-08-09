@@ -3,7 +3,7 @@ import React, { useEffect } from "react"
 import { deleteHandlerAddress, postHandlerAddress } from "../api"
 import { DataTable } from "../components/CustomTable"
 import { HandlerAddress } from "../types"
-import { useFaculties } from "../hooks/useFaculties"
+import { useOrganisationUnits } from "../hooks/useFaculties"
 import { toast } from "sonner"
 import { useLoaderData } from "react-router-dom"
 import { z } from "zod"
@@ -76,16 +76,16 @@ const Row = ({ addresses, onAdd, onDelete, open, setOpen }: { addresses: Handler
 
 const HandlerAddressess = () => {
   const [openFaculty, setOpenFaculty] = React.useState<string|null>(null)
-  const faculties = useFaculties()
+  const organisations = useOrganisationUnits()
   const handlerAddressList = useLoaderData() as HandlerAddress[]
 
   const [handlerAddresses, setHandlerAddresses] = React.useState<{ [code: string]: HandlerAddress[] }>({})
   useEffect(() => {
-    if (!faculties || Object.keys(handlerAddresses).length !== 0) return;
+    if (!organisations || Object.keys(handlerAddresses).length !== 0) return;
 
     const newHandlerAddresses: { [code: string]: HandlerAddress[] } = {}
 
-    faculties.forEach(f => {
+    organisations.forEach(f => {
       newHandlerAddresses[f.code] = []
     })
     handlerAddressList.forEach(adress => {
@@ -93,7 +93,7 @@ const HandlerAddressess = () => {
     })
     setHandlerAddresses(newHandlerAddresses)
 
-  }, [faculties])
+  }, [organisations])
 
   const handleAddAddress = async (facultyCode: string, address: string) => {
     const res = await postHandlerAddress({ facultyCode, address }) as HandlerAddress
@@ -124,7 +124,7 @@ const HandlerAddressess = () => {
             </tr>
           </thead>
           <tbody>
-            {faculties && faculties.map(faculty => (
+            {organisations && organisations.map(faculty => (
               <tr key={faculty.code}>
                 <td>{faculty.name['fi']}</td>
                 <td>

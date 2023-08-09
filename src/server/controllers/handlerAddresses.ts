@@ -9,7 +9,7 @@ const handlerAddressRouter = Router()
 
 handlerAddressRouter.post('/', requireAuthenticated(UserRoles.Admin), async (req: RequestWithUser, res) => {
   const creationParams = HandlerAddressParamsValidator.parse(req.body)
-  console.log(creationParams)
+
   const handlerAddress = await HandlerAddress.create({
     ...creationParams,
     addedById: req.user?.id
