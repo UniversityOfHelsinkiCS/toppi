@@ -1,4 +1,4 @@
-import { PUBLIC_URL } from '../../config'
+import { PUBLIC_URL, inTesting } from '../../config'
 
 const ITEM_NAME = 'fakeUser'
 
@@ -23,10 +23,12 @@ const fakeUsers = [
   },
 ] as const
 
-const fakeUserId: (typeof fakeUsers)[number]['hypersonsisuid'] = 'hy-matlu-handler'
+const testUserId = 'hy-fake-user' // do not change (until tests change)
+
+const fakeUserId: typeof fakeUsers[number]["hypersonsisuid"] = 'hy-matlu-handler'
 
 export const updateMockHeaders = () => {
-  localStorage.setItem(ITEM_NAME, JSON.stringify(fakeUsers.find((f) => f.hypersonsisuid === fakeUserId)))
+  localStorage.setItem(ITEM_NAME, JSON.stringify(fakeUsers.find(f => f.hypersonsisuid === (inTesting ? testUserId : fakeUserId))))
 }
 
 export const getMockHeaders = () => {
