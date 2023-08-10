@@ -1,11 +1,8 @@
-import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize'
 import { sequelize } from '../connection'
-import { ContractRequestParams, ContractRequestStatus, contractRequestStatuses } from "../../../shared/types";
+import { ContractRequestParams, ContractRequestStatus, contractRequestStatuses } from '../../../shared/types'
 
-class ContractRequest extends Model<
-  InferAttributes<ContractRequest>,
-  InferCreationAttributes<ContractRequest>
-> {
+class ContractRequest extends Model<InferAttributes<ContractRequest>, InferCreationAttributes<ContractRequest>> {
   declare id: CreationOptional<number>
 
   declare data: ContractRequestParams
@@ -14,9 +11,9 @@ class ContractRequest extends Model<
 
   declare userId: CreationOptional<ForeignKey<string>>
 
-  declare createdAt: CreationOptional<Date>;
+  declare createdAt: CreationOptional<Date>
 
-  declare updatedAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>
 }
 
 ContractRequest.init(
@@ -33,22 +30,22 @@ ContractRequest.init(
     status: {
       type: DataTypes.ENUM,
       values: contractRequestStatuses,
-      defaultValue: "waiting",
+      defaultValue: 'waiting',
     },
     userId: {
       type: DataTypes.STRING,
       allowNull: true,
       references: {
-        model: "users",
-        key: "id",
-      }
+        model: 'users',
+        key: 'id',
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
     },
     updatedAt: {
       type: DataTypes.DATE,
-    }
+    },
   },
   {
     underscored: true,

@@ -17,37 +17,42 @@ interface ContractState {
   setHourlyRate: (hourlyRate: number) => void
 }
 
-const useContractStore = create<ContractState>()(persist((set) => ({
-  teachingHours: 0,
-  setTeachingHours: (teachingHours: number) => set({ teachingHours }),
-  courseType: courseTypeOptions[0],
-  setCourseType: (courseType: Option) => set({ courseType }),
-  credits: creditOptions[0],
-  setCredits: (credits: Option) => set({ credits }),
-  studentCount: studentCountOptions[0],
-  setStudentCount: (studentCount: Option) => set({ studentCount }),
-  hourlyRate: 0,
-  setHourlyRate: (hourlyRate: number) => set({ hourlyRate }),
-}), {
-  name: "calculator-state",
-}))
+const useContractStore = create<ContractState>()(
+  persist(
+    (set) => ({
+      teachingHours: 0,
+      setTeachingHours: (teachingHours: number) => set({ teachingHours }),
+      courseType: courseTypeOptions[0],
+      setCourseType: (courseType: Option) => set({ courseType }),
+      credits: creditOptions[0],
+      setCredits: (credits: Option) => set({ credits }),
+      studentCount: studentCountOptions[0],
+      setStudentCount: (studentCount: Option) => set({ studentCount }),
+      hourlyRate: 0,
+      setHourlyRate: (hourlyRate: number) => set({ hourlyRate }),
+    }),
+    {
+      name: 'calculator-state',
+    }
+  )
+)
 
 export const usePreparationHours = () => {
-  const credits = useContractStore(state => state.credits)
-  const courseType = useContractStore(state => state.courseType)
+  const credits = useContractStore((state) => state.credits)
+  const courseType = useContractStore((state) => state.courseType)
   const preparationHours = getPreparationHours(credits, courseType)
   return preparationHours
 }
 
 export const useTotalHours = () => {
-  const teachingHours = useContractStore(state => state.teachingHours)
+  const teachingHours = useContractStore((state) => state.teachingHours)
   const preparationHours = usePreparationHours()
-  const studentCountHours = useContractStore(state => state.studentCount.value)
+  const studentCountHours = useContractStore((state) => state.studentCount.value)
   return teachingHours + preparationHours + studentCountHours
 }
 
 export const useWorkHourCalculatorFields = () => ({
-  ...useContractStore(state => ({
+  ...useContractStore((state) => ({
     teachingHours: state.teachingHours,
     courseType: state.courseType,
     setCourseType: state.setCourseType,
@@ -61,8 +66,7 @@ export const useWorkHourCalculatorFields = () => ({
 })
 
 export const useCalculatorParams: () => CalculatorParams = () => {
-
-  const calculatorState = useContractStore(state => ({
+  const calculatorState = useContractStore((state) => ({
     teachingHours: state.teachingHours,
     courseType: state.courseType,
     credits: state.credits,
@@ -71,7 +75,7 @@ export const useCalculatorParams: () => CalculatorParams = () => {
   }))
 
   const totalHours = useTotalHours()
-  
+
   return {
     teachingHours: calculatorState.teachingHours,
     courseType: calculatorState.courseType,

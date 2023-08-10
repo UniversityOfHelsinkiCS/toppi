@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test'
 
 /**
  * Read environment variables from file.
@@ -6,7 +6,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 // require('dotenv').config();
 
-const inE2E = process.env.CI === 'true';
+const inE2E = process.env.CI === 'true'
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -79,4 +79,4 @@ export default defineConfig({
   //   reuseExistingServer: true,
   //   timeout: 120 * 1000,
   // },
-});
+})

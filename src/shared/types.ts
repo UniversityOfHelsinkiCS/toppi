@@ -1,60 +1,62 @@
-import dayjs from "dayjs"
-import { z } from "zod"
+import dayjs from 'dayjs'
+import { z } from 'zod'
 
-export const contractRequestStatuses = ["waiting", "handled", "rejected"] as const
+export const contractRequestStatuses = ['waiting', 'handled', 'rejected'] as const
 export const ContractRequestStatusEnum = z.enum(contractRequestStatuses)
 export type ContractRequestStatus = z.infer<typeof ContractRequestStatusEnum>
 
-export const contractDurationOptions = ["recommended", "custom"] as const
+export const contractDurationOptions = ['recommended', 'custom'] as const
 export const ContractDurationOptionsEnum = z.enum(contractDurationOptions)
 export type ContractDurationOption = z.infer<typeof ContractDurationOptionsEnum>
 
 /**
  * Validates YYYY-MM-DD using dayjs
  */
-export const zDate = z.custom<string>((dateString) => typeof dateString === "string" && dayjs(dateString, "YYYY-MM-DD", true).isValid())
+export const zDate = z.custom<string>((dateString) => typeof dateString === 'string' && dayjs(dateString, 'YYYY-MM-DD', true).isValid())
 
-export const ContractRequestFormParamsValidator = z.object({
-  firstName: z.string().nonempty(),
-  lastName: z.string().nonempty(),
-  email: z.string().email(),
-  birthDate: zDate,
-  faculty: z.string().nonempty(),
-  programme: z.string().optional(),
-  courseName: z.string().nonempty(),
-  courseStartDate: zDate,
-  courseEndDate: zDate,
-  contractDuration: ContractDurationOptionsEnum,
-  contractStartDate: zDate,
-  contractEndDate: zDate,
-  additionalInfo: z.string().optional(),
-}).superRefine((form, ctx) => {
-  if (dayjs(form.courseStartDate).isAfter(dayjs(form.courseEndDate))) {
-    ctx.addIssue({
-      code: "custom",
-      path: ["courseEndDate"],
-      message: 'mustBeAfter',
-    })
-    ctx.addIssue({
-      code: "custom",
-      path: ["courseStartDate"],
-      message: 'mustBeBefore',
-    })
-  }
+export const ContractRequestFormParamsValidator = z
+  .object({
+    firstName: z.string().nonempty(),
+    lastName: z.string().nonempty(),
+    email: z.string().email(),
+    birthDate: zDate,
+    faculty: z.string().nonempty(),
+    programme: z.string().optional(),
+    courseName: z.string().nonempty(),
+    courseStartDate: zDate,
+    courseEndDate: zDate,
+    contractDuration: ContractDurationOptionsEnum,
+    contractStartDate: zDate,
+    contractEndDate: zDate,
+    additionalInfo: z.string().optional(),
+  })
+  .superRefine((form, ctx) => {
+    if (dayjs(form.courseStartDate).isAfter(dayjs(form.courseEndDate))) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['courseEndDate'],
+        message: 'mustBeAfter',
+      })
+      ctx.addIssue({
+        code: 'custom',
+        path: ['courseStartDate'],
+        message: 'mustBeBefore',
+      })
+    }
 
-  if (dayjs(form.contractStartDate).isAfter(dayjs(form.contractEndDate))) {
-    ctx.addIssue({
-      code: "custom",
-      path: ["contractEndDate"],
-      message: 'mustBeAfter',
-    })
-    ctx.addIssue({
-      code: "custom",
-      path: ["contractStartDate"],
-      message: 'mustBeBefore',
-    })
-  }
-})
+    if (dayjs(form.contractStartDate).isAfter(dayjs(form.contractEndDate))) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['contractEndDate'],
+        message: 'mustBeAfter',
+      })
+      ctx.addIssue({
+        code: 'custom',
+        path: ['contractStartDate'],
+        message: 'mustBeBefore',
+      })
+    }
+  })
 
 export type ContractRequestFormParams = z.infer<typeof ContractRequestFormParamsValidator>
 
@@ -89,7 +91,7 @@ export type CalculatorParams = z.infer<typeof CalculatorParamsValidator>
 
 export const ContractRequestParamsValidator = z.object({
   calculatorData: CalculatorParamsValidator,
-  formData: ContractRequestFormParamsValidator
+  formData: ContractRequestFormParamsValidator,
 })
 
 export type ContractRequestParams = z.infer<typeof ContractRequestParamsValidator>
@@ -102,7 +104,7 @@ export interface ShibbolethHeaders {
   hygroupcn?: string
   schacdateofbirth?: string
   shib_logout_url?: string
-  "x-admin-logged-in-as"?: string
+  'x-admin-logged-in-as'?: string
 }
 
 export type Locale = {
@@ -128,19 +130,19 @@ export type Faculty = OrganisationUnit & {
 }
 
 export type SpecialOrganisation = OrganisationUnit & {
-  code: typeof specialOrganisationCodes[number]
+  code: (typeof specialOrganisationCodes)[number]
 }
 
 export type Programme = {
   key: string
   name: Locale
-  level: 'bachelor'|'master'|'doctoral'
+  level: 'bachelor' | 'master' | 'doctoral'
   companionFaculties: Array<string>
   international: boolean
 }
 
-export const specialGroups = ["kosu", "superAdmin"] as const
-export type SpecialGroup = typeof specialGroups[number]
+export const specialGroups = ['kosu', 'superAdmin'] as const
+export type SpecialGroup = (typeof specialGroups)[number]
 
 /**
  * Higher gives access to lower
@@ -152,7 +154,7 @@ export const UserRoles = {
   Admin: 3,
 } as const
 
-export type UserRole = typeof UserRoles[keyof typeof UserRoles]
+export type UserRole = (typeof UserRoles)[keyof typeof UserRoles]
 
 export type UserAccess = {
   specialGroups?: {

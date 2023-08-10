@@ -1,22 +1,18 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize'
 import { sequelize } from '../connection'
 
-
-class User extends Model<
-  InferAttributes<User>,
-  InferCreationAttributes<User>
-> {
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<string>
 
-  declare firstName: string;
+  declare firstName: string
 
-  declare lastName: string;
+  declare lastName: string
 
-  declare email: string;
+  declare email: string
 
-  declare createdAt: CreationOptional<Date>;
+  declare createdAt: CreationOptional<Date>
 
-  declare updatedAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>
 
   toPublic() {
     return {
@@ -47,7 +43,7 @@ User.init(
     },
     updatedAt: {
       type: DataTypes.DATE,
-    }
+    },
   },
   {
     underscored: true,

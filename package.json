@@ -107,7 +107,8 @@
   "prettier": {
     "trailingComma": "es5",
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "printWidth": 200
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": "eslint",

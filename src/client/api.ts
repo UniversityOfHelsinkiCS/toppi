@@ -1,8 +1,8 @@
-import axios, { AxiosInstance } from "axios";
-import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from "../config";
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router-dom";
-import { getMockHeaders } from "./util/mockHeaders";
-import { ContractRequestParams, HandlerAddressParams, OrganisationData, UserParams } from "../shared/types";
+import axios, { AxiosInstance } from 'axios'
+import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from '../config'
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from 'react-router-dom'
+import { getMockHeaders } from './util/mockHeaders'
+import { ContractRequestParams, HandlerAddressParams, OrganisationData, UserParams } from '../shared/types'
 
 export const publicClient = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
@@ -12,8 +12,8 @@ export const privateClient = axios.create({
   baseURL: `${PUBLIC_URL}/private/api`,
 })
 
-privateClient.interceptors.request.use(config => {
-  let headers = (inDevelopment || inTesting || inE2E) ? getMockHeaders() : undefined
+privateClient.interceptors.request.use((config) => {
+  let headers = inDevelopment || inTesting || inE2E ? getMockHeaders() : undefined
   headers ||= {}
 
   const adminLoggedInAs = localStorage.getItem('adminLoggedInAs') // id
@@ -27,13 +27,13 @@ privateClient.interceptors.request.use(config => {
 })
 
 export const sendContract = async (client: AxiosInstance, contract: ContractRequestParams) => {
-  const { data } = await client.post("/contract-requests", contract)
+  const { data } = await client.post('/contract-requests', contract)
 
   return data
 }
 
 export const getContractRequests = async () => {
-  const { data } = await privateClient.get("/contract-requests")
+  const { data } = await privateClient.get('/contract-requests')
 
   return data
 }
@@ -44,18 +44,18 @@ export const getContractRequest = async ({ params }: LoaderFunctionArgs) => {
   return data
 }
 
-const updateStatus = async (id: string|undefined, updates: object) => {
+const updateStatus = async (id: string | undefined, updates: object) => {
   const { data } = await privateClient.put(`/contract-requests/${id}`, updates)
 
   return data
 }
 
 export const updateStatusAction = async ({ request, params }: ActionFunctionArgs) => {
-  const formData = await request.formData();
+  const formData = await request.formData()
   console.log(formData)
-  const updates = Object.fromEntries(formData);
-  await updateStatus(params.id, updates);
-  return redirect(`/private/contract-requests/${params.id}`);
+  const updates = Object.fromEntries(formData)
+  await updateStatus(params.id, updates)
+  return redirect(`/private/contract-requests/${params.id}`)
 }
 
 export const login = async () => {
@@ -76,10 +76,10 @@ export const getOrganisationData = async () => {
   return data as OrganisationData[]
 }
 
-export const getHandlerAddresses = async (query?: { facultyCode?: string, address?: string }) => {
+export const getHandlerAddresses = async (query?: { facultyCode?: string; address?: string }) => {
   const params = query ? query : {}
   const { data } = await privateClient.get('/handler-addresses', {
-    params
+    params,
   })
 
   return data

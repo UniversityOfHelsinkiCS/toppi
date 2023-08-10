@@ -1,10 +1,10 @@
-import { inProduction } from "../../config"
-import { logout } from "../api"
-import { clearHeaders } from "./mockHeaders"
+import { inProduction } from '../../config'
+import { logout } from '../api'
+import { clearHeaders } from './mockHeaders'
 
 const devLogout = () => {
   clearHeaders()
-  window.location.pathname = "/"
+  window.location.pathname = '/'
 }
 
 export const handleLogout = async () => {

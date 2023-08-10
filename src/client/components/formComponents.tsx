@@ -1,12 +1,30 @@
-import { FormControl, FormHelperText, FormLabel, Input } from "@mui/joy"
-import { SxProps } from "@mui/joy/styles/types"
-import React from "react"
-import { Controller, ControllerRenderProps } from "react-hook-form"
+import { FormControl, FormHelperText, FormLabel, Input } from '@mui/joy'
+import { SxProps } from '@mui/joy/styles/types'
+import React from 'react'
+import { Controller, ControllerRenderProps } from 'react-hook-form'
 
-export const FormField = ({ 
-  label, name, error, render, control, sx, required = false, pretext, onChange, disabled = false,
-}: { 
-  label: string, name: string, error?: string, render: (field: ControllerRenderProps) => React.ReactElement, control: any, sx?: SxProps, required?: boolean, pretext?: string, onChange?: (ev: any) => void, disabled?: boolean
+export const FormField = ({
+  label,
+  name,
+  error,
+  render,
+  control,
+  sx,
+  required = false,
+  pretext,
+  onChange,
+  disabled = false,
+}: {
+  label: string
+  name: string
+  error?: string
+  render: (field: ControllerRenderProps) => React.ReactElement
+  control: any
+  sx?: SxProps
+  required?: boolean
+  pretext?: string
+  onChange?: (ev: any) => void
+  disabled?: boolean
 }) => (
   <FormControl error={!!error} sx={sx} required={required} disabled={disabled}>
     <FormLabel>{label}</FormLabel>
@@ -23,10 +41,26 @@ export const FormField = ({
   </FormControl>
 )
 
-export const FormInputField = ({ 
-  label, name, error, control, sx, required = false, type = "input", onChange, readOnly = false
-}: { 
-  label: string, name: string, error?: string, control: any, sx?: SxProps, required?: boolean, type?: React.HTMLInputTypeAttribute, onChange?: (ev: any) => void, readOnly?: boolean
+export const FormInputField = ({
+  label,
+  name,
+  error,
+  control,
+  sx,
+  required = false,
+  type = 'input',
+  onChange,
+  readOnly = false,
+}: {
+  label: string
+  name: string
+  error?: string
+  control: any
+  sx?: SxProps
+  required?: boolean
+  type?: React.HTMLInputTypeAttribute
+  onChange?: (ev: any) => void
+  readOnly?: boolean
 }) => (
   <FormField
     label={label}
@@ -36,6 +70,6 @@ export const FormInputField = ({
     required={required}
     sx={sx}
     onChange={onChange}
-    render={(field) => <Input {...field} type={type} readOnly={readOnly} required={false}/>}
+    render={(field) => <Input {...field} type={type} readOnly={readOnly} required={false} />}
   />
 )

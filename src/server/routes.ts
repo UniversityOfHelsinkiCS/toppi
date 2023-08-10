@@ -1,20 +1,20 @@
-import express, { Router } from "express";
+import express, { Router } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
-import contractsRouter from "./controllers/contracts";
-import loginRouter from "./controllers/login";
-import testRouter from "./controllers/test";
-import { inProduction, inStaging } from "../config";
-import { initSentry, sentryErrorHandler, sentryRequestHandler } from "./middleware/sentry";
-import { shibbolethHeaders } from "./middleware/shibbolethHeaders";
-import { getCurrentUser } from "./middleware/authentication";
-import { errorHandler } from "./middleware/error";
-import organisationsRouter from "./controllers/organisations";
-import handlerAddressRouter from "./controllers/handlerAddresses";
+import contractsRouter from './controllers/contracts'
+import loginRouter from './controllers/login'
+import testRouter from './controllers/test'
+import { inProduction, inStaging } from '../config'
+import { initSentry, sentryErrorHandler, sentryRequestHandler } from './middleware/sentry'
+import { shibbolethHeaders } from './middleware/shibbolethHeaders'
+import { getCurrentUser } from './middleware/authentication'
+import { errorHandler } from './middleware/error'
+import organisationsRouter from './controllers/organisations'
+import handlerAddressRouter from './controllers/handlerAddresses'
 
 /**
- * apiRouter handles the business side of requests. 
- * The requests it receives may or may not be authenticated, 
+ * apiRouter handles the business side of requests.
+ * The requests it receives may or may not be authenticated,
  * so the controllers/subsequent middleware must check for user themselves.
  */
 const apiRouter = Router()
@@ -40,7 +40,7 @@ mainRouter.use(sentryRequestHandler)
 mainRouter.use(cors())
 mainRouter.use(express.json())
 mainRouter.use(express.urlencoded({ extended: true }))
-mainRouter.use(morgan("short"))
+mainRouter.use(morgan('short'))
 
 mainRouter.use('/private/api', shibbolethHeaders, getCurrentUser, apiRouter)
 mainRouter.use('/api', apiRouter)

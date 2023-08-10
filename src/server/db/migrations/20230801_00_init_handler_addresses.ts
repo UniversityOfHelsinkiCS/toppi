@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import { Migration } from '../connection'
 
 export const up: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.createTable("handler_addresses", {
+  await queryInterface.createTable('handler_addresses', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -19,8 +19,8 @@ export const up: Migration = async ({ context: queryInterface }) => {
       type: DataTypes.STRING,
       allowNull: true,
       references: {
-        model: "users",
-        key: "id"
+        model: 'users',
+        key: 'id',
       },
     },
     created_at: {
@@ -35,5 +35,5 @@ export const up: Migration = async ({ context: queryInterface }) => {
 }
 
 export const down: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.dropTable("handler_addresses")
+  await queryInterface.dropTable('handler_addresses')
 }

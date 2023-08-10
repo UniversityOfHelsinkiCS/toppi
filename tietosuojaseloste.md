@@ -1,6 +1,7 @@
 # Topin rekisteri- ja tietosuojaseloste
 
 ## Rekisterin nimi
+
 Toppi: työkalu tuntiopettajien työajan ja palkan laskemiseen.
 
 Tallennamme ja käsittelemme Helsingin yliopiston henkilökunnan henkilötietoja EU:n tietosuojaasetuksen mukaisesti.
@@ -26,13 +27,13 @@ Asiakasrekisteriin tallennettuja henkilötietoja käytetään käyttäjien työs
 
 Henkilötiedot:
 
-* Etu- ja sukunimi
-* Sähköpostiosoite
-* Syntymäaika
+- Etu- ja sukunimi
+- Sähköpostiosoite
+- Syntymäaika
 
 Muu tietosisältö:
 
-* Käyttäjän syöttämä vapaamuotoinen sisältö koskien työsopimuspyynnön kohteena olevaa kurssia.
+- Käyttäjän syöttämä vapaamuotoinen sisältö koskien työsopimuspyynnön kohteena olevaa kurssia.
 
 ## Säännönmukaiset tietolähteet
 
@@ -42,7 +43,7 @@ Rekisterinpitäjä tallentaa asiakasrekisteriin ne tiedot, jotka asiakas luovutt
 
 Käyttäjän etu- ja sukunimi sekä sähköpostiosoite tallennetaan rekisteriin käyttäjän kirjautuessa Toppiin ja hyväksyessään näiden tietojen luovutuksen.
 
-Käyttäjän syöttämää sisältö, eli työsopimuspyyntö, tallennetaan rekisteriin käyttäjän lähettäessä sen. 
+Käyttäjän syöttämää sisältö, eli työsopimuspyyntö, tallennetaan rekisteriin käyttäjän lähettäessä sen.
 Työsopimuspyyntöön sisältyy käyttäjän etu- ja sukunimi, sähköpostiosoite sekä syntymäaika. Lisäksi siihen sisältyy pyyntöä koskevan kurssin tietoja, jotka käyttäjä itse syöttää.
 
 Henkilötiedot on suojattu asiattomalta pääsyltä ja käsittelemiseltä. Tiedot säilytetään Suomessa. Henkilötietojen käsittelyssä on huomioitu EU:n tietosuoja-asetuksen vaatimukset. Tietosisällöstä tallennetaan varmuuskopioita. Rekisterinpitäjä tallentaa ehyttä ja luotettavaa tietoa, esimerkiksi varmuuskopioiden kautta varmennettuna.
@@ -53,10 +54,10 @@ Henkilötietoja ei siirretä EU:n tai ETA alueen ulkopuolelle.
 
 ## Rekisterin suojauksen periaatteet
 
-Sovelluksen yhteydessä olevaa rekisteriä ylläpidetään teknisenä tallenteena salatun tietoliikenneyhteyden kautta salasanoin ja palomuurein suojattuina. 
-Järjestelmään tallennettuihin tietoihin pääsevät ja niitä ovat oikeutettuja käyttämään vain nimetyt Toppia työssään käyttävät ja järjestelmän ylläpidosta vastaavat yliopiston henkilökuntaan kuuluvat henkilöt. 
+Sovelluksen yhteydessä olevaa rekisteriä ylläpidetään teknisenä tallenteena salatun tietoliikenneyhteyden kautta salasanoin ja palomuurein suojattuina.
+Järjestelmään tallennettuihin tietoihin pääsevät ja niitä ovat oikeutettuja käyttämään vain nimetyt Toppia työssään käyttävät ja järjestelmän ylläpidosta vastaavat yliopiston henkilökuntaan kuuluvat henkilöt.
 
-Rekisteriin sisältyvät henkilötiedot säilytetään luottamuksellisina. Rekisterin käyttö on ohjeistettu ja henkilörekisteriin pääsy on rajattu siten, että järjestelmään tallennettuihin rekisterin sisältämiin tietoihin pääsevät käsiksi ja niitä ovat oikeutettuja käyttämään vain ne henkilöt, joilla on tehtäviensä puolesta siihen oikeus ja jotka tarvitsevat tietoja tehtävässään. Henkilötietoja käsittelevällä henkilöstöllä on vaitiolovelvollisuus. 
+Rekisteriin sisältyvät henkilötiedot säilytetään luottamuksellisina. Rekisterin käyttö on ohjeistettu ja henkilörekisteriin pääsy on rajattu siten, että järjestelmään tallennettuihin rekisterin sisältämiin tietoihin pääsevät käsiksi ja niitä ovat oikeutettuja käyttämään vain ne henkilöt, joilla on tehtäviensä puolesta siihen oikeus ja jotka tarvitsevat tietoja tehtävässään. Henkilötietoja käsittelevällä henkilöstöllä on vaitiolovelvollisuus.
 
 Järjestelmään sisäänpääsy edellyttää rekisterin käyttäjältä käyttäjätunnuksen ja salasanan syöttämistä. Palvelinympäristö on suojattu salasanoilla ja asianmukaisella palomuurilla. Palvelimen ja käyttäjän koneen välinen tietoliikenne kulkee salattuna. Lisäksi rekisterinpitäjän tietoverkko ja laitteisto, jolla rekisteri sijaitsee, on suojattu palomuurilla ja muiden teknisten toimenpiteiden avulla. Henkilötietoja sisältävien aineistojen hävitys tehdään tietoturvallisesti.
 

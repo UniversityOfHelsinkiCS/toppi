@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { requireAuthenticated } from "../middleware/authentication";
-import { RequestWithUser } from "../types";
-import { User } from "../db/models";
-import { ApplicationError } from "../errors";
+import { Router } from 'express'
+import { requireAuthenticated } from '../middleware/authentication'
+import { RequestWithUser } from '../types'
+import { User } from '../db/models'
+import { ApplicationError } from '../errors'
 
 const loginRouter = Router()
 
@@ -17,7 +17,7 @@ loginRouter.get('/login', requireAuthenticated(), async (req: RequestWithUser, r
 
   return res.send({
     ...user,
-    newUser
+    newUser,
   })
 })
 
@@ -25,7 +25,7 @@ loginRouter.get('/logout', requireAuthenticated(), async (req: RequestWithUser, 
   const { shib_logout_url: shibLogoutUrl } = req.headers
 
   if (!shibLogoutUrl) {
-    return ApplicationError.BadRequest("Shibboleth logout url missing")
+    return ApplicationError.BadRequest('Shibboleth logout url missing')
   }
 
   return res.send({

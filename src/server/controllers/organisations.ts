@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { getOrganisations } from "../services/organisations";
+import { Router } from 'express'
+import { getOrganisations } from '../services/organisations'
 
 const organisationsRouter = Router()
 

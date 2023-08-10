@@ -1,21 +1,18 @@
-import { Box, Sheet, Tooltip, Typography, useTheme } from "@mui/joy";
-import { Outlet, useLoaderData, useMatch, useNavigate } from "react-router-dom";
-import { ContractRequest } from "../types";
-import { StatusChip } from "../components/common";
-import { useFaculties } from "../hooks/useFaculties";
-import { currentLng } from "../util/i18n";
-import { DataTable } from "../components/CustomTable";
+import { Box, Sheet, Tooltip, Typography, useTheme } from '@mui/joy'
+import { Outlet, useLoaderData, useMatch, useNavigate } from 'react-router-dom'
+import { ContractRequest } from '../types'
+import { StatusChip } from '../components/common'
+import { useFaculties } from '../hooks/useFaculties'
+import { currentLng } from '../util/i18n'
+import { DataTable } from '../components/CustomTable'
 
-const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest: ContractRequest, facultyName: string }) => {
+const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest: ContractRequest; facultyName: string }) => {
   const open = useMatch(`private/contract-requests/${contractRequest.id}`)
   const navigate = useNavigate()
   const theme = useTheme()
 
   return (
-    <tr 
-      onClick={() => navigate(`/private/contract-requests/${contractRequest.id}`)} 
-      style={{ cursor: 'pointer', ...(open ? { background: theme.vars.palette.background.level3, } : {}) }}
-    >
+    <tr onClick={() => navigate(`/private/contract-requests/${contractRequest.id}`)} style={{ cursor: 'pointer', ...(open ? { background: theme.vars.palette.background.level3 } : {}) }}>
       <td>{contractRequest.data.formData.email}</td>
       <td>{new Date(contractRequest.createdAt).toLocaleDateString()}</td>
       <td>
@@ -25,7 +22,9 @@ const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest
           </Tooltip>
         </div>
       </td>
-      <td><StatusChip status={contractRequest.status} /></td>
+      <td>
+        <StatusChip status={contractRequest.status} />
+      </td>
     </tr>
   )
 }
@@ -36,8 +35,10 @@ const ContractRequestList = () => {
 
   return (
     <Box flex={0.4}>
-      <Typography level="h4" sx={{ mb: "1rem" }}>Työsopimuspyynnöt</Typography>
-      <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
+      <Typography level="h4" sx={{ mb: '1rem' }}>
+        Työsopimuspyynnöt
+      </Typography>
+      <Sheet variant="outlined" sx={{ borderRadius: 'sm' }}>
         <DataTable hover>
           <thead style={{ height: '3rem' }}>
             <tr>
@@ -48,12 +49,8 @@ const ContractRequestList = () => {
             </tr>
           </thead>
           <tbody>
-            {contracts.map(c => (
-              <ContractRequestItem 
-                contractRequest={c} 
-                key={c.id} 
-                facultyName={faculties?.find(f => f.code === c.data.formData.faculty)?.name?.[currentLng()] ?? ''}
-              />
+            {contracts.map((c) => (
+              <ContractRequestItem contractRequest={c} key={c.id} facultyName={faculties?.find((f) => f.code === c.data.formData.faculty)?.name?.[currentLng()] ?? ''} />
             ))}
           </tbody>
         </DataTable>
@@ -63,7 +60,6 @@ const ContractRequestList = () => {
 }
 
 const ContractRequests = () => {
-
   return (
     <Box p="2rem">
       <Box display="flex">

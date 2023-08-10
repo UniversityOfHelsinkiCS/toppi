@@ -6,14 +6,11 @@ import { inStaging } from './src/config'
 const base = inStaging ? '/toppi' : '/'
 
 export default defineConfig(() => {
-
   return {
     build: {
       sourcemap: true, // Source map generation must be turned on
     },
-    plugins: [
-      react(),
-    ],
+    plugins: [react()],
     base,
     server: {
       proxy: {

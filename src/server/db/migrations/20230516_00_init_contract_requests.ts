@@ -4,7 +4,7 @@ import { Migration } from '../connection'
 import { contractRequestStatuses } from '../../../shared/types'
 
 export const up: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.createTable("contract_requests", {
+  await queryInterface.createTable('contract_requests', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -17,7 +17,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
     status: {
       type: DataTypes.ENUM,
       allowNull: false,
-      defaultValue: "waiting",
+      defaultValue: 'waiting',
       values: contractRequestStatuses,
     },
     created_at: {
@@ -32,5 +32,5 @@ export const up: Migration = async ({ context: queryInterface }) => {
 }
 
 export const down: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.dropTable("contract_requests")
+  await queryInterface.dropTable('contract_requests')
 }

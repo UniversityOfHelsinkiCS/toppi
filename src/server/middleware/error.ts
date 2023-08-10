@@ -1,8 +1,8 @@
-import { ErrorRequestHandler, Response } from "express"
-import { ZodError } from "zod"
-import * as Sentry from "@sentry/node";
-import { ApplicationError } from "../errors"
-import { inProduction } from "../../config"
+import { ErrorRequestHandler, Response } from 'express'
+import { ZodError } from 'zod'
+import * as Sentry from '@sentry/node'
+import { ApplicationError } from '../errors'
+import { inProduction } from '../../config'
 
 const handle = (res: Response, error: ApplicationError) => {
   if (inProduction) Sentry.captureException(error)
@@ -10,7 +10,6 @@ const handle = (res: Response, error: ApplicationError) => {
 }
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-
   if (err instanceof ZodError) {
     return handle(res, ApplicationError.FromZod(err))
   }

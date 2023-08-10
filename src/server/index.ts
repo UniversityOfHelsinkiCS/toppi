@@ -2,9 +2,9 @@ import path from 'path'
 
 import express from 'express'
 import 'express-async-errors'
-import { connectToDatabase } from './db/connection';
-import { router } from './routes';
-import { PORT, inProduction, inTesting } from '../config';
+import { connectToDatabase } from './db/connection'
+import { router } from './routes'
+import { PORT, inProduction, inTesting } from '../config'
 
 const app = express()
 
@@ -19,8 +19,7 @@ if (inProduction || inTesting) {
 }
 
 app.listen(PORT, async () => {
-  
-  console.log("Server running on port " + PORT)
+  console.log('Server running on port ' + PORT)
   // logger.info(`Server running on port ${PORT}`)
 })
 

@@ -1,20 +1,22 @@
-import { Form, useLoaderData } from "react-router-dom"
-import { Alert, Box, Button, FormControl, FormLabel, Sheet, Textarea, Typography } from "@mui/joy"
-import React from "react"
-import { HandlerAddressChip, SectionDivider, StatusChip } from "../components/common"
-import { useFaculties, useProgrammes } from "../hooks/useFaculties"
-import { ContractRequest, HandlerAddress } from "../types"
-import { ContractDurationOption, ContractRequestFormParams, contractRequestStatuses } from "../../shared/types"
-import { useTranslation } from "react-i18next"
-import { TableItem, DataTable } from "../components/CustomTable"
-import CalculatorPreview from "../components/CalculatorPreview"
-import { useHandlerAddresses } from "../hooks/useHandlerAddresses"
-import { Warning } from "@mui/icons-material"
+import { Form, useLoaderData } from 'react-router-dom'
+import { Alert, Box, Button, FormControl, FormLabel, Sheet, Textarea, Typography } from '@mui/joy'
+import React from 'react'
+import { HandlerAddressChip, SectionDivider, StatusChip } from '../components/common'
+import { useFaculties, useProgrammes } from '../hooks/useFaculties'
+import { ContractRequest, HandlerAddress } from '../types'
+import { ContractDurationOption, ContractRequestFormParams, contractRequestStatuses } from '../../shared/types'
+import { useTranslation } from 'react-i18next'
+import { TableItem, DataTable } from '../components/CustomTable'
+import CalculatorPreview from '../components/CalculatorPreview'
+import { useHandlerAddresses } from '../hooks/useHandlerAddresses'
+import { Warning } from '@mui/icons-material'
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
     <Box>
-      <Typography whiteSpace="pre-wrap" fontFamily="monospace">{JSON.stringify(data, null, 2)}</Typography>
+      <Typography whiteSpace="pre-wrap" fontFamily="monospace">
+        {JSON.stringify(data, null, 2)}
+      </Typography>
     </Box>
   )
 }
@@ -23,16 +25,15 @@ const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }
   const faculties = useFaculties()
   const programmes = useProgrammes(formData.faculty)
 
-  const facultyDisplay = (code: string|undefined) => {
-    const faculty = faculties?.find(f => f.code === code)
+  const facultyDisplay = (code: string | undefined) => {
+    const faculty = faculties?.find((f) => f.code === code)
     return faculty ? faculty.name.fi : undefined
   }
-  const programmeDisplay = (code: string|undefined) => {
-    const programme = programmes?.find(p => p.key === code)
+  const programmeDisplay = (code: string | undefined) => {
+    const programme = programmes?.find((p) => p.key === code)
     return programme ? programme.name.fi : undefined
   }
-  const contractDisplay = (duration: ContractDurationOption) => 
-    duration === "custom" ? "Itse merkattu" : "Suositeltu"
+  const contractDisplay = (duration: ContractDurationOption) => (duration === 'custom' ? 'Itse merkattu' : 'Suositeltu')
 
   return (
     <DataTable copy>
@@ -65,7 +66,9 @@ const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) =>
     <Box>
       <Typography level="body3">Klikkaa riviä kopioidaksesi kentän arvo</Typography>
       <FormattedFormData formData={contractRequest.data.formData} />
-      <Typography level="h6" mt="2rem" mb="0.5rem">Laskuriin merkatut tiedot</Typography>
+      <Typography level="h6" mt="2rem" mb="0.5rem">
+        Laskuriin merkatut tiedot
+      </Typography>
       <CalculatorPreview {...contractRequest.data.calculatorData} copy />
     </Box>
   )
@@ -76,10 +79,12 @@ const HandlerAddresses = ({ handlerAddresses }: { handlerAddresses: HandlerAddre
     <Box>
       <Typography level="h4">Pyynnön käsittelyosoitteet</Typography>
       <Box display="flex" pt="0.5rem" flexWrap="wrap" gap="0.5rem">
-        {handlerAddresses.length === 0 && 
-          <Alert color="warning" startDecorator={<Warning />}>Pyynnöllä ei käsittelijöitä. Joko pyynnön tiedekunta-kenttä puuttuu, tai tiedekunnalle ei ole vielä merkattu käsittelijöitä.</Alert>
-        }
-        {handlerAddresses.map(address => (
+        {handlerAddresses.length === 0 && (
+          <Alert color="warning" startDecorator={<Warning />}>
+            Pyynnöllä ei käsittelijöitä. Joko pyynnön tiedekunta-kenttä puuttuu, tai tiedekunnalle ei ole vielä merkattu käsittelijöitä.
+          </Alert>
+        )}
+        {handlerAddresses.map((address) => (
           <Box key={address.id}>
             <HandlerAddressChip address={address} />
           </Box>
@@ -92,16 +97,16 @@ const HandlerAddresses = ({ handlerAddresses }: { handlerAddresses: HandlerAddre
 const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   const { t } = useTranslation()
 
-  const actions = contractRequestStatuses.map(status => ({
+  const actions = contractRequestStatuses.map((status) => ({
     status: status,
     buttonProps: {
       key: status,
-      name: "status",
+      name: 'status',
       value: status,
-      type: "submit",
+      type: 'submit',
       disabled: status === contractRequest.status,
-      color: status === "rejected" ? "danger" : "primary" as "danger"|"primary",
-      variant: status === "handled" ? "solid" : "plain" as "solid"|"plain",
+      color: status === 'rejected' ? 'danger' : ('primary' as 'danger' | 'primary'),
+      variant: status === 'handled' ? 'solid' : ('plain' as 'solid' | 'plain'),
     },
   }))
 
@@ -112,16 +117,15 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
           Päivitä pyynnön tila: <StatusChip status={contractRequest.status} />
         </Typography>
         <Typography>
-          Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi.
-          Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
+          Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi. Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
         </Typography>
         <Box py="1rem" display="flex" flexDirection="column" gap="1rem">
           <FormControl>
             <FormLabel>Viesti</FormLabel>
-            <Textarea placeholder="Vapaamuotoinen lisätieto tilan päivitykselle"/>
+            <Textarea placeholder="Vapaamuotoinen lisätieto tilan päivitykselle" />
           </FormControl>
           <Box display="flex" gap="1rem">
-            {actions.map(action => (
+            {actions.map((action) => (
               <Button {...action.buttonProps}>{t(`setStatusAction.${action.status}`)}</Button>
             ))}
           </Box>
@@ -137,24 +141,18 @@ const ContractRequestView = () => {
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
-    <Sheet sx={{ px: "3rem", flex: 0.5 }}>
-      <Typography level="h4">
-        Pyynnön #{contractRequest.id} tiedot
-      </Typography>
+    <Sheet sx={{ px: '3rem', flex: 0.5 }}>
+      <Typography level="h4">Pyynnön #{contractRequest.id} tiedot</Typography>
       <Box display="flex">
-        <Button sx={{ ml: "auto" }} onClick={() => setViewRaw(!viewRaw)} variant="plain" size="sm">
-          {viewRaw ? "Katso muotoiltuna" : "Katso raakadata"}
+        <Button sx={{ ml: 'auto' }} onClick={() => setViewRaw(!viewRaw)} variant="plain" size="sm">
+          {viewRaw ? 'Katso muotoiltuna' : 'Katso raakadata'}
         </Button>
       </Box>
-      {viewRaw ? (
-        <Raw data={contractRequest} />
-      ) : (
-        <Formatted contractRequest={contractRequest} />
-      )}
+      {viewRaw ? <Raw data={contractRequest} /> : <Formatted contractRequest={contractRequest} />}
       <SectionDivider />
       <UpdateStatus contractRequest={contractRequest} />
       <SectionDivider />
-      {handlerAddresses && <HandlerAddresses handlerAddresses={handlerAddresses}/>}
+      {handlerAddresses && <HandlerAddresses handlerAddresses={handlerAddresses} />}
     </Sheet>
   )
 }

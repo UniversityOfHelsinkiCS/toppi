@@ -1,5 +1,5 @@
-import translationEn from "./en/translation.ts"
-import translationFi from "./fi/translation.ts"
+import translationEn from './en/translation.ts'
+import translationFi from './fi/translation.ts'
 
 const i18nResources = {
   en: {
@@ -8,6 +8,6 @@ const i18nResources = {
   fi: {
     translation: translationFi,
   },
-} as const;
+} as const
 
 export default i18nResources

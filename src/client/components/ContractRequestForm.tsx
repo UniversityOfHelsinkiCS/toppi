@@ -1,28 +1,46 @@
-import { Alert, Box, Button, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from "@mui/joy";
-import CalculatorPreview from "./CalculatorPreview";
-import { toast } from "sonner";
-import React from "react";
-import dayjs from "dayjs"
-import { Controller, useForm } from "react-hook-form";
-import type { SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { ContractRequestFormParams, ContractRequestFormParamsValidator } from "../../shared/types";
-import { useCurrentUser } from "../hooks/useCurrentUser";
-import { useSendContract } from "../hooks/useSendContract";
-import { useFaculties, useProgrammes } from "../hooks/useFaculties";
-import { useCalculatorParams } from "../store/calculatorStore";
-import { useTranslation } from "react-i18next";
-import { FormField, FormInputField } from "./formComponents";
-import { TFunction } from "i18next";
+import { Alert, Box, Button, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from '@mui/joy'
+import CalculatorPreview from './CalculatorPreview'
+import { toast } from 'sonner'
+import React from 'react'
+import dayjs from 'dayjs'
+import { Controller, useForm } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ContractRequestFormParams, ContractRequestFormParamsValidator } from '../../shared/types'
+import { useCurrentUser } from '../hooks/useCurrentUser'
+import { useSendContract } from '../hooks/useSendContract'
+import { useFaculties, useProgrammes } from '../hooks/useFaculties'
+import { useCalculatorParams } from '../store/calculatorStore'
+import { useTranslation } from 'react-i18next'
+import { FormField, FormInputField } from './formComponents'
+import { TFunction } from 'i18next'
 
-const InputSection = ({ label, endAdornment, children, orientation = "horizontal" }: { label?: string, endAdornment?: React.ReactNode, children: React.ReactNode, orientation?: "vertical"|"horizontal" }) => {
+const InputSection = ({
+  label,
+  endAdornment,
+  children,
+  orientation = 'horizontal',
+}: {
+  label?: string
+  endAdornment?: React.ReactNode
+  children: React.ReactNode
+  orientation?: 'vertical' | 'horizontal'
+}) => {
   return (
     <Box py="0.5rem">
-      {label && <Typography level="body2" sx={{ mb: "1rem" }} endDecorator={endAdornment}>{label}</Typography>}
-      <Box display="flex" gap="1rem" sx={theme => ({ 
-        flexDirection: orientation === "horizontal" ? "row" : "column", 
-        [theme.breakpoints.down("md")]: { flexDirection: "column" }
-      })}>
+      {label && (
+        <Typography level="body2" sx={{ mb: '1rem' }} endDecorator={endAdornment}>
+          {label}
+        </Typography>
+      )}
+      <Box
+        display="flex"
+        gap="1rem"
+        sx={(theme) => ({
+          flexDirection: orientation === 'horizontal' ? 'row' : 'column',
+          [theme.breakpoints.down('md')]: { flexDirection: 'column' },
+        })}
+      >
         {children}
       </Box>
     </Box>
@@ -30,16 +48,16 @@ const InputSection = ({ label, endAdornment, children, orientation = "horizontal
 }
 
 const getRecommendedStartDate = (courseStartDate?: string) => {
-  return courseStartDate ? dayjs(courseStartDate).subtract(7, "days").format("YYYY-MM-DD") : ""
+  return courseStartDate ? dayjs(courseStartDate).subtract(7, 'days').format('YYYY-MM-DD') : ''
 }
 
 const getRecommendedEndDate = (courseEndDate?: string) => {
-  return courseEndDate ? dayjs(courseEndDate).add(14, "days").format("YYYY-MM-DD") : ""
+  return courseEndDate ? dayjs(courseEndDate).add(14, 'days').format('YYYY-MM-DD') : ''
 }
 
 const getDateError = (t: TFunction, errorMessage?: string) => {
-  if (errorMessage === "mustBeAfter") return t('errors.mustBeAfter')
-  if (errorMessage === "mustBeBefore") return t('errors.mustBeBefore')
+  if (errorMessage === 'mustBeAfter') return t('errors.mustBeAfter')
+  if (errorMessage === 'mustBeBefore') return t('errors.mustBeBefore')
   else if (errorMessage) return t('errors.required')
   else return undefined
 }
@@ -47,20 +65,23 @@ const getDateError = (t: TFunction, errorMessage?: string) => {
 const useDefaultValues = () => {
   const user = useCurrentUser()
 
-  const defaultValues: ContractRequestFormParams = React.useMemo(() => ({
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    email: user?.email || "",
-    birthDate: user?.birthDate || "",
-    faculty: "",
-    courseName: "",
-    courseStartDate: "",
-    courseEndDate: "",
-    contractDuration: "recommended",
-    contractStartDate: "",
-    contractEndDate: "",
-    additionalInfo: "",
-  }), [user])
+  const defaultValues: ContractRequestFormParams = React.useMemo(
+    () => ({
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      email: user?.email || '',
+      birthDate: user?.birthDate || '',
+      faculty: '',
+      courseName: '',
+      courseStartDate: '',
+      courseEndDate: '',
+      contractDuration: 'recommended',
+      contractStartDate: '',
+      contractEndDate: '',
+      additionalInfo: '',
+    }),
+    [user]
+  )
 
   return defaultValues
 }
@@ -71,119 +92,129 @@ const ContractForm = () => {
   const { control, handleSubmit, setValue, clearErrors, getValues, watch, formState } = useForm({
     resolver: zodResolver(ContractRequestFormParamsValidator),
     defaultValues: useDefaultValues(),
-    mode: "onChange",
+    mode: 'onChange',
   })
 
   const sendContract = useSendContract()
 
-  const faculty = watch("faculty")
+  const faculty = watch('faculty')
   const faculties = useFaculties()
   const programmes = useProgrammes(faculty)
 
   const onSubmit: SubmitHandler<typeof ContractRequestFormParamsValidator._type> = (formData) => {
     const req = sendContract(formData)
-  
+
     toast.promise(req, {
-      loading: "Lähetetään työsopimuspyyntöä",
-      success: "Työsopimuspyyntö lähetetty",
-      error: "Työsopimuspyynnön lähettäminen epäonnistui"
+      loading: 'Lähetetään työsopimuspyyntöä',
+      success: 'Työsopimuspyyntö lähetetty',
+      error: 'Työsopimuspyynnön lähettäminen epäonnistui',
     })
   }
 
-  const isRecommendedContractDates = watch("contractDuration") === "recommended"
+  const isRecommendedContractDates = watch('contractDuration') === 'recommended'
 
   console.log(faculty, formState.errors)
 
   return (
-    <Sheet sx={{
-      borderRadius: "1rem",
-    }}>
+    <Sheet
+      sx={{
+        borderRadius: '1rem',
+      }}
+    >
       <Box>
         <Typography level="h5">Työsopimusta varten tarvittavat muut tiedot</Typography>
         <Box mt="2rem">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputSection>
-                <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label="Etunimi" name="firstName" control={control} sx={{ flex: 1 }}/>
-                <FormInputField required error={formState.errors.lastName ? t('errors.required') : undefined} label="Sukunimi" name="lastName" control={control} sx={{ flex: 1 }}/>
+                <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label="Etunimi" name="firstName" control={control} sx={{ flex: 1 }} />
+                <FormInputField required error={formState.errors.lastName ? t('errors.required') : undefined} label="Sukunimi" name="lastName" control={control} sx={{ flex: 1 }} />
               </InputSection>
               <FormInputField required error={formState.errors.birthDate ? t('errors.required') : undefined} label="Syntymäaika" name="birthDate" control={control} />
               <FormInputField required error={formState.errors.email ? t('errors.required') : undefined} label="Sähköposti" name="email" type="email" control={control} />
               <InputSection label="Kurssin järjestäjä">
-                <FormField 
+                <FormField
                   required
                   error={formState.errors.faculty ? t('errors.required') : ''}
-                  sx={{ flex: 1}}
+                  sx={{ flex: 1 }}
                   name="faculty"
                   label="Tiedekunta"
                   control={control}
                   render={(field) => (
-                    <Select 
+                    <Select
                       {...field}
                       placeholder="Valitse tiedekunta"
                       onChange={(_, val) => {
                         if (!val) return
-                        setValue("faculty", val)
-                        clearErrors("faculty")
+                        setValue('faculty', val)
+                        clearErrors('faculty')
                       }}
                     >
                       {faculties ? (
-                        faculties.map(f => (
-                          <Option key={f.code} value={f.code}>{f.name.fi}</Option>
+                        faculties.map((f) => (
+                          <Option key={f.code} value={f.code}>
+                            {f.name.fi}
+                          </Option>
                         ))
                       ) : (
-                        <Option value="">
-                          Ladataan...
-                        </Option>
+                        <Option value="">Ladataan...</Option>
                       )}
                     </Select>
                   )}
                 />
-                <FormField 
-                  sx={{ flex: 1}}
+                <FormField
+                  sx={{ flex: 1 }}
                   name="programme"
                   label="Koulutusohjelma"
                   disabled={!faculty}
                   control={control}
                   render={(field) => (
-                    <Select 
-                      {...field}
-                      placeholder="Valitse koulutusohjelma"
-                      onChange={(e, val) => val && setValue("programme", val)}
-                    >
+                    <Select {...field} placeholder="Valitse koulutusohjelma" onChange={(e, val) => val && setValue('programme', val)}>
                       {programmes ? (
-                        programmes.map(f => (
-                          <Option key={f.key} value={f.key}>{f.name.fi}</Option>
+                        programmes.map((f) => (
+                          <Option key={f.key} value={f.key}>
+                            {f.name.fi}
+                          </Option>
                         ))
                       ) : (
-                        <Option value="">
-                          Ladataan...
-                        </Option>
+                        <Option value="">Ladataan...</Option>
                       )}
                       <Option value="">En tiedä</Option>
                     </Select>
                   )}
                 />
               </InputSection>
-              <FormInputField required error={formState.errors.courseName ? t('errors.required') : undefined} label="Kurssin nimi" name="courseName" control={control} sx={{ flex: 1 }}/>
+              <FormInputField required error={formState.errors.courseName ? t('errors.required') : undefined} label="Kurssin nimi" name="courseName" control={control} sx={{ flex: 1 }} />
               <InputSection label="Kurssin aikataulu">
-                <FormInputField required error={getDateError(t, formState.errors.courseStartDate?.message)} label="Ensimmäinen luento" name="courseStartDate" control={control} sx={{ flex: 1 }}
+                <FormInputField
+                  required
+                  error={getDateError(t, formState.errors.courseStartDate?.message)}
+                  label="Ensimmäinen luento"
+                  name="courseStartDate"
+                  control={control}
+                  sx={{ flex: 1 }}
                   type="date"
                   onChange={(ev) => {
-                    clearErrors("courseEndDate")
+                    clearErrors('courseEndDate')
                     if (isRecommendedContractDates) {
                       const v = ev.target.value
-                      setValue("contractStartDate", getRecommendedStartDate(v))
+                      setValue('contractStartDate', getRecommendedStartDate(v))
                     }
                   }}
                 />
-                <FormInputField required error={getDateError(t, formState.errors.courseEndDate?.message)} label="Viimeinen luento/tentti" name="courseEndDate" control={control} sx={{ flex: 1 }}
+                <FormInputField
+                  required
+                  error={getDateError(t, formState.errors.courseEndDate?.message)}
+                  label="Viimeinen luento/tentti"
+                  name="courseEndDate"
+                  control={control}
+                  sx={{ flex: 1 }}
                   type="date"
                   onChange={(ev) => {
-                    clearErrors("courseStartDate")
+                    clearErrors('courseStartDate')
                     if (isRecommendedContractDates) {
                       const v = ev.target.value
-                      setValue("contractEndDate", getRecommendedEndDate(v))
+                      setValue('contractEndDate', getRecommendedEndDate(v))
                     }
                   }}
                 />
@@ -194,12 +225,12 @@ const ContractForm = () => {
                   control={control}
                   rules={{
                     onChange: (ev) => {
-                      if (ev.target.value === "recommended") {
+                      if (ev.target.value === 'recommended') {
                         const { courseStartDate, courseEndDate } = getValues()
-                        setValue("contractStartDate", getRecommendedStartDate(courseStartDate))
-                        setValue("contractEndDate", getRecommendedEndDate(courseEndDate))
-                      } 
-                    }
+                        setValue('contractStartDate', getRecommendedStartDate(courseStartDate))
+                        setValue('contractEndDate', getRecommendedEndDate(courseEndDate))
+                      }
+                    },
                   }}
                   render={({ field }) => (
                     <RadioGroup {...field}>
@@ -209,31 +240,29 @@ const ContractForm = () => {
                   )}
                 />
                 <InputSection>
-                  <FormInputField 
-                    sx={{ flex: 1 }} required={!isRecommendedContractDates}
-                    name="contractStartDate" control={control}
+                  <FormInputField
+                    sx={{ flex: 1 }}
+                    required={!isRecommendedContractDates}
+                    name="contractStartDate"
+                    control={control}
                     error={getDateError(t, formState.errors.contractStartDate?.message)}
                     type="date"
-                    label={`${!isRecommendedContractDates ? "Valitse" : "Suositeltu"} alkupäivä`}
+                    label={`${!isRecommendedContractDates ? 'Valitse' : 'Suositeltu'} alkupäivä`}
                     readOnly={isRecommendedContractDates}
                   />
-                  <FormInputField 
-                    sx={{ flex: 1 }} required={!isRecommendedContractDates}
-                    name="contractEndDate" control={control}
+                  <FormInputField
+                    sx={{ flex: 1 }}
+                    required={!isRecommendedContractDates}
+                    name="contractEndDate"
+                    control={control}
                     error={getDateError(t, formState.errors.contractEndDate?.message)}
                     type="date"
-                    label={`${!isRecommendedContractDates ? "Valitse" : "Suositeltu"} loppupäivä`}
+                    label={`${!isRecommendedContractDates ? 'Valitse' : 'Suositeltu'} loppupäivä`}
                     readOnly={isRecommendedContractDates}
                   />
                 </InputSection>
               </InputSection>
-              <FormField 
-                label="Lisätietoja"
-                name="additionalInfo"
-                render={( field ) => <Textarea {...field} />}
-                control={control}
-                pretext="Kerro tässä esimerkiksi sovituista poikkeuksista"
-              />
+              <FormField label="Lisätietoja" name="additionalInfo" render={(field) => <Textarea {...field} />} control={control} pretext="Kerro tässä esimerkiksi sovituista poikkeuksista" />
               <Button type="submit">Lähetä käsiteltäväksi</Button>
             </Box>
           </form>
@@ -244,16 +273,15 @@ const ContractForm = () => {
 }
 
 const CalculatorPreviewContainer = () => {
-
   const previewData = useCalculatorParams()
 
-  return <CalculatorPreview {...previewData} copy={false}/>
+  return <CalculatorPreview {...previewData} copy={false} />
 }
 
 const ContractRequestForm = () => (
   <Box p="2rem">
     <Typography level="h4">Työsopimuspyyntö</Typography>
-    <Box sx={theme => ({ display: "flex", gap: "4rem", py: "4rem", [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse', } })}>
+    <Box sx={(theme) => ({ display: 'flex', gap: '4rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
       <Box flex={1}>
         <ContractForm />
       </Box>

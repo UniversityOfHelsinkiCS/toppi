@@ -9,10 +9,10 @@ export type JamiUserOrganisationAccess = {
   }
 } & {
   [code: string]: {
-    read: boolean,
-    write: boolean,
-    admin: boolean,
-  },
+    read: boolean
+    write: boolean
+    admin: boolean
+  }
 }
 
 export const jamiClient = axios.create({
@@ -23,13 +23,16 @@ export const jamiClient = axios.create({
 })
 
 let jamiAvailable = false
-jamiClient.get('/ping').then(() => {
-  jamiAvailable = true
-  console.log('JAMI connected :)')
-}).catch(() => {
-  jamiAvailable = false
-  console.error('JAMI not available :( Check your JAMI_URL and API_TOKEN')
-})
+jamiClient
+  .get('/ping')
+  .then(() => {
+    jamiAvailable = true
+    console.log('JAMI connected :)')
+  })
+  .catch(() => {
+    jamiAvailable = false
+    console.error('JAMI not available :( Check your JAMI_URL and API_TOKEN')
+  })
 
 const shouldUseMock = () => !jamiAvailable || inTesting
 
@@ -48,7 +51,6 @@ const post = async (url: string, body: object) => {
   const { data } = await jamiClient.post(url, body)
   return data
 }
-
 
 const mockJami = {
   getOrganisations(): Faculty[] {
@@ -72,16 +74,16 @@ const mockJami = {
             companionFaculties: [],
             international: false,
           },
-        ]
-      }
+        ],
+      },
     ]
-  }
+  },
 }
 
 /**
  * High-performance caching solution:
- */ 
-let organisationData: Faculty[]|null = null
+ */
+let organisationData: Faculty[] | null = null
 
 export const getOrganisationData = async (): Promise<Faculty[]> => {
   if (organisationData) return organisationData
@@ -95,11 +97,7 @@ export const getOrganisationData = async (): Promise<Faculty[]> => {
   return data || []
 }
 
-export const getUserOrganisations = async (
-  userId: string,
-  iamGroups: string[]
-): Promise<JamiUserOrganisationAccess> => {
-
+export const getUserOrganisations = async (userId: string, iamGroups: string[]): Promise<JamiUserOrganisationAccess> => {
   const data = await post('/', {
     userId,
     iamGroups,

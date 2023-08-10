@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { HandlerAddress, User } from "../db/models";
-import { HandlerAddressParamsValidator, UserRoles } from "../../shared/types";
-import { requireAuthenticated } from "../middleware/authentication";
-import { RequestWithUser } from "../types";
-import { z } from "zod";
+import { Router } from 'express'
+import { HandlerAddress, User } from '../db/models'
+import { HandlerAddressParamsValidator, UserRoles } from '../../shared/types'
+import { requireAuthenticated } from '../middleware/authentication'
+import { RequestWithUser } from '../types'
+import { z } from 'zod'
 
 const handlerAddressRouter = Router()
 
@@ -12,7 +12,7 @@ handlerAddressRouter.post('/', requireAuthenticated(UserRoles.Admin), async (req
 
   const handlerAddress = await HandlerAddress.create({
     ...creationParams,
-    addedById: req.user?.id
+    addedById: req.user?.id,
   })
 
   res.send(handlerAddress)
@@ -24,10 +24,7 @@ const getQueryParamsParser = z.object({
 })
 
 handlerAddressRouter.get('/', requireAuthenticated(UserRoles.Admin), async (req: RequestWithUser, res) => {
-  const {
-    facultyCode,
-    address
-  } = getQueryParamsParser.parse(req.query)
+  const { facultyCode, address } = getQueryParamsParser.parse(req.query)
 
   const handlerAddresses = await HandlerAddress.findAll({
     include: User,
@@ -44,7 +41,7 @@ handlerAddressRouter.delete('/:id', requireAuthenticated(UserRoles.Admin), async
   await HandlerAddress.destroy({
     where: {
       id: req.params.id,
-    }
+    },
   })
 
   return res.sendStatus(201)
