@@ -142,18 +142,6 @@ export type Programme = {
 export const specialGroups = ["kosu", "superAdmin"] as const
 export type SpecialGroup = typeof specialGroups[number]
 
-export type UserOrganisationAccess = {
-  specialGroup?: {
-    [group in SpecialGroup]?: boolean
-  }
-} & {
-  [code: string]: {
-    read: boolean,
-    write: boolean,
-    admin: boolean,
-  },
-}
-
 /**
  * Higher gives access to lower
  */
@@ -166,6 +154,12 @@ export const UserRoles = {
 
 export type UserRole = typeof UserRoles[keyof typeof UserRoles]
 
+export type UserAccess = {
+  specialGroups?: {
+    [group in SpecialGroup]?: boolean
+  }
+  codes: string[]
+}
 
 export const HandlerAddressParamsValidator = z.object({
   address: z.string(),

@@ -5,6 +5,8 @@ import { requireAuthenticated } from "../middleware/authentication";
 import { RequestWithUser } from "../types";
 import { ApplicationError } from "../errors";
 import { notifyOnContractRequest } from "../services/notifications";
+import { hasRight } from "../../shared/authorizationUtils";
+import { Op } from "sequelize";
 
 const contractsRouter = Router()
 
@@ -21,15 +23,46 @@ contractsRouter.post('/', async (req: RequestWithUser, res) => {
   res.send(contractRequest)
 })
 
-contractsRouter.get('/', requireAuthenticated(UserRoles.Faculty), async (req: RequestWithUser, res) => {
-  const page = Number(req.query.page) || 0
+contractsRouter.get('/', requireAuthenticated(UserRoles.AdUser), async (req: RequestWithUser, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const user = req.user!
 
-  const contractRequests = await ContractRequest.findAll({
-    include: User,
-    limit: 40,
-    offset: 40 * page,
-    order: [["createdAt", "desc"]]
-  })
+  let contractRequests: ContractRequest[]|undefined
+
+  if (hasRight(user, UserRoles.University)) {
+    contractRequests = await ContractRequest.findAll({
+      include: User,
+      order: [["createdAt", "desc"]]
+    })
+
+  } else if (hasRight(user, UserRoles.Faculty)) {
+    const codes = user.access?.codes || []
+
+    contractRequests = await ContractRequest.findAll({
+      where: {
+        data: {
+          formData: {
+            faculty: {
+              [Op.in]: codes
+            }
+          }
+        }
+      },
+      include: User,
+      order: [["createdAt", "desc"]]
+    })
+
+  } else { // only AdUser
+    contractRequests = await ContractRequest.findAll({
+      include: {
+        model: User,
+        where: {
+          id: user.id,
+        }
+      },
+      order: [["createdAt", "desc"]]
+    })
+  }
 
   return res.send(contractRequests)
 })

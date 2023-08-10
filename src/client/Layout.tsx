@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { inStaging } from "../config";
 import { UserParams, UserRoles } from "../shared/types";
 import { handleLogout } from "./util/logout";
-import { hasRight } from "./util/authorization";
+import { hasRight } from "../shared/authorizationUtils";
 
 const Header = () => {
   const { t } = useTranslation()

@@ -1,4 +1,4 @@
-import { UserOrganisationAccess, UserRole, UserRoles } from "../../shared/types";
+import { UserAccess, UserRole, UserRoles } from "../../shared/types";
 
 type RoleName = keyof typeof UserRoles
 
@@ -34,16 +34,18 @@ const loadExtraUserRoles = () => {
 
 loadExtraUserRoles()
 
-export const getUserRoles = (userId: string, access: UserOrganisationAccess) => {
+export const getUserRoles = (userId: string, access: UserAccess) => {
   const roles: UserRole[] = [UserRoles.AdUser]
 
-  if (access.specialGroup?.kosu) {
+  // Give faculty role...
+  if (access.codes.length) {
     roles.push(UserRoles.Faculty)
   }
 
   // Todo who gets UserRole.University?
 
-  if (access.specialGroup?.superAdmin) {
+  // Give admin role...
+  if (access.specialGroups?.superAdmin) {
     roles.push(UserRoles.Admin)
   }
 

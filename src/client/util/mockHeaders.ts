@@ -1,20 +1,32 @@
 import { PUBLIC_URL } from "../../config"
-import { ShibbolethHeaders } from "../../shared/types"
 
 const ITEM_NAME = 'fakeUser'
 
-const fakeUser: ShibbolethHeaders = {
-  hypersonsisuid: 'hy-fake-user',
-  givenname: 'Topias',
-  sn: 'Testaaja',
-  mail: 'topias.testaaja@helsinki.fi',
-  schacdateofbirth: '19910101',
-  shib_logout_url: `${PUBLIC_URL}/`,
-  hygroupcn: 'grp-toska',
-}
+const fakeUsers = [
+  {
+    hypersonsisuid: 'hy-fake-user',
+    givenname: 'Topias',
+    sn: 'Testaaja',
+    mail: 'topias.testaaja@helsinki.fi',
+    schacdateofbirth: '19910101',
+    shib_logout_url: `${PUBLIC_URL}/`,
+    hygroupcn: 'grp-toska',
+  },
+  {
+    hypersonsisuid: 'hy-matlu-handler',
+    givenname: 'Matias',
+    sn: 'Matlumies',
+    mail: 'matias.matlumies@helsinki.fi',
+    schacdateofbirth: '19810101',
+    shib_logout_url: `${PUBLIC_URL}/`,
+    hygroupcn: 'kumpula-student',
+  }
+] as const
+
+const fakeUserId: typeof fakeUsers[number]["hypersonsisuid"] = 'hy-matlu-handler'
 
 export const updateMockHeaders = () => {
-  localStorage.setItem(ITEM_NAME, JSON.stringify(fakeUser))
+  localStorage.setItem(ITEM_NAME, JSON.stringify(fakeUsers.find(f => f.hypersonsisuid === fakeUserId)))
 }
 
 export const getMockHeaders = () => {

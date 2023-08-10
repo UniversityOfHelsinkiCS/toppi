@@ -1,7 +1,19 @@
 import axios from 'axios'
-import { Faculty, UserOrganisationAccess } from '../../shared/types'
+import { Faculty, SpecialGroup } from '../../shared/types'
 import { API_TOKEN, JAMI_URL } from './config'
 import { inTesting } from '../../config'
+
+export type JamiUserOrganisationAccess = {
+  specialGroup?: {
+    [group in SpecialGroup]?: boolean
+  }
+} & {
+  [code: string]: {
+    read: boolean,
+    write: boolean,
+    admin: boolean,
+  },
+}
 
 export const jamiClient = axios.create({
   baseURL: JAMI_URL,
@@ -86,7 +98,7 @@ export const getOrganisationData = async (): Promise<Faculty[]> => {
 export const getUserOrganisations = async (
   userId: string,
   iamGroups: string[]
-): Promise<UserOrganisationAccess> => {
+): Promise<JamiUserOrganisationAccess> => {
 
   const data = await post('/', {
     userId,
