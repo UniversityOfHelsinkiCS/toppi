@@ -1,4 +1,6 @@
 import { UserParams } from '../../shared/types'
+import { ContractRequest } from '../db/models'
+import { RequestUser } from '../types'
 import { getUserOrganisations } from '../util/jami'
 import { getUserHandlerAddresses } from './handlerAddresses'
 
@@ -18,4 +20,14 @@ export const getUserAccess = async (user: UserParams) => {
     specialGroups: jamiAccess.specialGroup ?? {},
     codes: handlerAddresses.map((adr) => adr.facultyCode), // maybe check that no duplicates?
   }
+}
+
+export const getUserAccessTo = (user: RequestUser, contractRequest: ContractRequest) => {
+  if (user.access?.codes.includes(contractRequest.data.formData.faculty)) {
+    return 'write'
+  }
+  if (user.email === contractRequest.data.formData.email) {
+    return 'read'
+  }
+  return null
 }

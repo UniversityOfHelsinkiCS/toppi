@@ -7,6 +7,7 @@ import { ApplicationError } from '../errors'
 import { notifyOnContractRequest } from '../services/notifications'
 import { hasRight } from '../../shared/authorizationUtils'
 import { Op } from 'sequelize'
+import { getUserAccessTo } from '../services/access'
 
 const contractsRouter = Router()
 
@@ -66,23 +67,32 @@ contractsRouter.get('/', requireAuthenticated(UserRoles.AdUser), async (req: Req
   return res.send(contractRequests)
 })
 
-contractsRouter.get('/:id', requireAuthenticated(UserRoles.AdUser), async (req, res) => {
+contractsRouter.get('/:id', requireAuthenticated(UserRoles.AdUser), async (req: RequestWithUser, res) => {
   const id = req.params.id
+  const user = req.user!
 
   const contractRequest = await ContractRequest.findByPk(id, { include: User })
+  if (!contractRequest) return ApplicationError.NotFound()
 
-  return res.send(contractRequest)
+  const access = getUserAccessTo(user, contractRequest)
+  if (!access) return ApplicationError.Forbidden()
+
+  return res.send({
+    ...contractRequest,
+    access,
+  })
 })
 
-contractsRouter.put('/:id', requireAuthenticated(UserRoles.University), async (req, res) => {
+contractsRouter.put('/:id', requireAuthenticated(UserRoles.Faculty), async (req: RequestWithUser, res) => {
   const { id } = req.params
+  const user = req.user!
   const status = ContractRequestStatusEnum.parse(req.body.status)
 
   const contractRequest = await ContractRequest.findByPk(id)
 
-  if (!contractRequest) {
-    return ApplicationError.NotFound()
-  }
+  if (!contractRequest) return ApplicationError.NotFound()
+
+  if (getUserAccessTo(user, contractRequest) !== 'write') return ApplicationError.Forbidden()
 
   contractRequest.status = status
 
