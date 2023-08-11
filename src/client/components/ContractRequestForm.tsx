@@ -130,7 +130,7 @@ const ContractForm = () => {
                 <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label="Etunimi" name="firstName" control={control} sx={{ flex: 1 }} />
                 <FormInputField required error={formState.errors.lastName ? t('errors.required') : undefined} label="Sukunimi" name="lastName" control={control} sx={{ flex: 1 }} />
               </InputSection>
-              <FormInputField required error={formState.errors.birthDate ? t('errors.required') : undefined} label="Syntymäaika" name="birthDate" control={control} />
+              <FormInputField required error={formState.errors.birthDate ? t('errors.required') : undefined} label="Syntymäaika" name="birthDate" type="date" control={control} />
               <FormInputField required error={formState.errors.email ? t('errors.required') : undefined} label="Sähköposti" name="email" type="email" control={control} />
               <InputSection label="Kurssin järjestäjä">
                 <FormField
