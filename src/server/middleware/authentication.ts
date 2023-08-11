@@ -20,7 +20,7 @@ const fakeUsers = [
     firstName: 'Topias',
     lastName: 'Testaaja',
     email: 'topias.testaaja@helsinki.fi',
-    schacdateofbirth: parseShibDateOfBirth('19910101'),
+    birthDate: parseShibDateOfBirth('19910101'),
     iamGroups: ['grp-toska'],
   },
   {
