@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { ShibbolethHeaders, UserAccess, UserParams } from '../shared/types'
+import { CustomHeaders, UserAccess, UserParams } from '../shared/types'
 import { IncomingHttpHeaders } from 'http'
 
 declare global {
@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-interface AuthenticatedRequestHeaders extends IncomingHttpHeaders, ShibbolethHeaders {}
+interface RequestHeaders extends IncomingHttpHeaders, CustomHeaders {}
 
 export type RequestUser = UserParams & {
   access?: UserAccess
@@ -18,7 +18,7 @@ export type RequestUser = UserParams & {
 
 export interface RequestWithUser extends Request {
   user?: RequestUser
-  headers: AuthenticatedRequestHeaders
+  headers: RequestHeaders
   loginAs?: boolean
 }
 

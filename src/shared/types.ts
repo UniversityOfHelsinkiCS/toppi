@@ -97,14 +97,7 @@ export const ContractRequestParamsValidator = z.object({
 
 export type ContractRequestParams = z.infer<typeof ContractRequestParamsValidator>
 
-export interface ShibbolethHeaders {
-  hypersonsisuid?: string
-  givenname?: string
-  sn?: string
-  mail?: string
-  hygroupcn?: string
-  schacdateofbirth?: string
-  shib_logout_url?: string
+export interface CustomHeaders {
   'x-admin-logged-in-as'?: string
 }
 

@@ -6,7 +6,6 @@ import loginRouter from './controllers/login'
 import testRouter from './controllers/test'
 import { inProduction, inStaging } from '../config'
 import { initSentry, sentryErrorHandler, sentryRequestHandler } from './middleware/sentry'
-import { shibbolethHeaders } from './middleware/shibbolethHeaders'
 import { getCurrentUser } from './middleware/authentication'
 import { errorHandler } from './middleware/error'
 import organisationsRouter from './controllers/organisations'
@@ -42,7 +41,7 @@ mainRouter.use(express.json())
 mainRouter.use(express.urlencoded({ extended: true }))
 mainRouter.use(morgan('short'))
 
-mainRouter.use('/private/api', shibbolethHeaders, getCurrentUser, apiRouter)
+mainRouter.use('/private/api', getCurrentUser, apiRouter)
 mainRouter.use('/api', apiRouter)
 
 mainRouter.use(sentryErrorHandler)

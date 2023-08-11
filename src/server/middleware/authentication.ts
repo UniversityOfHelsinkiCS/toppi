@@ -14,17 +14,27 @@ export const parseShibDateOfBirth = (dob: string | undefined) => {
   return parsed
 }
 
-const mockUser = {
-  id: 'hy-fake-user',
-  firstName: 'Topias',
-  lastName: 'Testaaja',
-  email: 'topias.testaaja@helsinki.fi',
-  birthDate: parseShibDateOfBirth('19910101'),
-  iamGroups: ['grp-toska'],
-}
+const fakeUsers = [
+  {
+    id: 'hy-fake-user',
+    firstName: 'Topias',
+    lastName: 'Testaaja',
+    email: 'topias.testaaja@helsinki.fi',
+    schacdateofbirth: parseShibDateOfBirth('19910101'),
+    iamGroups: ['grp-toska'],
+  },
+  {
+    id: 'hy-matlu-handler',
+    firstName: 'Matias',
+    lastName: 'Matlumies',
+    email: 'matias.matlumies@helsinki.fi',
+    birthDate: parseShibDateOfBirth('19910101'),
+    iamGroups: ['kumpula-student'],
+  },
+]
 
 export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, next) => {
-  if (inDevelopment || inE2E) req.user = mockUser
+  if (inDevelopment || inE2E) req.user = fakeUsers[0]
 
   const loginAsId = req.headers['x-admin-logged-in-as']
   if (typeof loginAsId === 'string') {
