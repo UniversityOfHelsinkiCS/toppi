@@ -13,6 +13,7 @@ services:
       DB_CONNECTION_STRING: postgres://toppi:toppi@db:5432/toppi
       JAMI_URL: https://api-toska.apps.ocp-test-0.k8s.it.helsinki.fi/jami
     container_name: toppi_dev
+
   db:
     image: postgres:15-alpine
     environment:
@@ -24,6 +25,12 @@ services:
     container_name: toppi_db
     volumes:
       - toppi_dev_data:/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+    container_name: toppi_redis
 
 volumes:
   toppi_dev_data:

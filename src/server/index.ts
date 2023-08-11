@@ -9,6 +9,7 @@ import { connectToDatabase } from './db/connection'
 import setupAuthentication from './util/oidc'
 import { router } from './routes'
 import { SESSION_SECRET } from './util/config'
+import { redisStore } from './util/redis'
 import { PORT, inProduction, inTesting } from '../config'
 
 const app = express()
@@ -16,6 +17,7 @@ const app = express()
 app.use(
   session({
     secret: SESSION_SECRET,
+    store: redisStore,
     resave: false,
     saveUninitialized: false,
   })
