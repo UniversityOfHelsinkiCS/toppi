@@ -1,5 +1,7 @@
 import { RequestHandler } from 'express'
-import { UserParamsValidator, UserRole, UserRoles } from '../../shared/types'
+
+import { inDevelopment, inE2E } from '../../config'
+import { UserRole, UserRoles } from '../../shared/types'
 import { ApplicationError } from '../errors'
 import { RequestUser, RequestWithUser } from '../types'
 import User from '../db/models/User'
@@ -7,26 +9,22 @@ import dayjs from 'dayjs'
 import { getUserAccess } from '../services/access'
 import { getUserRoles } from '../services/roles'
 
-const parseShibDateOfBirth = (dob: string | undefined) => {
+export const parseShibDateOfBirth = (dob: string | undefined) => {
   const parsed = dob ? dayjs(dob, 'YYYYMMDD', true).format('YYYY-MM-DD') : dob
   return parsed
 }
 
+const mockUser = {
+  id: 'hy-fake-user',
+  firstName: 'Topias',
+  lastName: 'Testaaja',
+  email: 'topias.testaaja@helsinki.fi',
+  birthDate: parseShibDateOfBirth('19910101'),
+  iamGroups: ['grp-toska'],
+}
+
 export const getCurrentUser: RequestHandler = async (req: RequestWithUser, res, next) => {
-  const { headers } = req
-
-  const userParams = {
-    id: headers.hypersonsisuid,
-    firstName: headers.givenname,
-    lastName: headers.sn,
-    birthDate: parseShibDateOfBirth(headers.schacdateofbirth),
-    email: headers.mail,
-    iamGroups: headers.hygroupcn?.split(';'),
-  }
-
-  const user = UserParamsValidator.parse(userParams)
-
-  req.user = user
+  if (inDevelopment || inE2E) req.user = mockUser
 
   const loginAsId = req.headers['x-admin-logged-in-as']
   if (typeof loginAsId === 'string') {

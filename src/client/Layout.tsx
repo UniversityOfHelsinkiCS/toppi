@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { inStaging } from '../config'
 import { UserParams, UserRoles } from '../shared/types'
 import { handleLogout } from './util/logout'
+import { handleLogin } from './util/login'
 import { hasRight } from '../shared/authorizationUtils'
 
 const Header = () => {
@@ -55,9 +56,9 @@ const Header = () => {
           </Box>
         </>
       ) : (
-        <Link href="/private">
-          <Typography endDecorator={<Login />}>Kirjaudu</Typography>
-        </Link>
+        <Button onClick={handleLogin} variant="soft" size="sm" endDecorator={<Login />}>
+          Kirjaudu
+        </Button>
       )}
     </Sheet>
   )

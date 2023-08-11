@@ -8,7 +8,7 @@ const devLogout = () => {
 }
 
 export const handleLogout = async () => {
-  if (!inProduction) devLogout()
+  if (!inProduction) return devLogout()
 
   const { url } = await logout()
 

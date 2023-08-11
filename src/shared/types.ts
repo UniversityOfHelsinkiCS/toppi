@@ -67,6 +67,7 @@ export const UserParamsValidator = z.object({
   birthDate: zDate.optional(),
   email: z.string().email(),
   iamGroups: z.array(z.string()).optional(),
+  newUser: z.boolean().optional(),
 })
 
 export type UserParams = z.infer<typeof UserParamsValidator> & { roles?: UserRole[] }
