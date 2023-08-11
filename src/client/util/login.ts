@@ -1,4 +1,4 @@
-import { inProduction } from '../../config'
+import { inDevelopment, inE2E } from '../../config'
 import { clearHeaders } from './mockHeaders'
 
 const devLogin = () => {
@@ -7,7 +7,7 @@ const devLogin = () => {
 }
 
 export const handleLogin = async () => {
-  if (!inProduction) return devLogin()
+  if (inDevelopment || inE2E) return devLogin()
 
   window.location.href = `${window.location.href}/api/oidc`
 }

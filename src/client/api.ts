@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios'
 import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from '../config'
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from 'react-router-dom'
 import { getMockHeaders } from './util/mockHeaders'
-import { ContractRequestParams, HandlerAddressParams, OrganisationData, UserParams } from '../shared/types'
+import { ContractRequestParams, HandlerAddressParams, OrganisationUnit, UserParams } from '../shared/types'
 
 export const publicClient = axios.create({
   baseURL: `${PUBLIC_URL}/api`,
@@ -73,7 +73,7 @@ export const logout = async () => {
 export const getOrganisationData = async () => {
   const { data } = await publicClient.get('/organisations')
 
-  return data as OrganisationData[]
+  return data as OrganisationUnit[]
 }
 
 export const getHandlerAddresses = async (query?: { facultyCode?: string; address?: string }) => {
