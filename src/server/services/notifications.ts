@@ -1,5 +1,17 @@
 import { ContractRequest, HandlerAddress } from '../db/models'
+import { Mail, pateClient } from '../util/pate'
 import { isDoctoralProgramme } from './organisations'
+
+const createContractRequestNotificationMail = (recipient: string, allHandlers: HandlerAddress[], contractRequest: ContractRequest): Mail => {
+  return {
+    subject: 'Uusi työsopimuspyyntö!',
+    recipient,
+    text: `
+      Noniiiin uusi työsopimuspyyntö on saatu! Lue se <a href="https://toppi.helsinki.fi/private/contract-requests/${contractRequest.id}">täältä topista</a>. \n
+      Tämä ilmoitus lähetettiin osoitteisiin ${allHandlers.map((h) => h.getFullAddress()).join()}
+    `,
+  }
+}
 
 export const notifyOnContractRequest = async (contractRequest: ContractRequest) => {
   const facultyCode = contractRequest.data.formData.faculty
@@ -23,6 +35,6 @@ export const notifyOnContractRequest = async (contractRequest: ContractRequest) 
 
   // Send mail to each...
   handlerAddresses.forEach((address) => {
-    console.log(`Sending notification to ${address.getFullAddress()}`)
+    pateClient.sendMail(createContractRequestNotificationMail(address.getFullAddress(), handlerAddresses, contractRequest))
   })
 }
