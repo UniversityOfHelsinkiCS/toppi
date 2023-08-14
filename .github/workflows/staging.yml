@@ -59,12 +59,18 @@ jobs:
         env:
           CI: true
         run: npx playwright test
+
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report
           path: playwright-report
+
+      - name: Print logs on failure
+        shell: bash
+        if: failure()
+        run: docker-compose -f compose.ci.yml logs
 
   build-and-push:
     runs-on: ubuntu-latest
