@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
-import { GIT_SHA } from '../../config'
+import { GIT_SHA, inStaging } from '../../config'
 
 const initializeSentry = () => {
   Sentry.init({
@@ -8,6 +8,7 @@ const initializeSentry = () => {
     release: GIT_SHA,
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 1.0,
+    environment: inStaging ? 'staging' : 'production',
   })
 }
 
