@@ -6,6 +6,7 @@ services:
     image: toppi_dev
     volumes:
       - ./:/opt/app-root/src
+      - node_modules:/opt/app-root/src/node_modules
     ports:
       - 3000:3000
       - 8000:8000
@@ -32,3 +33,4 @@ services:
 
 volumes:
   toppi_dev_data:
+  node_modules:
