@@ -78,7 +78,7 @@ contractsRouter.get('/:id', requireAuthenticated(UserRoles.AdUser), async (req: 
   if (!access) return ApplicationError.Forbidden()
 
   return res.send({
-    ...contractRequest,
+    ...contractRequest.toJSON(),
     access,
   })
 })

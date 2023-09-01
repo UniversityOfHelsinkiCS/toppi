@@ -1,4 +1,4 @@
-import { UserParams } from '../../shared/types'
+import { UserParams, UserRoles } from '../../shared/types'
 import { ContractRequest } from '../db/models'
 import { RequestUser } from '../types'
 import { getUserOrganisations } from '../util/jami'
@@ -28,6 +28,9 @@ export const getUserAccessTo = (user: RequestUser, contractRequest: ContractRequ
   }
   if (user.email === contractRequest.data.formData.email) {
     return 'read'
+  }
+  if (user.roles?.includes(UserRoles.Admin)) {
+    return 'admin'
   }
   return null
 }
