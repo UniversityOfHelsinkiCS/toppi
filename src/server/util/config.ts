@@ -10,7 +10,7 @@ export const JAMI_URL = process.env.JAMI_URL
 
 export const REDIS_HOST = process.env.REDIS_HOST || 'redis'
 
-export const SESSION_SECRET = process.env.SESSION_SECRET || ''
+export const SESSION_SECRET = process.env.SESSION_SECRET || 'secret'
 
 export const OIDC_ISSUER = inProduction && !inStaging ? 'https://login.helsinki.fi/.well-known/openid-configuration' : 'https://login-test.it.helsinki.fi/.well-known/openid-configuration'
 
