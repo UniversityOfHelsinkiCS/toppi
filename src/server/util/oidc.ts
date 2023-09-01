@@ -1,7 +1,7 @@
 import { Issuer, Strategy, TokenSet, UnknownObject, UserinfoResponse } from 'openid-client'
 import passport from 'passport'
 
-import { inE2E } from '../../config'
+import { inDevelopment, inE2E } from '../../config'
 import { OIDC_ISSUER, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_REDIRECT_URI } from './config'
 import { UserParams } from '../../shared/types'
 import { OpenIDAttributes } from '../types'
@@ -57,7 +57,7 @@ const verifyLogin = async (_tokenSet: TokenSet, userinfo: UserinfoResponse<Unkno
 }
 
 const setupAuthentication = async () => {
-  if (inE2E) return
+  if (inDevelopment || inE2E) return
 
   const client = await getClient()
 
