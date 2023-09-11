@@ -4,10 +4,14 @@ import passport from 'passport'
 import { PUBLIC_URL } from '../../config'
 import { requireAuthenticated } from '../middleware/authentication'
 import { RequestWithUser } from '../types'
+import { User } from '../db/models'
 
 const loginRouter = Router()
 
-loginRouter.get('/login', requireAuthenticated(), async (req: RequestWithUser, res) => res.send(req.user))
+loginRouter.get('/login', requireAuthenticated(), async (req: RequestWithUser, res) => {
+  await User.upsert(req.user!)
+  res.send(req.user)
+})
 
 loginRouter.get('/oidc', passport.authenticate('oidc'))
 
