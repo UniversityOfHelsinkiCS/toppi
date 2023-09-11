@@ -1,68 +1,9 @@
-import { Box, Button, CssBaseline, Link, Sheet, Typography } from '@mui/joy'
+import { Box, CssBaseline, Link, Sheet, Typography } from '@mui/joy'
 import { Toaster } from 'sonner'
-import { GitHub, Login, Logout } from '@mui/icons-material'
-import hyLogo from './assets/hy_logo.svg'
+import { GitHub } from '@mui/icons-material'
 import toskaLogo from './assets/toska13.png'
-import { Link as RouterLink, Outlet, useLoaderData } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { inStaging } from '../config'
-import { UserParams, UserRoles } from '../shared/types'
-import { handleLogout } from './util/logout'
-import { handleLogin } from './util/login'
-import { hasRight } from '../shared/authorizationUtils'
-
-const Header = () => {
-  const { t } = useTranslation()
-  const user = useLoaderData() as UserParams | undefined
-
-  return (
-    <Sheet
-      sx={{
-        p: '1rem',
-        mb: '4rem',
-        columnGap: '1rem',
-        alignItems: 'center',
-        display: 'flex',
-        borderRadius: '1rem',
-      }}
-    >
-      <RouterLink to={user ? '/private' : '/'} style={{ textDecoration: 'none' }}>
-        <Box display="flex" alignItems="center" columnGap="1rem">
-          <Box width="2rem">
-            <img src={hyLogo} alt="hy logo" />
-          </Box>
-          <Typography>TOPPI</Typography>
-        </Box>
-      </RouterLink>
-      <Typography level="body-sm" sx={{ userSelect: 'none', mr: 'auto' }}>
-        {t('navbar.description')}
-      </Typography>
-      {inStaging && <Typography sx={{ ml: '1rem' }}>STAGING</Typography>}
-      {user ? (
-        <>
-          <Link component={RouterLink} to="/private/contract-requests">
-            Työsopimuspyynnöt
-          </Link>
-          {hasRight(user, UserRoles.Admin) && (
-            <Link component={RouterLink} to="/private/handler-addresses">
-              Kohdennusosoitteet
-            </Link>
-          )}
-          <Box display="flex" gap="1rem">
-            <Typography variant="soft">kirjautunut: {user.email}</Typography>
-            <Button onClick={handleLogout} variant="soft" size="sm" endDecorator={<Logout />}>
-              Kirjaudu ulos
-            </Button>
-          </Box>
-        </>
-      ) : (
-        <Button onClick={handleLogin} variant="soft" size="sm" endDecorator={<Login />}>
-          Kirjaudu
-        </Button>
-      )}
-    </Sheet>
-  )
-}
+import { Outlet } from 'react-router-dom'
+import { Navbar } from './components/Navbar'
 
 const Footer = () => (
   <Sheet
@@ -95,7 +36,7 @@ const Layout = () => (
   <CssBaseline>
     <Toaster />
     <Box display="flex" flexDirection="column" minHeight="100vh">
-      <Header />
+      <Navbar />
       <Outlet />
       <Footer />
     </Box>
