@@ -15,7 +15,7 @@ export const TableItem = ({ label, value, extra, copy = true }: { label: string;
       <td>
         <Box display="flex" gap="1rem" alignItems="end">
           {value && value}
-          {shownExtra && <Typography level="body3">{shownExtra}</Typography>}
+          {shownExtra && <Typography level="body-sm">{shownExtra}</Typography>}
         </Box>
       </td>
     </tr>

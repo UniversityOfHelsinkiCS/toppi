@@ -26,15 +26,15 @@ export const Error = () => {
       }}
     >
       <Box p="2rem">
-        <Typography level="display2">something went wrong ._.</Typography>
+        <Typography level="title-md">something went wrong ._.</Typography>
         <Typography>{error.statusText}</Typography>
         <Typography sx={{ py: '1rem', mb: '2rem' }}>{error.response?.statusText || error.message}</Typography>
         <Button variant="soft" sx={{ my: '1rem' }} onClick={() => navigate(-1)}>
           Go back...
         </Button>
-        <Typography level="body2">Details:</Typography>
+        <Typography level="body-md">Details:</Typography>
         {error.response && error.response.data && (
-          <Typography level="body3" fontFamily="monospace" whiteSpace="pre-wrap" variant="outlined" p="1rem">
+          <Typography level="body-sm" fontFamily="monospace" whiteSpace="pre-wrap" variant="outlined" p="1rem">
             {JSON.stringify(error.response.data, null, 2)}
           </Typography>
         )}

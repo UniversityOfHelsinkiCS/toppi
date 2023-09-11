@@ -64,9 +64,9 @@ const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }
 const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   return (
     <Box>
-      <Typography level="body3">Klikkaa riviä kopioidaksesi kentän arvo</Typography>
+      <Typography level="body-sm">Klikkaa riviä kopioidaksesi kentän arvo</Typography>
       <FormattedFormData formData={contractRequest.data.formData} />
-      <Typography level="h6" mt="2rem" mb="0.5rem">
+      <Typography level="body-md" mt="2rem" mb="0.5rem">
         Laskuriin merkatut tiedot
       </Typography>
       <CalculatorPreview {...contractRequest.data.calculatorData} copy />

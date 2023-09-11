@@ -34,7 +34,7 @@ const Header = () => {
           <Typography>TOPPI</Typography>
         </Box>
       </RouterLink>
-      <Typography level="body2" sx={{ userSelect: 'none', mr: 'auto' }}>
+      <Typography level="body-sm" sx={{ userSelect: 'none', mr: 'auto' }}>
         {t('navbar.description')}
       </Typography>
       {inStaging && <Typography sx={{ ml: '1rem' }}>STAGING</Typography>}
@@ -63,6 +63,7 @@ const Header = () => {
     </Sheet>
   )
 }
+
 const Footer = () => (
   <Sheet
     sx={{
@@ -81,7 +82,7 @@ const Footer = () => (
         <img src={toskaLogo} alt="Toska" width={70} />
       </Link>
     </Box>
-    <Typography level="body2">© Toska, Helsingin yliopisto</Typography>
+    <Typography level="body-md">© Toska, Helsingin yliopisto</Typography>
     <Box>
       <Link href="https://github.com/UniversityOfHelsinkiCS/toppi" target="_blank">
         <GitHub fontSize="large" />

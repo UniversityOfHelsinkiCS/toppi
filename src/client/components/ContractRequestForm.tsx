@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from '@mui/joy'
+import { Box, Button, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from '@mui/joy'
 import CalculatorPreview from './CalculatorPreview'
 import { toast } from 'sonner'
 import React from 'react'
@@ -29,7 +29,7 @@ const InputSection = ({
   return (
     <Box py="0.5rem">
       {label && (
-        <Typography level="body2" sx={{ mb: '1rem' }} endDecorator={endAdornment}>
+        <Typography level="body-md" sx={{ mb: '1rem' }} endDecorator={endAdornment}>
           {label}
         </Typography>
       )}
@@ -113,16 +113,15 @@ const ContractForm = () => {
 
   const isRecommendedContractDates = watch('contractDuration') === 'recommended'
 
-  console.log(faculty, formState.errors)
-
   return (
     <Sheet
       sx={{
         borderRadius: '1rem',
+        p: '1rem',
       }}
     >
       <Box>
-        <Typography level="h5">Työsopimusta varten tarvittavat muut tiedot</Typography>
+        <Typography level="body-md">Työsopimusta varten tarvittavat muut tiedot</Typography>
         <Box mt="2rem">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex" flexDirection="column" gap="3rem">
@@ -279,21 +278,20 @@ const CalculatorPreviewContainer = () => {
 }
 
 const ContractRequestForm = () => (
-  <Box p="2rem">
+  <Box p="1rem">
     <Typography level="h4">Työsopimuspyyntö</Typography>
-    <Box sx={(theme) => ({ display: 'flex', gap: '4rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
-      <Box flex={1}>
+    <Box sx={(theme) => ({ display: 'flex', gap: '2rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
+      <Box flex={3}>
         <ContractForm />
       </Box>
-      <Box flex={1}>
+      <Box flex={2}>
         <Box mb="2rem">
-          <Typography level="h5">Työaika ja palkka</Typography>
-          <Typography>Täyttämäsi laskurin tiedot lähetetään työsopimuspyynnön mukana. Tarkistathan vielä niiden oikeellisuuden.</Typography>
+          <Typography level="body-md">Työaika ja palkka</Typography>
+          <Typography level="body-sm">Täyttämäsi laskurin tiedot lähetetään työsopimuspyynnön mukana. Tarkistathan vielä niiden oikeellisuuden.</Typography>
         </Box>
         <CalculatorPreviewContainer />
       </Box>
     </Box>
-    <Alert>Toppi on vielä testi- ja esittelykäytössä, joten lomakkeesta lähetettyjä työsopimuspyyntöjä ei käsitellä.</Alert>
   </Box>
 )
 

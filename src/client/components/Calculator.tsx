@@ -5,7 +5,7 @@ import { Option } from '../types'
 import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions } from '../calculatorConfig'
 import { SectionDivider } from './common'
 
-const HoursChip = ({ hours }: { hours: number }) => <Chip variant="soft">{`${hours} tuntia`}</Chip>
+const HoursChip = ({ hours }: { hours: number }) => <Chip variant="soft" color="primary">{`${hours} tuntia`}</Chip>
 
 const SalaryChip = ({ salary, unit = '€/h' }: { salary: number; unit?: string }) => <Chip variant="soft" color="success">{`${salary} ${unit}`}</Chip>
 
@@ -56,8 +56,8 @@ const InputContainer = ({
 
 const InputSection = ({ children, title, description, sx }: { children: React.ReactNode; title: string; description: string; resultHours?: number; sx?: SxProps }) => (
   <Box display="flex" p="1rem" flexDirection="column" rowGap="1rem" flexGrow={1} sx={sx}>
-    <Typography level="body1">{title}</Typography>
-    <Typography level="body2" sx={{ mb: 'auto' }}>
+    <Typography level="body-md">{title}</Typography>
+    <Typography level="body-sm" sx={{ mb: 'auto' }}>
       {description}
     </Typography>
     {children}
@@ -84,7 +84,7 @@ const TeachingHoursInput = () => {
       type="number"
       placeholder="0"
       slotProps={{ input: { min: 0, max: 1000 } }}
-      endDecorator={<Typography level="body2">tuntia</Typography>}
+      endDecorator={<Typography level="body-md">tuntia</Typography>}
     />
   )
 }
@@ -92,7 +92,7 @@ const TeachingHoursInput = () => {
 const PreparationHoursTable = () => (
   <Sheet>
     <Box p="1rem">
-      <Typography level="body2">Kurssiin valmistautumiseen käytettävä työaika lasketaan seuraavan taulukon mukaisesti:</Typography>
+      <Typography level="body-md">Kurssiin valmistautumiseen käytettävä työaika lasketaan seuraavan taulukon mukaisesti:</Typography>
     </Box>
     <Table>
       <thead>
@@ -158,7 +158,7 @@ const WorkHourCalculator = () => {
         </InputContainer>
       </Box>
       <Box display="flex" alignItems="center">
-        <Typography level="h5">Työaika yhteensä </Typography>
+        <Typography level="body-md">Työaika yhteensä </Typography>
         <Box ml="1rem">
           <HoursChip hours={totalHours} />
         </Box>
@@ -179,7 +179,7 @@ const salaryTableData = [
 const SalaryTable = ({ sx }: { sx: SxProps }) => (
   <Sheet sx={sx}>
     <Box pb="1rem">
-      <Typography level="body2">Helsingin yliopiston yleisen taulukon mukaiset palkkiot ulkopuolisille opettajille:</Typography>
+      <Typography level="body-md">Helsingin yliopiston yleisen taulukon mukaiset palkkiot ulkopuolisille opettajille:</Typography>
     </Box>
     <Table>
       <thead>
@@ -210,7 +210,7 @@ const SalaryInput = () => {
       type="number"
       placeholder="0"
       slotProps={{ input: { min: 0, max: 1000 } }}
-      endDecorator={<Typography level="body2">€/h</Typography>}
+      endDecorator={<Typography level="body-md">€/h</Typography>}
     />
   )
 }
@@ -239,7 +239,7 @@ const SalaryCalculator = () => {
             </InputSection>
           </InputContainer>
           <Box display="flex" alignItems="center" gap="1em" flexWrap="wrap">
-            <Typography level="h5">Palkkio yhteensä </Typography>
+            <Typography level="body-md">Palkkio yhteensä </Typography>
             <Box display="flex" columnGap="1rem" alignItems="center">
               <HoursChip hours={totalHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={totalHours * hourlyRate} unit="€" />
             </Box>
