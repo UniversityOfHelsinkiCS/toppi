@@ -13,6 +13,7 @@ export const UserDisplay = ({ user }: { user: UserParams }) => {
 
   return (
     <Sheet
+      id="user-display"
       variant="outlined"
       sx={{
         display: 'flex',

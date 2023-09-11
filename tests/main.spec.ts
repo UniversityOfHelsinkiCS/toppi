@@ -82,7 +82,7 @@ test('Fill full contract request form', async ({ page }) => {
 
 test('User can login and gets the form prefilled', async ({ page }) => {
   await page.getByRole('button', { name: 'Kirjaudu' }).click()
-  await expect(page.getByText('kirjautunut: topias.testaaja@helsinki.fi')).toBeVisible()
+  await expect(page.locator('#user-display').getByText('topias.testaaja@helsinki.fi')).toBeVisible()
   await expect(page.getByLabel('Etunimi *')).toHaveValue('Topias')
   await expect(page.getByLabel('Sukunimi *')).toHaveValue('Testaaja')
   await expect(page.getByLabel('Syntymäaika *')).toHaveValue('1991-01-01')
