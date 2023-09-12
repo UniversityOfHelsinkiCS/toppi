@@ -1,13 +1,31 @@
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, Outlet, useLoaderData, useMatch } from 'react-router-dom'
 import { UserParams, UserRoles } from '../../shared/types'
-import { Box, Button, Link, Sheet, Typography } from '@mui/joy'
+import { Box, Button, Dropdown, IconButton, Link, Menu, MenuButton, MenuItem, Sheet, Typography } from '@mui/joy'
 import { inStaging } from '../../config'
 import { hasRight } from '../../shared/authorizationUtils'
-import { Login } from '@mui/icons-material'
+import { Language, Login } from '@mui/icons-material'
 import { handleLogin } from '../util/login'
 import hyLogo from '../assets/hy_logo.svg'
 import { UserDisplay } from './UserDisplay'
+
+const LanguageSelect = () => {
+  const { i18n } = useTranslation()
+
+  return (
+    <Box display="flex" alignItems="center">
+      <Dropdown>
+        <MenuButton startDecorator={<Language />} slotProps={{ root: { variant: 'plain' } }} slots={{ root: IconButton }}>
+          {i18n.language.toUpperCase()}
+        </MenuButton>
+        <Menu>
+          <MenuItem onClick={() => i18n.changeLanguage('fi')}>Suomi (FI)</MenuItem>
+          <MenuItem onClick={() => i18n.changeLanguage('en')}>English (EN)</MenuItem>
+        </Menu>
+      </Dropdown>
+    </Box>
+  )
+}
 
 const Navlink = ({ to, label }: { to: string; label: string }) => {
   const isActive = useMatch(to)
@@ -80,6 +98,7 @@ export const Navbar = () => {
           {t('navbar.description')}
         </Typography>
         {inStaging && <Typography sx={{ ml: '1rem' }}>STAGING</Typography>}
+        <LanguageSelect />
         {user ? (
           <UserDisplay user={user} />
         ) : (
