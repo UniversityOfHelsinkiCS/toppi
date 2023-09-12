@@ -103,15 +103,15 @@ export const Navbar = () => {
           <UserDisplay user={user} />
         ) : (
           <Button onClick={handleLogin} variant="soft" size="sm" endDecorator={<Login />}>
-            Kirjaudu
+            {t('navbar.signin')}
           </Button>
         )}
       </Box>
       {user && (
         <Box display="flex" justifyContent="center" width="100%" pt="1rem" gap="1rem">
-          {hasRight(user, UserRoles.Faculty) && <Navlink to="/private" label="Etusivu" />}
-          <Navlink to="/private/contract-requests" label="Työsopimuspyynnöt" />
-          {hasRight(user, UserRoles.Admin) && <Navlink to="/private/handler-addresses" label="Kohdennusosoitteet" />}
+          <Navlink to="/private" label={t('navbar.frontPage')} />
+          <Navlink to="/private/contract-requests" label={t('navbar.contractRequests')} />
+          {hasRight(user, UserRoles.Admin) && <Navlink to="/private/handler-addresses" label={t('navbar.handlerAddresses')} />}
         </Box>
       )}
     </Sheet>

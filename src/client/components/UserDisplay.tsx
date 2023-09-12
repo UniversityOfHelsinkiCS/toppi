@@ -2,8 +2,10 @@ import { Avatar, Box, Button, IconButton, Sheet, Tooltip, Typography } from '@mu
 import { UserParams } from '../../shared/types'
 import { handleLogout } from '../util/logout'
 import { Logout } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 
 export const UserDisplay = ({ user }: { user: UserParams }) => {
+  const { t } = useTranslation()
   const userInitials = user.email
     .split('@')[0]
     .split('.')
@@ -26,7 +28,7 @@ export const UserDisplay = ({ user }: { user: UserParams }) => {
     >
       <Avatar size="sm">{userInitials}</Avatar>
       <Typography level="body-sm">{user.email}</Typography>
-      <Tooltip title="Kirjaudu ulos">
+      <Tooltip title={t('navbar.signout')}>
         <IconButton onClick={handleLogout} variant="plain" size="sm">
           <Logout />
         </IconButton>

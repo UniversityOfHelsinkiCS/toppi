@@ -1,6 +1,11 @@
 const translations = {
   navbar: {
     description: '– TOOL FOR OUTSIDE TEACHERS WORKHOUR CALCULATION & CONTRACT REQUESTS',
+    signin: 'Sign in',
+    signout: 'Sign out',
+    frontPage: 'Front page',
+    contractRequests: 'Contract requests',
+    handlerAddresses: 'Handler addresses',
   },
   status: {
     waiting: 'Waiting',

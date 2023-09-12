@@ -277,22 +277,26 @@ const CalculatorPreviewContainer = () => {
   return <CalculatorPreview {...previewData} copy={false} />
 }
 
-const ContractRequestForm = () => (
-  <Box p="1rem">
-    <Typography level="h4">Työsopimuspyyntö</Typography>
-    <Box sx={(theme) => ({ display: 'flex', gap: '2rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
-      <Box flex={3}>
-        <ContractForm />
-      </Box>
-      <Box flex={2}>
-        <Box mb="2rem">
-          <Typography level="body-md">Työaika ja palkka</Typography>
-          <Typography level="body-sm">Täyttämäsi laskurin tiedot lähetetään työsopimuspyynnön mukana. Tarkistathan vielä niiden oikeellisuuden.</Typography>
+const ContractRequestForm = () => {
+  const { t } = useTranslation()
+
+  return (
+    <Box p="1rem">
+      <Typography level="h4">Työsopimuspyyntö</Typography>
+      <Box sx={(theme) => ({ display: 'flex', gap: '2rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
+        <Box flex={3}>
+          <ContractForm />
         </Box>
-        <CalculatorPreviewContainer />
+        <Box flex={2}>
+          <Box mb="2rem">
+            <Typography level="body-md">{t('contractRequestForm.calculatorPreviewTitle')}</Typography>
+            <Typography level="body-sm">{t('contractRequestForm.calculatorPreviewDescription')}</Typography>
+          </Box>
+          <CalculatorPreviewContainer />
+        </Box>
       </Box>
     </Box>
-  </Box>
-)
+  )
+}
 
 export default ContractRequestForm
