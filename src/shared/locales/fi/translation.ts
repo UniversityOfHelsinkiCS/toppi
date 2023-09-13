@@ -96,6 +96,7 @@ const translations = {
     recommendedEndDate: 'Suositeltu loppupäivä',
     calculatorPreviewTitle: 'Työaika ja palkka',
     calculatorPreviewDescription: 'Täyttämäsi laskurin tiedot lähetetään työsopimuspyynnön mukana. Tarkistathan vielä niiden oikeellisuuden.',
+    additionalInfoPretext: 'Kerro tässä esimerkiksi sovituista poikkeuksista',
     submitLoading: 'Lähetetään työsopimuspyyntöä...',
     submitSuccess: 'Työsopimuspyyntö lähetetty onnistuneesti',
     submitError: 'Työsopimuspyynnön lähettäminen epäonnistui',

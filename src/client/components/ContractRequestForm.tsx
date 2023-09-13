@@ -266,7 +266,7 @@ const ContractForm = () => {
                 name="additionalInfo"
                 render={(field) => <Textarea {...field} />}
                 control={control}
-                pretext="Kerro tässä esimerkiksi sovituista poikkeuksista"
+                pretext={t('contractRequestForm.additionalInfoPretext')}
               />
               <Button type="submit">{t('contractRequestForm.submit')}</Button>
             </Box>
