@@ -188,7 +188,7 @@ const ContractForm = () => {
                 <FormInputField
                   required
                   error={getDateError(t, formState.errors.courseStartDate?.message)}
-                  label={t('formFields.startDate')}
+                  label={t('contractRequestForm.startDatelabel')}
                   name="courseStartDate"
                   control={control}
                   sx={{ flex: 1 }}
@@ -204,7 +204,7 @@ const ContractForm = () => {
                 <FormInputField
                   required
                   error={getDateError(t, formState.errors.courseEndDate?.message)}
-                  label={t('formFields.endDate')}
+                  label={t('contractRequestForm.endDatelabel')}
                   name="courseEndDate"
                   control={control}
                   sx={{ flex: 1 }}
