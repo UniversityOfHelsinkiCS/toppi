@@ -9,6 +9,7 @@ import { useLoaderData } from 'react-router-dom'
 import { z } from 'zod'
 import { HandlerAddressChip, SmallHelsinkiFi } from '../components/common'
 import { Add } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 
 const validator = z.string().email()
 const validateAddress = (address: string, addresses: HandlerAddress[]) => {
@@ -35,6 +36,7 @@ const Row = ({
   open: boolean
   setOpen: () => void
 }) => {
+  const { t } = useTranslation()
   const [address, setAddress] = React.useState('')
   const [isPending, setIsPending] = React.useState(false)
 
@@ -55,7 +57,7 @@ const Row = ({
             <Input
               value={address}
               onChange={(ev) => setAddress(ev.target.value.toLowerCase())}
-              placeholder="Uusi käsittelijän osoite/IAM"
+              placeholder={t('handlerAddresses.newAddress')}
               endDecorator={<SmallHelsinkiFi />}
               variant="soft"
               size="sm"
@@ -71,7 +73,7 @@ const Row = ({
               disabled={!isValidAddress()}
               size="sm"
             >
-              Lisää
+              {t('common.add')}
             </Button>
           </>
         )}
@@ -86,6 +88,7 @@ const Row = ({
 }
 
 const HandlerAddressess = () => {
+  const { t } = useTranslation()
   const [openFaculty, setOpenFaculty] = React.useState<string | null>(null)
   const organisations = useOrganisationUnits()
   const handlerAddressList = useLoaderData() as HandlerAddress[]
@@ -107,7 +110,7 @@ const HandlerAddressess = () => {
 
   const handleAddAddress = async (facultyCode: string, address: string) => {
     const res = (await postHandlerAddress({ facultyCode, address })) as HandlerAddress
-    toast.success(`Lisätty: ${res.address}`)
+    toast.success(`${t('common.added')}: ${res.address}`)
     setHandlerAddresses({
       ...handlerAddresses,
       [res.facultyCode]: [...handlerAddresses[res.facultyCode], res],
@@ -115,9 +118,9 @@ const HandlerAddressess = () => {
   }
 
   const handleDeleteAddress = async (facultyCode: string, address: HandlerAddress) => {
-    if (!window.confirm(`Haluatko varmasti poistaa osoitteen ${address.address} tiedekunnan ${facultyCode} käsittelijöistä?`)) return
+    if (!window.confirm(t('handlerAddresses.removeConfirm', { address: address.address, facultyCode }))) return
     await deleteHandlerAddress(address.id)
-    toast.success(`Poistettu: ${address.address}`)
+    toast.success(`${t('common.removed')}: ${address.address}`)
     setHandlerAddresses({
       ...handlerAddresses,
       [facultyCode]: handlerAddresses[facultyCode].filter((a) => a.id !== address.id),
@@ -130,8 +133,8 @@ const HandlerAddressess = () => {
         <DataTable>
           <thead>
             <tr>
-              <th>TDK</th>
-              <th>Osoitteet</th>
+              <th>{t('common.facultyShort')}</th>
+              <th>{t('common.addresses')}</th>
             </tr>
           </thead>
           <tbody>

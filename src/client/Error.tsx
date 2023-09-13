@@ -2,8 +2,10 @@ import { Box, Button, Typography } from '@mui/joy'
 import { useEffect } from 'react'
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
 import * as Sentry from '@sentry/browser'
+import { useTranslation } from 'react-i18next'
 
 export const Error = () => {
+  const { t } = useTranslation()
   const error = useRouteError() as any
   const navigate = useNavigate()
 
@@ -26,13 +28,13 @@ export const Error = () => {
       }}
     >
       <Box p="2rem">
-        <Typography level="title-md">something went wrong ._.</Typography>
+        <Typography level="title-md">{t('common.unknownError')}</Typography>
         <Typography>{error.statusText}</Typography>
         <Typography sx={{ py: '1rem', mb: '2rem' }}>{error.response?.statusText || error.message}</Typography>
         <Button variant="soft" sx={{ my: '1rem' }} onClick={() => navigate(-1)}>
-          Go back...
+          {t('common.goBack')}
         </Button>
-        <Typography level="body-md">Details:</Typography>
+        <Typography level="body-md">{t('common.details')}:</Typography>
         {error.response && error.response.data && (
           <Typography level="body-sm" fontFamily="monospace" whiteSpace="pre-wrap" variant="outlined" p="1rem">
             {JSON.stringify(error.response.data, null, 2)}

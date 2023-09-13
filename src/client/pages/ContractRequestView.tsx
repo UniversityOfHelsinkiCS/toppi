@@ -22,6 +22,7 @@ const Raw = ({ data }: { data: ContractRequest }) => {
 }
 
 const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }) => {
+  const { t } = useTranslation()
   const faculties = useFaculties()
   const programmes = useProgrammes(formData.faculty)
 
@@ -33,41 +34,43 @@ const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }
     const programme = programmes?.find((p) => p.key === code)
     return programme ? programme.name.fi : undefined
   }
-  const contractDisplay = (duration: ContractDurationOption) => (duration === 'custom' ? 'Itse merkattu' : 'Suositeltu')
+  const contractDisplay = (duration: ContractDurationOption) => (duration === 'custom' ? t('formFields.customContractDuration') : t('formFields.recommendedContractDuration'))
 
   return (
     <DataTable copy>
       <thead style={{ height: '3rem' }}>
         <tr>
-          <th scope="col">Kentän nimi</th>
-          <th scope="col">Arvo</th>
+          <th scope="col">{t('common.fieldName')}</th>
+          <th scope="col">{t('common.fieldValue')}</th>
         </tr>
       </thead>
       <tbody>
-        <TableItem label="Etunimi" value={formData.firstName} />
-        <TableItem label="Sukunimi" value={formData.lastName} />
-        <TableItem label="Sähköposti" value={formData.email} />
-        <TableItem label="Syntymäaika" value={formData.birthDate} />
-        <TableItem label="Tiedekunta" value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
-        <TableItem label="Koulutusohjelma" value={formData.programme} extra={programmeDisplay(formData.programme)} />
-        <TableItem label="Kurssin nimi" value={formData.courseName} />
-        <TableItem label="Kurssin alkupäivä" value={formData.courseStartDate} />
-        <TableItem label="Kurssin loppupäivä" value={formData.courseEndDate} />
-        <TableItem label="Sopimuksen alkupäivä" value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
-        <TableItem label="Sopimuksen loppupäivä" value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
-        <TableItem label="Lisätiedot" value={formData.additionalInfo} />
+        <TableItem label={t('formFields.firstName')} value={formData.firstName} />
+        <TableItem label={t('formFields.lastName')} value={formData.lastName} />
+        <TableItem label={t('formFields.email')} value={formData.email} />
+        <TableItem label={t('formFields.birthDate')} value={formData.birthDate} />
+        <TableItem label={t('common.faculty')} value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
+        <TableItem label={t('common.faculty')} value={formData.programme} extra={programmeDisplay(formData.programme)} />
+        <TableItem label={t('formFields.courseName')} value={formData.courseName} />
+        <TableItem label={t('formFields.courseStartDate')} value={formData.courseStartDate} />
+        <TableItem label={t('formFields.courseEndDate')} value={formData.courseEndDate} />
+        <TableItem label={t('formFields.contractStartDate')} value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
+        <TableItem label={t('formFields.contractEndDate')} value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
+        <TableItem label={t('formFields.additionalInfos')} value={formData.additionalInfo} />
       </tbody>
     </DataTable>
   )
 }
 
 const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) => {
+  const { t } = useTranslation()
+
   return (
     <Box>
-      <Typography level="body-sm">Klikkaa riviä kopioidaksesi kentän arvo</Typography>
+      <Typography level="body-sm">{t('common.clickToCopy')}</Typography>
       <FormattedFormData formData={contractRequest.data.formData} />
       <Typography level="body-md" mt="2rem" mb="0.5rem">
-        Laskuriin merkatut tiedot
+        {t('contractRequestView.calculatorFields')}
       </Typography>
       <CalculatorPreview {...contractRequest.data.calculatorData} copy />
     </Box>
@@ -75,13 +78,15 @@ const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) =>
 }
 
 const HandlerAddresses = ({ handlerAddresses }: { handlerAddresses: HandlerAddress[] }) => {
+  const { t } = useTranslation()
+
   return (
     <Box>
-      <Typography level="h4">Pyynnön käsittelyosoitteet</Typography>
+      <Typography level="h4">{t('contractRequestView.contractHandlerAddresses')}</Typography>
       <Box display="flex" pt="0.5rem" flexWrap="wrap" gap="0.5rem">
         {handlerAddresses.length === 0 && (
           <Alert color="warning" startDecorator={<Warning />}>
-            Pyynnöllä ei käsittelijöitä. Joko pyynnön tiedekunta-kenttä puuttuu, tai tiedekunnalle ei ole vielä merkattu käsittelijöitä.
+            {t('contractRequestView.noHandlers')}
           </Alert>
         )}
         {handlerAddresses.map((address) => (
@@ -114,15 +119,13 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
     <Form method="put" id="contract-request-status">
       <Box display="flex" flexDirection="column" gap="1rem">
         <Typography level="h4">
-          Päivitä pyynnön tila: <StatusChip status={contractRequest.status} />
+          {t('contractRequestView.updateStatus')}: <StatusChip status={contractRequest.status} />
         </Typography>
-        <Typography>
-          Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi. Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.
-        </Typography>
+        <Typography>{t('contractRequestView.updateStatusInstructions')}</Typography>
         <Box py="1rem" display="flex" flexDirection="column" gap="1rem">
           <FormControl>
-            <FormLabel>Viesti</FormLabel>
-            <Textarea placeholder="Vapaamuotoinen lisätieto tilan päivitykselle" />
+            <FormLabel>{t('common.message')}</FormLabel>
+            <Textarea placeholder={t('contractRequestView.messageDescription')} />
           </FormControl>
           <Box display="flex" gap="1rem">
             {actions.map((action) => (
