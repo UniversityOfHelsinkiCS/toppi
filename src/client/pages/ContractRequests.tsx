@@ -5,6 +5,7 @@ import { StatusChip } from '../components/common'
 import { useFaculties } from '../hooks/useFaculties'
 import { currentLng } from '../util/i18n'
 import { DataTable } from '../components/CustomTable'
+import { useTranslation } from 'react-i18next'
 
 const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest: ContractRequest; facultyName: string }) => {
   const open = useMatch(`private/contract-requests/${contractRequest.id}`)
@@ -32,6 +33,7 @@ const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest
 const ContractRequestList = () => {
   const contracts = useLoaderData() as ContractRequest[]
   const faculties = useFaculties()
+  const { t } = useTranslation()
 
   return (
     <Box flex={0.4}>
@@ -42,10 +44,10 @@ const ContractRequestList = () => {
         <DataTable hover>
           <thead style={{ height: '3rem' }}>
             <tr>
-              <th style={{ width: '14rem' }}>Lähettäjä</th>
-              <th>Pvm</th>
-              <th>TDK</th>
-              <th>Pyynnön tila</th>
+              <th style={{ width: '14rem' }}>{t('common.sender')}</th>
+              <th>{t('common.dateShort')}</th>
+              <th>{t('common.facultyShort')}</th>
+              <th>{t('common.contractRequestStatus')}</th>
             </tr>
           </thead>
           <tbody>

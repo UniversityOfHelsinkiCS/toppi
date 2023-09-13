@@ -105,9 +105,9 @@ const ContractForm = () => {
     const req = sendContract(formData)
 
     toast.promise(req, {
-      loading: 'Lähetetään työsopimuspyyntöä',
-      success: 'Työsopimuspyyntö lähetetty',
-      error: 'Työsopimuspyynnön lähettäminen epäonnistui',
+      loading: t('contractRequestForm.submitLoading'),
+      success: t('contractRequestForm.submitSuccess'),
+      error: t('contractRequestForm.submitError'),
     })
   }
 
@@ -121,28 +121,28 @@ const ContractForm = () => {
       }}
     >
       <Box>
-        <Typography level="body-md">Työsopimusta varten tarvittavat muut tiedot</Typography>
+        <Typography level="body-md">{t('contractRequestForm.formTitle')}</Typography>
         <Box mt="2rem">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputSection>
-                <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label="Etunimi" name="firstName" control={control} sx={{ flex: 1 }} />
-                <FormInputField required error={formState.errors.lastName ? t('errors.required') : undefined} label="Sukunimi" name="lastName" control={control} sx={{ flex: 1 }} />
+                <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label={t('formFields.firstName')} name="firstName" control={control} sx={{ flex: 1 }} />
+                <FormInputField required error={formState.errors.lastName ? t('errors.required') : undefined} label={t('formFields.lastName')} name="lastName" control={control} sx={{ flex: 1 }} />
               </InputSection>
-              <FormInputField required error={formState.errors.birthDate ? t('errors.required') : undefined} label="Syntymäaika" name="birthDate" type="date" control={control} />
-              <FormInputField required error={formState.errors.email ? t('errors.required') : undefined} label="Sähköposti" name="email" type="email" control={control} />
-              <InputSection label="Kurssin järjestäjä">
+              <FormInputField required error={formState.errors.birthDate ? t('errors.required') : undefined} label={t('formFields.birthDate')} name="birthDate" type="date" control={control} />
+              <FormInputField required error={formState.errors.email ? t('errors.required') : undefined} label={t('formFields.email')} name="email" type="email" control={control} />
+              <InputSection label={t('contractRequestForm.courseOrganiser')}>
                 <FormField
                   required
                   error={formState.errors.faculty ? t('errors.required') : ''}
                   sx={{ flex: 1 }}
                   name="faculty"
-                  label="Tiedekunta"
+                  label={t('common.faculty')}
                   control={control}
                   render={(field) => (
                     <Select
                       {...field}
-                      placeholder="Valitse tiedekunta"
+                      placeholder={t('contractRequestForm.chooseFaculty')}
                       onChange={(_, val) => {
                         if (!val) return
                         setValue('faculty', val)
@@ -156,7 +156,7 @@ const ContractForm = () => {
                           </Option>
                         ))
                       ) : (
-                        <Option value="">Ladataan...</Option>
+                        <Option value="">{t('common.loading')}</Option>
                       )}
                     </Select>
                   )}
@@ -164,11 +164,11 @@ const ContractForm = () => {
                 <FormField
                   sx={{ flex: 1 }}
                   name="programme"
-                  label="Koulutusohjelma"
+                  label={t('common.programme')}
                   disabled={!faculty}
                   control={control}
                   render={(field) => (
-                    <Select {...field} placeholder="Valitse koulutusohjelma" onChange={(e, val) => val && setValue('programme', val)}>
+                    <Select {...field} placeholder={t('contractRequestForm.chooseProgramme')} onChange={(e, val) => val && setValue('programme', val)}>
                       {programmes ? (
                         programmes.map((f) => (
                           <Option key={f.key} value={f.key}>
@@ -176,19 +176,19 @@ const ContractForm = () => {
                           </Option>
                         ))
                       ) : (
-                        <Option value="">Ladataan...</Option>
+                        <Option value="">{t('common.loading')}</Option>
                       )}
-                      <Option value="">En tiedä</Option>
+                      <Option value="">{t('common.dontKnow')}</Option>
                     </Select>
                   )}
                 />
               </InputSection>
-              <FormInputField required error={formState.errors.courseName ? t('errors.required') : undefined} label="Kurssin nimi" name="courseName" control={control} sx={{ flex: 1 }} />
-              <InputSection label="Kurssin aikataulu">
+              <FormInputField required error={formState.errors.courseName ? t('errors.required') : undefined} label={t('formFields.courseName')} name="courseName" control={control} sx={{ flex: 1 }} />
+              <InputSection label={t('contractRequestForm.courseSchedule')}>
                 <FormInputField
                   required
                   error={getDateError(t, formState.errors.courseStartDate?.message)}
-                  label="Ensimmäinen luento"
+                  label={t('formFields.startDate')}
                   name="courseStartDate"
                   control={control}
                   sx={{ flex: 1 }}
@@ -204,7 +204,7 @@ const ContractForm = () => {
                 <FormInputField
                   required
                   error={getDateError(t, formState.errors.courseEndDate?.message)}
-                  label="Viimeinen luento/tentti"
+                  label={t('formFields.endDate')}
                   name="courseEndDate"
                   control={control}
                   sx={{ flex: 1 }}
@@ -218,7 +218,7 @@ const ContractForm = () => {
                   }}
                 />
               </InputSection>
-              <InputSection label="Sopimuksen kesto" orientation="vertical">
+              <InputSection label={t('contractRequestForm.contractDates')} orientation="vertical">
                 <Controller
                   name="contractDuration"
                   control={control}
@@ -233,8 +233,8 @@ const ContractForm = () => {
                   }}
                   render={({ field }) => (
                     <RadioGroup {...field}>
-                      <Radio value="recommended" label="Suositeltu: alkaa viikkoa ennen kurssin alkua ja jatkuu kaksi viikkoa sen loputtua" />
-                      <Radio value="custom" label="Muu aikaväli" />
+                      <Radio value="recommended" label={t('contractRequestForm.contractDatesRecommended')} />
+                      <Radio value="custom" label={t('contractRequestForm.contractDatesCustom')} />
                     </RadioGroup>
                   )}
                 />
@@ -246,7 +246,7 @@ const ContractForm = () => {
                     control={control}
                     error={getDateError(t, formState.errors.contractStartDate?.message)}
                     type="date"
-                    label={`${!isRecommendedContractDates ? 'Valitse' : 'Suositeltu'} alkupäivä`}
+                    label={!isRecommendedContractDates ? t('contractRequestForm.chooseStartDate') : t('contractRequestForm.recommendedStartDate')}
                     readOnly={isRecommendedContractDates}
                   />
                   <FormInputField
@@ -256,13 +256,19 @@ const ContractForm = () => {
                     control={control}
                     error={getDateError(t, formState.errors.contractEndDate?.message)}
                     type="date"
-                    label={`${!isRecommendedContractDates ? 'Valitse' : 'Suositeltu'} loppupäivä`}
+                    label={!isRecommendedContractDates ? t('contractRequestForm.chooseEndDate') : t('contractRequestForm.recommendedEndDate')}
                     readOnly={isRecommendedContractDates}
                   />
                 </InputSection>
               </InputSection>
-              <FormField label="Lisätietoja" name="additionalInfo" render={(field) => <Textarea {...field} />} control={control} pretext="Kerro tässä esimerkiksi sovituista poikkeuksista" />
-              <Button type="submit">Lähetä käsiteltäväksi</Button>
+              <FormField
+                label={t('common.additionalInfo')}
+                name="additionalInfo"
+                render={(field) => <Textarea {...field} />}
+                control={control}
+                pretext="Kerro tässä esimerkiksi sovituista poikkeuksista"
+              />
+              <Button type="submit">{t('contractRequestForm.submit')}</Button>
             </Box>
           </form>
         </Box>
@@ -282,7 +288,7 @@ const ContractRequestForm = () => {
 
   return (
     <Box p="1rem">
-      <Typography level="h4">Työsopimuspyyntö</Typography>
+      <Typography level="h4">{t('common.contractRequest')}</Typography>
       <Box sx={(theme) => ({ display: 'flex', gap: '2rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
         <Box flex={3}>
           <ContractForm />
