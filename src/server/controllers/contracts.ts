@@ -7,7 +7,7 @@ import { ApplicationError } from '../errors'
 import { notifyOnContractRequest } from '../services/notifications'
 import { hasRight } from '../../shared/authorizationUtils'
 import { Op } from 'sequelize'
-import { getUserAccessTo } from '../services/access'
+import { ContractRequestAccessLevel, getUserAccessTo } from '../services/access'
 
 const contractsRouter = Router()
 
@@ -92,7 +92,7 @@ contractsRouter.put('/:id', requireAuthenticated(UserRoles.Faculty), async (req:
 
   if (!contractRequest) return ApplicationError.NotFound()
 
-  if (getUserAccessTo(user, contractRequest) !== 'write') return ApplicationError.Forbidden()
+  if (getUserAccessTo(user, contractRequest) >= ContractRequestAccessLevel.Write) return ApplicationError.Forbidden()
 
   contractRequest.status = status
 

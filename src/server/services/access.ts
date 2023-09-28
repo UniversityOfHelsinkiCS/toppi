@@ -22,15 +22,22 @@ export const getUserAccess = async (user: UserParams) => {
   }
 }
 
+export const ContractRequestAccessLevel = {
+  None: 0,
+  Read: 1,
+  Write: 2,
+  Admin: 3,
+} as const
+
 export const getUserAccessTo = (user: RequestUser, contractRequest: ContractRequest) => {
+  if (user.roles?.includes(UserRoles.Admin)) {
+    return ContractRequestAccessLevel.Admin
+  }
   if (user.access?.codes.includes(contractRequest.data.formData.faculty)) {
-    return 'write'
+    return ContractRequestAccessLevel.Write
   }
   if (user.email === contractRequest.data.formData.email) {
-    return 'read'
+    return ContractRequestAccessLevel.Read
   }
-  if (user.roles?.includes(UserRoles.Admin)) {
-    return 'admin'
-  }
-  return null
+  return ContractRequestAccessLevel.None
 }
