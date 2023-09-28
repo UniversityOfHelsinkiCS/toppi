@@ -9,7 +9,7 @@ Työaika- ja palkkalaskuri ulkopuolisille tuntiopettajille.
 Give extra role grants with `ADUSER_ROLE, FACULTY_ROLE, UNIVERSITY_ROLE, ADMIN_ROLE` env variables. Extra role grants will be merged with any other roles users get (such as those from Jami). Example:
 
 ```bash
-$ export ADMIN_ROLE=ttoppi;toppeli;topelias;topitopi
+$ export ADMIN_ROLE=topelias.toppinen@helsinki.fi;urho.kekkonen@suomi.fi
 ```
 
 Set tester emails with `TESTER_EMAILS`. Contract requests sent with these emails will always have `isTest: true`. Example:
