@@ -139,6 +139,7 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
 }
 
 const ContractRequestView = () => {
+  const { t } = useTranslation()
   const contractRequest = useLoaderData() as ContractRequest
   const handlerAddresses = useHandlerAddresses({ facultyCode: contractRequest.data.formData.faculty || 'missing' })
   const [viewRaw, setViewRaw] = React.useState(false)
@@ -146,6 +147,7 @@ const ContractRequestView = () => {
   return (
     <Sheet sx={{ px: '3rem', flex: 0.5 }}>
       <Typography level="h4">Pyynnön #{contractRequest.id} tiedot</Typography>
+      {contractRequest.isTest && <Alert sx={{ my: '1rem' }}>{t('contractRequestView.testInfo')}</Alert>}
       <Box display="flex">
         <Button sx={{ ml: 'auto' }} onClick={() => setViewRaw(!viewRaw)} variant="plain" size="sm">
           {viewRaw ? 'Katso muotoiltuna' : 'Katso raakadata'}

@@ -24,7 +24,7 @@ const ContractRequestItem = ({ contractRequest, facultyName }: { contractRequest
         </div>
       </td>
       <td>
-        <StatusChip status={contractRequest.status} />
+        <StatusChip status={contractRequest.status} isTest={contractRequest.isTest} />
       </td>
     </tr>
   )

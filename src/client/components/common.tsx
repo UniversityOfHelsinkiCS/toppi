@@ -4,12 +4,15 @@ import { ContractRequest, HandlerAddress } from '../types'
 
 export const SectionDivider = () => <Divider sx={{ my: '4rem' }} />
 
-export const StatusChip = ({ status }: { status: ContractRequest['status'] }) => {
+export const StatusChip = ({ status, isTest = false }: { status: ContractRequest['status']; isTest?: boolean }) => {
   const { t } = useTranslation()
+  const variant = isTest ? 'outlined' : status === 'waiting' ? 'solid' : 'outlined'
+  const color = isTest ? 'neutral' : status === 'rejected' ? 'danger' : 'primary'
 
   return (
-    <Chip variant={status === 'waiting' ? 'solid' : 'outlined'} size="sm" color={status === 'rejected' ? 'danger' : 'primary'}>
+    <Chip variant={variant} size="sm" color={color}>
       {t(`status.${status}`)}
+      {isTest && ` (${t('common.test')})`}
     </Chip>
   )
 }

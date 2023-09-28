@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { Controller, useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ContractRequestFormParams, ContractRequestFormParamsValidator } from '../../shared/types'
+import { ContractRequestFormParams, ContractRequestFormParamsValidator, UserRoles } from '../../shared/types'
 import { useCurrentUser } from '../hooks/useCurrentUser'
 import { useSendContract } from '../hooks/useSendContract'
 import { useFaculties, useProgrammes } from '../hooks/useFaculties'
@@ -14,6 +14,7 @@ import { useCalculatorParams } from '../store/calculatorStore'
 import { useTranslation } from 'react-i18next'
 import { FormField, FormInputField } from './formComponents'
 import { TFunction } from 'i18next'
+import { hasRight } from '../../shared/authorizationUtils'
 
 const InputSection = ({
   label,
@@ -88,6 +89,8 @@ const useDefaultValues = () => {
 
 const ContractForm = () => {
   const { t } = useTranslation()
+  const user = useCurrentUser()
+  const isStaff = user && hasRight(user, UserRoles.Faculty)
 
   const { control, handleSubmit, setValue, clearErrors, getValues, watch, formState } = useForm({
     resolver: zodResolver(ContractRequestFormParamsValidator),
@@ -272,6 +275,7 @@ const ContractForm = () => {
                 pretext={t('contractRequestForm.additionalInfoPretext')}
               />
               <Button type="submit">{t('contractRequestForm.submit')}</Button>
+              {isStaff && <Typography level="body-sm">{t('contractRequestForm.testInfo')}</Typography>}
             </Box>
           </form>
         </Box>

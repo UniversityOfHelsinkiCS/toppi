@@ -24,6 +24,7 @@ const translations = {
     unknownError: 'Jotain meni pieleen :(',
     details: 'Tarkemmat tiedot',
     goBack: 'Takaisin',
+    test: 'Testi',
   },
   navbar: {
     description: '– TYÖKALU ULKOPUOLISTEN TUNTIOPETTAJIEN TYÖAIKOJEN JA PALKKIOIDEN LASKEMISEEN',
@@ -116,6 +117,7 @@ const translations = {
     submitSuccess: 'Työsopimuspyyntö lähetetty onnistuneesti',
     submitError: 'Työsopimuspyynnön lähettäminen epäonnistui',
     submit: 'Lähetä käsiteltäväksi',
+    testInfo: 'Kuulut Topin henkilökuntaan, joten lähettämäsi pyyntö merkitään testiksi.',
   },
   formFields: {
     firstName: 'Etunimi',
@@ -139,6 +141,7 @@ const translations = {
     updateStatusInstructions:
       'Jos pyyntö on nyt käsitelty, merkkaa se valmiiksi. Jos tiedoissa on jotain korjattavaa, merkkaa se korjattavaksi. Pyynnön lähettäjä saa sähköpostiinsa ilmoituksen pyynnön tilan muutoksesta.',
     messageDescription: 'Vapaamuotoinen viesti pyynnön tilan päivitykseen',
+    testInfo: 'Tämä pyyntö on testi, sitä ei tarvitse käsitellä. Testipyynnöstä lähtee ilmoitus erikseen valittuun testikohdennusosoitteeseen.',
   },
   handlerAddresses: {
     newAddress: 'Uusi käsittelijän osoite/IAM',

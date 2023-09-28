@@ -11,6 +11,8 @@ class ContractRequest extends Model<InferAttributes<ContractRequest>, InferCreat
 
   declare userId: CreationOptional<ForeignKey<string>>
 
+  declare isTest: CreationOptional<boolean>
+
   declare createdAt: CreationOptional<Date>
 
   declare updatedAt: CreationOptional<Date>
@@ -39,6 +41,11 @@ ContractRequest.init(
         model: 'users',
         key: 'id',
       },
+    },
+    isTest: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     createdAt: {
       type: DataTypes.DATE,

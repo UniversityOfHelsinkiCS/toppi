@@ -8,15 +8,21 @@ import { notifyOnContractRequest } from '../services/notifications'
 import { hasRight } from '../../shared/authorizationUtils'
 import { Op } from 'sequelize'
 import { ContractRequestAccessLevel, getUserAccessTo } from '../services/access'
+import { isTester } from '../services/testers'
 
 const contractsRouter = Router()
 
 contractsRouter.post('/', async (req: RequestWithUser, res) => {
   const data = ContractRequestParamsValidator.parse(req.body)
 
+  const user = req.user
+  const isStaff = user && hasRight(user, UserRoles.Faculty)
+  const isTest = isStaff || isTester(data.formData.email)
+
   const contractRequest = await ContractRequest.create({
     data,
-    userId: req.user?.id,
+    userId: user?.id,
+    isTest,
   })
 
   await notifyOnContractRequest(contractRequest)

@@ -22,6 +22,7 @@ export type ContractRequest = {
   id: number
   status: ContractRequestStatus
   data: ContractRequestParams
+  isTest: boolean
   User?: UserParams
   createdAt: string
   updatedAt: string
