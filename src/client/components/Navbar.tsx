@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link as RouterLink, Outlet, useLoaderData, useMatch } from 'react-router-dom'
+import { Link as RouterLink, useLoaderData, useMatch } from 'react-router-dom'
 import { UserParams, UserRoles } from '../../shared/types'
 import { Box, Button, Dropdown, IconButton, Link, Menu, MenuButton, MenuItem, Sheet, Typography } from '@mui/joy'
 import { inStaging } from '../../config'

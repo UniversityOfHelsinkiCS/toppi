@@ -3,9 +3,12 @@ import { useEffect } from 'react'
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
 import * as Sentry from '@sentry/browser'
 import { useTranslation } from 'react-i18next'
+import { handleLogin } from './util/login'
+import { useCurrentUser } from './hooks/useCurrentUser'
 
 export const Error = () => {
   const { t } = useTranslation()
+  const user = useCurrentUser()
   const error = useRouteError() as any
   const navigate = useNavigate()
 
@@ -13,11 +16,15 @@ export const Error = () => {
 
   useEffect(() => {
     if (isRouteErrorResponse(error)) {
+      if (error.status === 401 && !user) {
+        handleLogin()
+        return
+      }
       Sentry.captureException(error.error)
     } else {
       Sentry.captureException(error)
     }
-  }, [error])
+  }, [error, user])
 
   return (
     <Box

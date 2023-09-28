@@ -111,7 +111,7 @@ const UpdateStatus = ({ contractRequest }: { contractRequest: ContractRequest })
       type: 'submit',
       disabled: status === contractRequest.status,
       color: status === 'rejected' ? 'danger' : ('primary' as 'danger' | 'primary'),
-      variant: status === 'handled' ? 'solid' : ('plain' as 'solid' | 'plain'),
+      variant: 'solid' as 'plain' | 'solid',
     },
   }))
 
