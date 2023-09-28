@@ -27,6 +27,11 @@ export const notifyOnContractRequest = async (contractRequest: ContractRequest) 
     targetOrganisationCode = 'doctoral'
   }
 
+  // If contract request is marked as test, only send to testers
+  if (contractRequest.isTest) {
+    targetOrganisationCode = 'testers'
+  }
+
   const handlerAddresses = await HandlerAddress.findAll({
     where: {
       facultyCode: targetOrganisationCode,
@@ -34,7 +39,7 @@ export const notifyOnContractRequest = async (contractRequest: ContractRequest) 
   })
 
   // Send mail to each...
-  handlerAddresses.forEach((address) => {
-    pateClient.sendMail(createContractRequestNotificationMail(address.getFullAddress(), handlerAddresses, contractRequest))
-  })
+  await Promise.all(handlerAddresses.map((address) => pateClient.sendMail(createContractRequestNotificationMail(address.getFullAddress(), handlerAddresses, contractRequest))))
+
+  // Finally do something
 }

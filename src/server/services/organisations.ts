@@ -9,11 +9,19 @@ const doctoralOrganisation: OrganisationUnit = {
   },
 }
 
+const testersOrganisation: OrganisationUnit = {
+  code: 'testers',
+  name: {
+    fi: 'Testaajat',
+    en: 'Testers',
+  },
+}
+
 export const getOrganisations = async () => {
   const faculties = await getOrganisationData()
 
   // Add Toppi's "virtual" organisations to jami data
-  const organisations = [...faculties, doctoralOrganisation]
+  const organisations = [...faculties, doctoralOrganisation, testersOrganisation]
 
   return organisations
 }

@@ -107,7 +107,7 @@ export type Locale = {
   sv?: string
 }
 
-export const specialOrganisationCodes = ['doctoral'] as const
+export const specialOrganisationCodes = ['doctoral', 'testers'] as const
 
 /**
  * Represent an organisation that handles contract requests in toppi.
