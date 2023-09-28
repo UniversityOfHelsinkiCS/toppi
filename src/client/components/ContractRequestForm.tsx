@@ -29,7 +29,7 @@ const InputSection = ({
   return (
     <Box py="0.5rem">
       {label && (
-        <Typography level="body-md" sx={{ mb: '1rem' }} endDecorator={endAdornment}>
+        <Typography level="body-md" sx={{ mb: '0.5rem' }} endDecorator={endAdornment}>
           {label}
         </Typography>
       )}
@@ -219,6 +219,9 @@ const ContractForm = () => {
                 />
               </InputSection>
               <InputSection label={t('contractRequestForm.contractDates')} orientation="vertical">
+                <Typography level="body-sm" sx={{ mb: '0.5rem' }}>
+                  {t('contractRequestForm.contractDatesInfo')}
+                </Typography>
                 <Controller
                   name="contractDuration"
                   control={control}

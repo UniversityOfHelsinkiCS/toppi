@@ -102,6 +102,8 @@ const translations = {
     endDatelabel: 'Viimeinen luento/tentti',
     contractDates: 'Sopimuksen kesto',
     contractDatesRecommended: 'Suositeltu: alkaa viikkoa ennen kurssin alkua ja jatkuu kaksi viikkoa sen loputtua',
+    contractDatesInfo:
+      'Sopimuksen päivämäärät ovat palkanmaksua varten, mutta eivät estä sitä että esim. kurssin valmisteluun käytetään aikaa jo ennen sopimuksen alkua tai kokeiden tarkastamiseen sopimuksen loputtua.',
     contractDatesCustom: 'Muu aikaväli',
     chooseStartDate: 'Valitse alkupäivä',
     chooseEndDate: 'Valitse loppupäivä',
