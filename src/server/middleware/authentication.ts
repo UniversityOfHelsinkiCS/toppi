@@ -56,7 +56,7 @@ const populateUserRoles = async (user: RequestUser) => {
   }
 
   if (!roles) {
-    roles = getUserRoles(user.id, access)
+    roles = getUserRoles(user.email, access)
   }
 
   user.access = access

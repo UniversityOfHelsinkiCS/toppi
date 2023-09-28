@@ -6,9 +6,9 @@ const roleNames = Object.keys(UserRoles) as RoleName[]
 const ExtraRoles = Object.fromEntries(roleNames.map((r) => [r, []] as [RoleName, string[]])) as { [role in RoleName]: string[] }
 
 /**
- * Load custom given roles from env. Ids are separated by ;.
+ * Load custom given roles from env. Emails are separated by ;.
  * Env keys are uppercased role name + '_ROLE'
- * Example: ADMIN_ROLE=user-id-for-admin-1;user-id-for-admin-2
+ * Example: ADMIN_ROLE=topi.topelias@helsinki.fi;toppitoppinen@legitmail.gov
  */
 const loadExtraUserRoles = () => {
   const emptyEnvs: string[] = []
@@ -17,14 +17,14 @@ const loadExtraUserRoles = () => {
   for (key in ExtraRoles) {
     const envName = `${key.toUpperCase()}_ROLE`
     const envValue = process.env[envName]
-    const userIds = envValue?.split(';')
+    const emails = envValue?.split(';')
 
-    if (!userIds || userIds.length === 0) {
+    if (!emails || emails.length === 0) {
       emptyEnvs.push(envName)
       continue
     }
 
-    ExtraRoles[key] = userIds
+    ExtraRoles[key] = emails
   }
 
   console.log(`No extra roles grants defined for roles: ${emptyEnvs}`)
@@ -32,7 +32,7 @@ const loadExtraUserRoles = () => {
 
 loadExtraUserRoles()
 
-export const getUserRoles = (userId: string, access: UserAccess) => {
+export const getUserRoles = (email: string, access: UserAccess) => {
   const roles: UserRole[] = [UserRoles.AdUser]
 
   // Give faculty role...
@@ -50,7 +50,7 @@ export const getUserRoles = (userId: string, access: UserAccess) => {
   // Give extra roles
   let key: RoleName
   for (key in ExtraRoles) {
-    if (ExtraRoles[key].includes(userId)) {
+    if (ExtraRoles[key].includes(email)) {
       roles.push(UserRoles[key])
     }
   }
