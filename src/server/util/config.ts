@@ -19,3 +19,5 @@ export const OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID || ''
 export const OIDC_CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET || ''
 
 export const OIDC_REDIRECT_URI = process.env.OIDC_REDIRECT_URI || ''
+
+export const PATE_URL = process.env.PATE_URL || ''

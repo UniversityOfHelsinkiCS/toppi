@@ -5,7 +5,7 @@ import { isDoctoralProgramme } from './organisations'
 const createContractRequestNotificationMail = (recipient: string, allHandlers: HandlerAddress[], contractRequest: ContractRequest): Mail => {
   return {
     subject: 'Uusi työsopimuspyyntö!',
-    recipient,
+    to: recipient,
     text: `
       Noniiiin uusi työsopimuspyyntö on saatu! Lue se <a href="https://toppi.helsinki.fi/private/contract-requests/${contractRequest.id}">täältä topista</a>. \n
       Tämä ilmoitus lähetettiin osoitteisiin ${allHandlers.map((h) => h.getFullAddress()).join()}
