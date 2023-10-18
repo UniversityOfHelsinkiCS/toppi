@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import { API_TOKEN, PATE_URL } from './config'
 import { inDevelopment, inProduction, inTesting } from '../../config'
+import { Sentry } from '../middleware/sentry'
 
 const template = {
   from: 'Norppa',
@@ -46,14 +47,19 @@ const postMail = async (opts: PateRequest) => {
     return false
   }
 
-  const res = await pateApiClient.post('/mail', opts)
-
-  if (res.status !== 200) {
-    console.log('Error sending mail', res.data)
+  try {
+    const res = await pateApiClient.post('/mail', opts)
+    if (res.status !== 200) {
+      console.log('Pate returned non-200 code:', res.status, res.data)
+    }
+    Sentry.setTag('pate status', res.status)
+    return true
+  } catch (error) {
+    console.error(error)
+    Sentry.setTag('pate status', 'error')
+    Sentry.captureException(error)
     return false
   }
-
-  return true
 }
 
 export type Mail = {
