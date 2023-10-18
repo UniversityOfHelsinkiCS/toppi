@@ -1,15 +1,15 @@
 import axios, { AxiosInstance } from 'axios'
-import { PUBLIC_URL, inDevelopment, inE2E, inTesting } from '../config'
+import { inDevelopment, inE2E, inTesting } from '../config'
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from 'react-router-dom'
 import { getMockHeaders } from './util/mockHeaders'
 import { ContractRequestParams, HandlerAddressParams, OrganisationUnit, UserParams } from '../shared/types'
 
 export const publicClient = axios.create({
-  baseURL: `${PUBLIC_URL}/api`,
+  baseURL: `/api`,
 })
 
 export const privateClient = axios.create({
-  baseURL: `${PUBLIC_URL}/private/api`,
+  baseURL: `/private/api`,
 })
 
 privateClient.interceptors.request.use((config) => {

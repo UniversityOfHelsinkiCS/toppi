@@ -40,7 +40,7 @@ mainRouter.use(sentryRequestHandler)
 mainRouter.use(cors())
 mainRouter.use(express.json())
 mainRouter.use(express.urlencoded({ extended: true }))
-mainRouter.use(morgan('short'))
+mainRouter.use(morgan(':date[iso] :method :url :status - :response-time ms'))
 
 mainRouter.use('/private/api', getCurrentUser, apiRouter)
 mainRouter.use('/api', apiRouter)

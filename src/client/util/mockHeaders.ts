@@ -1,4 +1,4 @@
-import { PUBLIC_URL, inDevelopment, inTesting } from '../../config'
+import { inDevelopment, inTesting } from '../../config'
 
 const ITEM_NAME = 'fakeUser'
 
@@ -9,7 +9,6 @@ const fakeUsers = [
     sn: 'Testaaja',
     mail: 'topias.testaaja@helsinki.fi',
     schacdateofbirth: '19910101',
-    shib_logout_url: `${PUBLIC_URL}/`,
     hygroupcn: 'grp-toska',
   },
   {
@@ -18,7 +17,6 @@ const fakeUsers = [
     sn: 'Matlumies',
     mail: 'matias.matlumies@helsinki.fi',
     schacdateofbirth: '19810101',
-    shib_logout_url: `${PUBLIC_URL}/`,
     hygroupcn: 'kumpula-student',
   },
 ] as const

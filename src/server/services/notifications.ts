@@ -6,11 +6,11 @@ import { isDoctoralProgramme } from './organisations'
 
 const createContractRequestNotificationMail = (recipient: string, allHandlers: HandlerAddress[], contractRequest: ContractRequest): Mail => {
   return {
-    subject: 'Uusi työsopimuspyyntö!',
+    subject: `${contractRequest.isTest ? '(Testi) ' : ''}Uusi työsopimuspyyntö!`,
     to: recipient,
     text: `
       Uusi työsopimuspyyntö saatu käyttäjältä ${contractRequest.data.formData.email}.\n
-      <a href="https://${PUBLIC_URL}/private/contract-requests/${contractRequest.id}">Lue se Topista.</a> \n\n
+      <a href="${PUBLIC_URL}/private/contract-requests/${contractRequest.id}">Lue se Topista.</a> \n\n
       Tämä ilmoitus lähetettiin osoitteisiin ${allHandlers.map((h) => h.getFullAddress()).join(', ')}
       Olet saajalistalla, koska ${recipient} on merkitty käsittelijäosoitteeksi tiedekunnalle ${contractRequest.data.formData.faculty}.
       Ota yhteyttä tukeen <a href="mailto:grp-toska@helsinki.fi">grp-toska@helsinki.fi</a> jos kyseessä on virhe.
@@ -56,7 +56,7 @@ export const notifyOnContractRequest = async (contractRequest: ContractRequest) 
     await Promise.all(handlerAddresses.map((address) => pateClient.sendMail(createContractRequestNotificationMail(address.getFullAddress(), handlerAddresses, contractRequest))))
   ).filter((sent) => sent).length
 
-  Sentry.captureMessage(`Contract request from ${contractRequest.data.formData.email} sent to ${sentCount} handlers`)
+  Sentry.captureMessage(`${contractRequest.isTest ? 'TEST ' : ''} Contract request from ${contractRequest.data.formData.email} sent to ${sentCount} handlers`)
 
   return true
 }

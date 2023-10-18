@@ -9,5 +9,5 @@ const devLogin = () => {
 export const handleLogin = async () => {
   if (inDevelopment || inE2E) return devLogin()
 
-  window.location.href = `${PUBLIC_URL}/api/oidc`.replace('//', '/')
+  window.location.href = `${PUBLIC_URL}/api/oidc`
 }
