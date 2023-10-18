@@ -6,7 +6,7 @@ import { inDevelopment, inProduction, inTesting } from '../../config'
 import { Sentry } from '../middleware/sentry'
 
 const template = {
-  from: 'Norppa',
+  from: 'Toppi',
 }
 
 const settings = {

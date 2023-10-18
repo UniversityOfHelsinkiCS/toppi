@@ -1,3 +1,4 @@
+import { PUBLIC_URL } from '../../config'
 import { ContractRequest, HandlerAddress } from '../db/models'
 import { Sentry } from '../middleware/sentry'
 import { Mail, pateClient } from '../util/pate'
@@ -8,10 +9,10 @@ const createContractRequestNotificationMail = (recipient: string, allHandlers: H
     subject: 'Uusi työsopimuspyyntö!',
     to: recipient,
     text: `
-      Uusi työsopimuspyyntö saatu käyttäjältä ${contractRequest.data.formData.email}.
-      <a href="https://toppi.helsinki.fi/private/contract-requests/${contractRequest.id}">Lue se Topista.</a> \n\n
+      Uusi työsopimuspyyntö saatu käyttäjältä ${contractRequest.data.formData.email}.\n
+      <a href="https://${PUBLIC_URL}/private/contract-requests/${contractRequest.id}">Lue se Topista.</a> \n\n
       Tämä ilmoitus lähetettiin osoitteisiin ${allHandlers.map((h) => h.getFullAddress()).join(', ')}
-      Olet saajalistalla, koska ${recipient} on merkitty käsittelijäosoitteeksi tiedekunnalle ${contractRequest.data.formData.faculty}.\n
+      Olet saajalistalla, koska ${recipient} on merkitty käsittelijäosoitteeksi tiedekunnalle ${contractRequest.data.formData.faculty}.
       Ota yhteyttä tukeen <a href="mailto:grp-toska@helsinki.fi">grp-toska@helsinki.fi</a> jos kyseessä on virhe.
     `,
   }
