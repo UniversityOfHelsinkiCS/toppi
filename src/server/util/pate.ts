@@ -26,7 +26,7 @@ const pateApiClient = axios.create({
 })
 
 type PateRequest = {
-  mails: Mail[]
+  emails: Mail[]
   settings: typeof settings
   template: typeof template
 }
@@ -76,7 +76,7 @@ export const pateClient: Pate = {
   sendMail(mail: Mail) {
     console.log(`[Pate] sending mail ${mail.subject} to ${mail.to}: \n${mail.text}`)
     return postMail({
-      mails: [mail],
+      emails: [mail],
       settings,
       template,
     })
