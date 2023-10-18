@@ -1,4 +1,5 @@
 import { ContractRequest, HandlerAddress } from '../db/models'
+import { Sentry } from '../middleware/sentry'
 import { Mail, pateClient } from '../util/pate'
 import { isDoctoralProgramme } from './organisations'
 
@@ -15,7 +16,7 @@ const createContractRequestNotificationMail = (recipient: string, allHandlers: H
 
 export const notifyOnContractRequest = async (contractRequest: ContractRequest) => {
   const facultyCode = contractRequest.data.formData.faculty
-  if (!facultyCode) {
+  if (!facultyCode && !contractRequest.isTest) {
     console.log('Faculty code missing for CR. No notifications will be sent')
   }
 
@@ -38,8 +39,20 @@ export const notifyOnContractRequest = async (contractRequest: ContractRequest) 
     },
   })
 
-  // Send mail to each...
-  await Promise.all(handlerAddresses.map((address) => pateClient.sendMail(createContractRequestNotificationMail(address.getFullAddress(), handlerAddresses, contractRequest))))
+  if (handlerAddresses.length === 0) {
+    console.log(`No handler addresses found for faculty ${targetOrganisationCode}. No notifications will be sent`)
+    if (!contractRequest.isTest) {
+      Sentry.captureMessage(`Contract request from ${contractRequest.data.formData.email}. No handler addresses found for faculty ${targetOrganisationCode}. No notifications will be sent`)
+    }
+    return false
+  }
 
-  // Finally do something
+  // Send mail to each...
+  const sentCount = (
+    await Promise.all(handlerAddresses.map((address) => pateClient.sendMail(createContractRequestNotificationMail(address.getFullAddress(), handlerAddresses, contractRequest))))
+  ).filter((sent) => sent).length
+
+  Sentry.captureMessage(`Contract request from ${contractRequest.data.formData.email} sent to ${sentCount} handlers`)
+
+  return true
 }
