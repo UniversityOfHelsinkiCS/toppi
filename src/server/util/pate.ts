@@ -48,7 +48,7 @@ const postMail = async (opts: PateRequest) => {
   }
 
   try {
-    const res = await pateApiClient.post('/mail', opts)
+    const res = await pateApiClient.post('/', opts)
     if (res.status !== 200) {
       console.log('Pate returned non-200 code:', res.status, res.data)
     }
