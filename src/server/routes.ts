@@ -18,6 +18,7 @@ import handlerAddressRouter from './controllers/handlerAddresses'
  */
 const apiRouter = Router()
 
+apiRouter.get('/ping', (_req, res) => res.send('pong'))
 apiRouter.use('/contract-requests', contractsRouter)
 apiRouter.use('/handler-addresses', handlerAddressRouter)
 apiRouter.use('/organisations', organisationsRouter)
