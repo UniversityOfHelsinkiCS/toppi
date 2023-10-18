@@ -8,6 +8,7 @@ import User from '../db/models/User'
 import dayjs from 'dayjs'
 import { getUserAccess } from '../services/access'
 import { getUserRoles } from '../services/roles'
+import { Sentry } from './sentry'
 
 export const parseShibDateOfBirth = (dob: string | undefined) => {
   const parsed = dob ? dayjs(dob, 'YYYYMMDD', true).format('YYYY-MM-DD') : dob
@@ -76,6 +77,8 @@ export const requireAuthenticated = (minimumRole: UserRole = UserRoles.AdUser) =
     }
 
     const roles = await populateUserRoles(user)
+
+    Sentry.setTag('user roles', roles.map(nameOfRole).join(', '))
 
     const hasAccess = roles.some((role) => role >= minimumRole)
 

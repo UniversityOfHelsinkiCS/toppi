@@ -8,8 +8,11 @@ const createContractRequestNotificationMail = (recipient: string, allHandlers: H
     subject: 'Uusi työsopimuspyyntö!',
     to: recipient,
     text: `
-      Noniiiin uusi työsopimuspyyntö on saatu! Lue se <a href="https://toppi.helsinki.fi/private/contract-requests/${contractRequest.id}">täältä topista</a>. \n
-      Tämä ilmoitus lähetettiin osoitteisiin ${allHandlers.map((h) => h.getFullAddress()).join()}
+      Uusi työsopimuspyyntö saatu käyttäjältä ${contractRequest.data.formData.email}.
+      <a href="https://toppi.helsinki.fi/private/contract-requests/${contractRequest.id}">Lue se Topista.</a> \n\n
+      Tämä ilmoitus lähetettiin osoitteisiin ${allHandlers.map((h) => h.getFullAddress()).join(', ')}
+      Olet saajalistalla, koska ${recipient} on merkitty käsittelijäosoitteeksi tiedekunnalle ${contractRequest.data.formData.faculty}.\n
+      Ota yhteyttä tukeen <a href="mailto:grp-toska@helsinki.fi">grp-toska@helsinki.fi</a> jos kyseessä on virhe.
     `,
   }
 }
