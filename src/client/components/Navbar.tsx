@@ -112,6 +112,7 @@ export const Navbar = () => {
           <Navlink to="/private" label={t('navbar.frontPage')} />
           <Navlink to="/private/contract-requests" label={t('navbar.contractRequests')} />
           {hasRight(user, UserRoles.Admin) && <Navlink to="/private/handler-addresses" label={t('navbar.handlerAddresses')} />}
+          {hasRight(user, UserRoles.Admin) && <Navlink to="/private/admin" label={t('navbar.admin')} />}
         </Box>
       )}
     </Sheet>

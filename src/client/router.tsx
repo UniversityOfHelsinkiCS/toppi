@@ -7,6 +7,7 @@ import ContractRequestView from './pages/ContractRequestView'
 import { BASE_PATH } from '../config'
 import { Error } from './Error'
 import HandlerAddressess from './pages/HandlerAddresses'
+import Admin from './pages/Admin'
 
 const router = createBrowserRouter(
   [
@@ -53,6 +54,10 @@ const router = createBrowserRouter(
           path: 'handler-addresses',
           element: <HandlerAddressess />,
           loader: getHandlerAddressesLoader,
+        },
+        {
+          path: 'admin',
+          element: <Admin />,
         },
       ],
     },

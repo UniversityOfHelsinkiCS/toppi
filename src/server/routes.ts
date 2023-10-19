@@ -10,6 +10,7 @@ import { getCurrentUser } from './middleware/authentication'
 import { errorHandler } from './middleware/error'
 import organisationsRouter from './controllers/organisations'
 import handlerAddressRouter from './controllers/handlerAddresses'
+import usersRouter from './controllers/users'
 
 /**
  * apiRouter handles the business side of requests.
@@ -22,6 +23,7 @@ apiRouter.get('/ping', (_req, res) => res.send('pong'))
 apiRouter.use('/contract-requests', contractsRouter)
 apiRouter.use('/handler-addresses', handlerAddressRouter)
 apiRouter.use('/organisations', organisationsRouter)
+apiRouter.use('/users', usersRouter)
 if (inStaging) apiRouter.use('/test', testRouter)
 apiRouter.use('/', loginRouter)
 apiRouter.use('/', (_req, res) => res.sendStatus(404))

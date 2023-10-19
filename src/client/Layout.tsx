@@ -4,6 +4,7 @@ import { GitHub } from '@mui/icons-material'
 import toskaLogo from './assets/toska13.png'
 import { Outlet } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
+import AdminLoggedInAsBanner from './components/AdminLoggedInAsBanner'
 
 const Footer = () => (
   <Sheet
@@ -35,6 +36,7 @@ const Footer = () => (
 const Layout = () => (
   <CssBaseline>
     <Toaster />
+    <AdminLoggedInAsBanner />
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Navbar />
       <Outlet />

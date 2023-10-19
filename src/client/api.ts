@@ -16,8 +16,11 @@ privateClient.interceptors.request.use((config) => {
   let headers = inDevelopment || inTesting || inE2E ? getMockHeaders() : undefined
   headers ||= {}
 
-  const adminLoggedInAs = localStorage.getItem('adminLoggedInAs') // id
-  if (adminLoggedInAs) headers['x-admin-logged-in-as'] = adminLoggedInAs
+  const adminLoggedInAs = localStorage.getItem('toppi-admin-logged-in-as')
+  if (adminLoggedInAs) {
+    const user = JSON.parse(adminLoggedInAs)
+    headers['x-admin-logged-in-as'] = user.id
+  }
 
   const newHeaders = Object.assign(config.headers, headers)
 

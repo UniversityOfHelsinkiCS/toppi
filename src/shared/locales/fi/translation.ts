@@ -33,6 +33,7 @@ const translations = {
     frontPage: 'Etusivu',
     contractRequests: 'Työsopimuspyynnöt',
     handlerAddresses: 'Kohdennusosoitteet',
+    admin: 'Admin',
   },
   status: {
     waiting: 'Odottaa',
