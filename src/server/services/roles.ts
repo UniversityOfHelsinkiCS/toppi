@@ -1,9 +1,4 @@
-import { UserAccess, UserRole, UserRoles } from '../../shared/types'
-
-type RoleName = keyof typeof UserRoles
-
-const roleNames = Object.keys(UserRoles) as RoleName[]
-const ExtraRoles = Object.fromEntries(roleNames.map((r) => [r, []] as [RoleName, string[]])) as { [role in RoleName]: string[] }
+import { ExtraRoles, RoleName, UserAccess, UserRole, UserRoles } from '../../shared/types'
 
 /**
  * Load custom given roles from env. Emails are separated by ;.

@@ -150,6 +150,14 @@ export const UserRoles = {
 
 export type UserRole = (typeof UserRoles)[keyof typeof UserRoles]
 
+export type RoleName = keyof typeof UserRoles
+
+const roleNames = Object.keys(UserRoles) as RoleName[]
+
+export const ExtraRoles = Object.fromEntries(roleNames.map((r) => [r, []] as [RoleName, string[]])) as { [role in RoleName]: string[] }
+
+export const nameOfRole = (role: UserRole) => Object.entries(UserRoles).filter(([, v]) => v === role)?.[0]?.[0]
+
 export type UserAccess = {
   specialGroups?: {
     [group in SpecialGroup]?: boolean

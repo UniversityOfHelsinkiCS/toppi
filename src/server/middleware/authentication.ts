@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 
 import { inDevelopment, inE2E } from '../../config'
-import { UserRole, UserRoles } from '../../shared/types'
+import { UserRole, UserRoles, nameOfRole } from '../../shared/types'
 import { ApplicationError } from '../errors'
 import { RequestUser, RequestWithUser } from '../types'
 import User from '../db/models/User'
@@ -65,8 +65,6 @@ const populateUserRoles = async (user: RequestUser) => {
 
   return roles
 }
-
-const nameOfRole = (role: UserRole) => Object.entries(UserRoles).filter(([, v]) => v === role)?.[0]?.[0]
 
 export const requireAuthenticated = (minimumRole: UserRole = UserRoles.AdUser) => {
   const authMiddleware: RequestHandler = async (req: RequestWithUser, res, next) => {

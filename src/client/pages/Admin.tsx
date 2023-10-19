@@ -1,28 +1,45 @@
 import React from 'react'
-import { Box, Button, Input, Sheet, Typography } from '@mui/joy'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Input, Sheet, Typography } from '@mui/joy'
 import { privateClient } from '../api'
 import { loginAs } from '../util/loginAs'
-import { UserParams } from '../../shared/types'
+import { UserParams, nameOfRole } from '../../shared/types'
 import { useQuery } from '@tanstack/react-query'
 
-const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLoginAs: (user: UserParams) => void; isFocused: boolean }) => (
-  <Sheet sx={{ m: '1rem', p: '1rem' }} variant="soft">
-    <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-      <Typography>{user.email}</Typography>
-      <Button sx={{ ml: 'auto' }} variant="plain" onClick={() => handleLoginAs(user)}>
-        Login as
-      </Button>
-    </Box>
-    <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-      <Typography level="body-sm">{user.roles?.join(', ') ?? 'No roles'}</Typography>
-      {isFocused && (
-        <Typography sx={{ ml: 'auto' }} level="body-sm">
-          Or press enter to log in as
-        </Typography>
-      )}
-    </Box>
-  </Sheet>
-)
+const UserDetails = ({ userDetails }: { userDetails: UserParams }) => {
+  return <Typography>{userDetails.roles?.map(nameOfRole).join(', ')}</Typography>
+}
+
+const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLoginAs: (user: UserParams) => void; isFocused: boolean }) => {
+  const [isOpen, setIsOpen] = React.useState(false)
+
+  const { data: userDetails, isPending } = useQuery<UserParams>({
+    queryKey: ['userDetails', user.id],
+    queryFn: () => privateClient.get(`/users/${user.id}`).then((res) => res.data),
+    enabled: isOpen,
+  })
+
+  return (
+    <Sheet sx={{ m: '1rem', p: '1rem' }} variant="soft">
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <Typography>{user.email}</Typography>
+        <Button sx={{ ml: 'auto' }} variant="plain" onClick={() => handleLoginAs(user)}>
+          Login as
+        </Button>
+      </Box>
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <Accordion expanded={isOpen} onChange={(_ev, expanded) => setIsOpen(expanded)}>
+          <AccordionSummary>Details</AccordionSummary>
+          <AccordionDetails>{isPending || !userDetails ? 'Loading...' : <UserDetails userDetails={userDetails} />}</AccordionDetails>
+        </Accordion>
+        {isFocused && (
+          <Typography sx={{ ml: 'auto' }} level="body-sm">
+            Or press enter to log in as
+          </Typography>
+        )}
+      </Box>
+    </Sheet>
+  )
+}
 
 const Admin = () => {
   const { data: users, isPending } = useQuery<UserParams[]>({

@@ -1,9 +1,12 @@
 import { Router } from 'express'
 import { RequestWithUser } from '../types'
 import { requireAuthenticated } from '../middleware/authentication'
-import { UserRoles } from '../../shared/types'
+import { UserParams, UserRoles } from '../../shared/types'
 import { User } from '../db/models'
 import { Op } from 'sequelize'
+import { ApplicationError } from '../errors'
+import { getUserAccess } from '../services/access'
+import { getUserRoles } from '../services/roles'
 
 const usersRouter = Router()
 
@@ -19,6 +22,20 @@ usersRouter.get('/', requireAuthenticated(UserRoles.Admin), async (req: RequestW
   })
 
   res.send(users)
+})
+
+usersRouter.get('/:id', requireAuthenticated(UserRoles.Admin), async (req: RequestWithUser, res) => {
+  const id = req.params.id
+
+  const user = await User.findByPk(id)
+  if (!user) {
+    return ApplicationError.NotFound()
+  }
+  const userJson = user.toJSON() as UserParams
+  const access = await getUserAccess(userJson)
+  userJson.roles = getUserRoles(userJson.email, access)
+
+  res.send(userJson)
 })
 
 export default usersRouter
