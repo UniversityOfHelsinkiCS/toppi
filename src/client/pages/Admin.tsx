@@ -3,6 +3,7 @@ import { Box, Button, Input, Sheet, Typography } from '@mui/joy'
 import { privateClient } from '../api'
 import { loginAs } from '../util/loginAs'
 import { UserParams } from '../../shared/types'
+import { useQuery } from '@tanstack/react-query'
 
 const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLoginAs: (user: UserParams) => void; isFocused: boolean }) => (
   <Sheet sx={{ m: '1rem', p: '1rem' }} variant="soft">
@@ -24,27 +25,23 @@ const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLogi
 )
 
 const Admin = () => {
-  const [potentialUsers, setPotentialUsers] = React.useState<UserParams[]>([])
+  const { data: users, isPending } = useQuery<UserParams[]>({
+    queryKey: ['users'],
+    queryFn: () => privateClient.get('/users').then((res) => res.data),
+  })
+  const [search, setSearch] = React.useState('')
   const [focusIndex, setFocusIndex] = React.useState(0)
 
-  const handleChange = async (query: string) => {
-    if (query.length < 5) return
-
-    const params = {
-      email: query,
-    }
-
-    const { data } = await privateClient.get('/users', { params })
-    const users = data as UserParams[]
-
-    setPotentialUsers(users)
-    setFocusIndex(Math.min(focusIndex, users.length > 0 ? users.length - 1 : 0))
-  }
+  const filteredUsers = React.useMemo(() => {
+    if (!users) return []
+    return users.filter((user) => user.email.includes(search))
+  }, [users, search])
 
   const handleKeyPress = (event: any) => {
-    if (event.key === 'Enter' && potentialUsers.length > 0) loginAs(potentialUsers[focusIndex])
+    if (isPending || !users) return
+    if (event.key === 'Enter' && users.length > 0) loginAs(users[focusIndex])
     if (event.key === 'ArrowDown') {
-      setFocusIndex(Math.min(focusIndex + 1, potentialUsers.length - 1))
+      setFocusIndex(Math.min(focusIndex + 1, users.length - 1))
       event.preventDefault()
     }
     if (event.key === 'ArrowUp') {
@@ -56,9 +53,8 @@ const Admin = () => {
   return (
     <Box sx={{ p: '1rem' }} onKeyDown={handleKeyPress}>
       <Typography sx={{ mb: '1rem' }}>Login as other users, to act on their behalf or reproduce issues.</Typography>
-      <Input sx={{}} placeholder="Search users by email" variant="outlined" onChange={(ev) => handleChange(ev.target.value)} />
-
-      {potentialUsers.map((user, index) => (
+      <Input sx={{}} placeholder="Search users by email" variant="outlined" onChange={(ev) => setSearch(ev.target.value)} />
+      {filteredUsers.map((user, index) => (
         <User key={user.id} user={user} handleLoginAs={loginAs} isFocused={index === focusIndex} />
       ))}
     </Box>
