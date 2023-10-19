@@ -71,6 +71,7 @@ export const UserParamsValidator = z.object({
 })
 
 export type UserParams = z.infer<typeof UserParamsValidator> & { roles?: UserRole[] }
+export type UserData = UserParams & { createdAt?: string | Date; updatedAt?: string | Date }
 
 export const OptionValidator = z.object({
   label: z.string(),

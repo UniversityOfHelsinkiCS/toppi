@@ -1,18 +1,27 @@
 import React from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Input, Sheet, Typography } from '@mui/joy'
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, Box, Button, Input, Sheet, Typography } from '@mui/joy'
 import { privateClient } from '../api'
 import { loginAs } from '../util/loginAs'
-import { UserParams, nameOfRole } from '../../shared/types'
+import { UserData, nameOfRole } from '../../shared/types'
 import { useQuery } from '@tanstack/react-query'
+import { DataTable, TableItem } from '../components/CustomTable'
 
-const UserDetails = ({ userDetails }: { userDetails: UserParams }) => {
-  return <Typography>{userDetails.roles?.map(nameOfRole).join(', ')}</Typography>
+const UserDetails = ({ userDetails }: { userDetails: UserData }) => {
+  return (
+    <DataTable>
+      <tbody>
+        <TableItem label="roles" value={'' + userDetails.roles?.map(nameOfRole).join(', ')} />
+        <TableItem label="iam groups" value={'' + userDetails.iamGroups?.join(', ')} />
+        <TableItem label="first logged in" value={'' + String(userDetails?.createdAt)} />
+      </tbody>
+    </DataTable>
+  )
 }
 
-const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLoginAs: (user: UserParams) => void; isFocused: boolean }) => {
+const User = ({ user, handleLoginAs, isFocused }: { user: UserData; handleLoginAs: (user: UserData) => void; isFocused: boolean }) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
-  const { data: userDetails, isPending } = useQuery<UserParams>({
+  const { data: userDetails, isPending } = useQuery<UserData>({
     queryKey: ['userDetails', user.id],
     queryFn: () => privateClient.get(`/users/${user.id}`).then((res) => res.data),
     enabled: isOpen,
@@ -26,11 +35,15 @@ const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLogi
           Login as
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <Accordion expanded={isOpen} onChange={(_ev, expanded) => setIsOpen(expanded)}>
-          <AccordionSummary>Details</AccordionSummary>
-          <AccordionDetails>{isPending || !userDetails ? 'Loading...' : <UserDetails userDetails={userDetails} />}</AccordionDetails>
-        </Accordion>
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
+        <AccordionGroup sx={{ flex: 0.7 }}>
+          <Accordion onChange={(_ev, expanded) => setIsOpen(expanded)} expanded={isOpen}>
+            <AccordionSummary>Details</AccordionSummary>
+            <AccordionDetails>
+              <Box>{isPending || !userDetails ? 'Loading...' : <UserDetails userDetails={userDetails} />}</Box>
+            </AccordionDetails>
+          </Accordion>
+        </AccordionGroup>
         {isFocused && (
           <Typography sx={{ ml: 'auto' }} level="body-sm">
             Or press enter to log in as
@@ -42,7 +55,7 @@ const User = ({ user, handleLoginAs, isFocused }: { user: UserParams; handleLogi
 }
 
 const Admin = () => {
-  const { data: users, isPending } = useQuery<UserParams[]>({
+  const { data: users, isPending } = useQuery<UserData[]>({
     queryKey: ['users'],
     queryFn: () => privateClient.get('/users').then((res) => res.data),
   })
@@ -74,6 +87,7 @@ const Admin = () => {
       {filteredUsers.map((user, index) => (
         <User key={user.id} user={user} handleLoginAs={loginAs} isFocused={index === focusIndex} />
       ))}
+      {search.length > 3 && filteredUsers.length === 0 && <Typography sx={{ mt: '1rem' }}>No users found. Maybe they have not logged into Toppi.</Typography>}
     </Box>
   )
 }

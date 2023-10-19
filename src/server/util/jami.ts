@@ -105,3 +105,9 @@ export const getUserOrganisations = async (userId: string, iamGroups: string[]):
 
   return data || {}
 }
+
+export const getUserInfo = async (userId: string): Promise<{ iamGroups: string[] }> => {
+  const data = await get(`/${userId}`)
+
+  return data || { iamGroups: [] }
+}
