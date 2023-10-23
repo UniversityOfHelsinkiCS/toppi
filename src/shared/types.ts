@@ -16,13 +16,13 @@ export const zDate = z.custom<string>((dateString) => typeof dateString === 'str
 
 export const ContractRequestFormParamsValidator = z
   .object({
-    firstName: z.string().nonempty(),
-    lastName: z.string().nonempty(),
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
     email: z.string().email(),
     birthDate: zDate,
-    faculty: z.string().nonempty(),
+    faculty: z.string().min(1),
     programme: z.string().optional(),
-    courseName: z.string().nonempty(),
+    courseName: z.string().min(1),
     courseStartDate: zDate,
     courseEndDate: zDate,
     contractDuration: ContractDurationOptionsEnum,
@@ -86,7 +86,9 @@ export const CalculatorParamsValidator = z.object({
   hourlyRate: z.number().optional(),
   preparationHours: z.number().optional(),
   totalHours: z.number().optional(),
+  workHourExceptions: z.string(),
   salary: z.number().optional(),
+  salaryExceptions: z.string(),
 })
 
 export type CalculatorParams = z.infer<typeof CalculatorParamsValidator>

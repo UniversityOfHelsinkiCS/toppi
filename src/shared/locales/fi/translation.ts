@@ -63,8 +63,10 @@ const translations = {
     studentCount: 'Opiskelijoiden määrä',
     studentCountWorkingHours: 'Opiskelijoiden määrään perustuva lisätyöaika',
     totalWorkingHours: 'Työaika yhteensä',
+    workHourExceptions: 'Työaikaan vaikuttavat poikkeukset',
     hourlyRate: 'Tuntipalkka',
     totalSalary: 'Palkkio yhteensä',
+    salaryExceptions: 'Palkkioon vaikuttavat poikkeukset',
   },
   calculator: {
     teachingHoursTitle: 'Opetustuntien määrä',
@@ -84,6 +86,8 @@ const translations = {
     totalSalary: 'Palkkio yhteensä',
     workHourCalculator: 'Työaikalaskuri',
     salaryCalculator: 'Palkkalaskuri',
+    salaryExceptions: 'Palkkioon vaikuttavat poikkeukset',
+    workHourExceptions: 'Työaikaan vaikuttavat poikkeukset',
   },
   salaryTableData: {
     levelA: 'Taso A. Vaativuustaso 8-11 (esim. professori)',

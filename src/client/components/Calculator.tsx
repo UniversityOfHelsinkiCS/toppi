@@ -1,6 +1,6 @@
 import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
 import { SxProps } from '@mui/joy/styles/types'
-import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from '../store/calculatorStore'
+import useContractStore, { ContractState, ContractStateSetters, ExceptionsSetters, ExceptionsState, useTotalHours, useWorkHourCalculatorFields } from '../store/calculatorStore'
 import { Option } from '../types'
 import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions, useSalaryTableData } from '../calculatorConfig'
 import { SectionDivider } from './common'
@@ -174,6 +174,9 @@ const WorkHourCalculator = () => {
           <HoursChip hours={totalHours} />
         </Box>
       </Box>
+      <Box mt="2rem">
+        <ExceptionsField fieldName="workHourExceptions" setterName="setWorkHourExceptions" />
+      </Box>
     </Box>
   )
 }
@@ -252,11 +255,21 @@ const SalaryCalculator = () => {
               <HoursChip hours={totalHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={totalHours * hourlyRate} unit="€" />
             </Box>
           </Box>
+          <Box mt="2rem">
+            <ExceptionsField fieldName="salaryExceptions" setterName="setSalaryExceptions" />
+          </Box>
         </Box>
         <SalaryTable sx={{ flex: 2 }} />
       </Box>
     </Box>
   )
+}
+
+const ExceptionsField = ({ fieldName, setterName }: { fieldName: keyof ExceptionsState; setterName: keyof ExceptionsSetters }) => {
+  const { t } = useTranslation()
+  const { exceptions, setExceptions } = useContractStore((state) => ({ exceptions: state[fieldName], setExceptions: state[setterName] }))
+
+  return <Input value={exceptions} onChange={(e) => setExceptions(e.target.value)} type="text" placeholder={t(`calculator.${fieldName}`)} />
 }
 
 const Calculator = () => {

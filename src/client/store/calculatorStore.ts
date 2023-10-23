@@ -4,20 +4,33 @@ import { Option } from '../types'
 import { courseTypeOptions, creditOptions, getPreparationHours, studentCountOptions } from '../calculatorConfig'
 import { CalculatorParams } from '../../shared/types'
 
-interface ContractState {
-  teachingHours: number
-  setTeachingHours: (teachingHours: number) => void
-  courseType: Option
-  setCourseType: (courseType: Option) => void
-  credits: Option
-  setCredits: (credits: Option) => void
-  studentCount: Option
-  setStudentCount: (studentCount: Option) => void
-  hourlyRate: number
-  setHourlyRate: (hourlyRate: number) => void
+export type ExceptionsState = {
+  workHourExceptions: string
+  salaryExceptions: string
 }
 
-const useContractStore = create<ContractState>()(
+export type ExceptionsSetters = {
+  setWorkHourExceptions: (workHourExceptions: string) => void
+  setSalaryExceptions: (salaryExceptions: string) => void
+}
+
+export type ContractState = {
+  teachingHours: number
+  courseType: Option
+  credits: Option
+  studentCount: Option
+  hourlyRate: number
+} & ExceptionsState
+
+export type ContractStateSetters = {
+  setTeachingHours: (teachingHours: number) => void
+  setCourseType: (courseType: Option) => void
+  setCredits: (credits: Option) => void
+  setStudentCount: (studentCount: Option) => void
+  setHourlyRate: (hourlyRate: number) => void
+} & ExceptionsSetters
+
+const useContractStore = create<ContractState & ContractStateSetters>()(
   persist(
     (set) => ({
       teachingHours: 0,
@@ -30,6 +43,10 @@ const useContractStore = create<ContractState>()(
       setStudentCount: (studentCount: Option) => set({ studentCount }),
       hourlyRate: 0,
       setHourlyRate: (hourlyRate: number) => set({ hourlyRate }),
+      workHourExceptions: '',
+      setWorkHourExceptions: (workHourExceptions: string) => set({ workHourExceptions }),
+      salaryExceptions: '',
+      setSalaryExceptions: (salaryExceptions: string) => set({ salaryExceptions }),
     }),
     {
       name: 'calculator-state',
@@ -72,6 +89,8 @@ export const useCalculatorParams: () => CalculatorParams = () => {
     credits: state.credits,
     studentCount: state.studentCount,
     hourlyRate: state.hourlyRate,
+    workHourExceptions: state.workHourExceptions,
+    salaryExceptions: state.salaryExceptions,
   }))
 
   const totalHours = useTotalHours()
@@ -84,7 +103,9 @@ export const useCalculatorParams: () => CalculatorParams = () => {
     hourlyRate: calculatorState.hourlyRate,
     preparationHours: usePreparationHours(),
     totalHours,
+    workHourExceptions: calculatorState.workHourExceptions,
     salary: totalHours * calculatorState.hourlyRate,
+    salaryExceptions: calculatorState.salaryExceptions,
   }
 }
 
