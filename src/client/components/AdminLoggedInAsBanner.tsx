@@ -7,14 +7,14 @@ const AdminLoggedInAsBanner = () => {
   const [user, setUser] = React.useState<UserParams>()
 
   React.useEffect(() => {
-    const loggedInAs = localStorage.getItem('toppi-logged-in-as')
+    const loggedInAs = localStorage.getItem('toppi-admin-logged-in-as')
     if (!loggedInAs) return
 
     setUser(JSON.parse(loggedInAs) as UserParams)
   }, [])
 
   const handleClick = () => {
-    localStorage.removeItem('toppi-logged-in-as')
+    localStorage.removeItem('toppi-admin-logged-in-as')
     window.location.reload()
   }
 
