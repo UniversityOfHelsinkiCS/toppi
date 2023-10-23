@@ -1,4 +1,6 @@
 import { Option } from './types'
+import { useTranslation } from 'react-i18next'
+import React from 'react'
 
 export const courseTypeOptions = [
   { label: 'Toistuva', value: 0 },
@@ -26,6 +28,22 @@ export const preparationHoursTableData = [
   [15, 45, 70],
   [20, 60, 90],
 ]
+
+export const useSalaryTableData = () => {
+  const { t } = useTranslation()
+
+  return React.useMemo(
+    () => [
+      { qualificationInfo: t('salaryTableData.levelA'), salary: 55 },
+      { qualificationInfo: t('salaryTableData.levelB'), salary: 40 },
+      { qualificationInfo: t('salaryTableData.levelC'), salary: 30 },
+      { qualificationInfo: t('salaryTableData.levelD'), salary: 24 },
+      { qualificationInfo: t('salaryTableData.levelE'), salary: 20 },
+      { qualificationInfo: t('salaryTableData.levelF'), salary: 19 },
+    ],
+    [t]
+  )
+}
 
 export const getPreparationHours = (credits: Option, courseType: Option) => {
   return preparationHoursTableData[credits.value][courseType.value]

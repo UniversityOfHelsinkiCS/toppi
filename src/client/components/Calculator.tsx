@@ -2,10 +2,9 @@ import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider,
 import { SxProps } from '@mui/joy/styles/types'
 import useContractStore, { useTotalHours, useWorkHourCalculatorFields } from '../store/calculatorStore'
 import { Option } from '../types'
-import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions } from '../calculatorConfig'
+import { courseTypeOptions, creditOptions, preparationHoursTableData, studentCountOptions, useSalaryTableData } from '../calculatorConfig'
 import { SectionDivider } from './common'
 import { useTranslation } from 'react-i18next'
-import { TFunction } from 'i18next'
 
 const HoursChip = ({ hours }: { hours: number }) => {
   const { t } = useTranslation()
@@ -179,18 +178,9 @@ const WorkHourCalculator = () => {
   )
 }
 
-const salaryTableData = (t: TFunction) => [
-  { qualificationInfo: t('salaryTableData.levelA'), salary: 55 },
-  { qualificationInfo: t('salaryTableData.levelB'), salary: 40 },
-  { qualificationInfo: t('salaryTableData.levelC'), salary: 30 },
-  { qualificationInfo: t('salaryTableData.levelD'), salary: 24 },
-  { qualificationInfo: t('salaryTableData.levelE'), salary: 20 },
-  { qualificationInfo: t('salaryTableData.levelF'), salary: 19 },
-]
-
 const SalaryTable = ({ sx }: { sx: SxProps }) => {
   const { t } = useTranslation()
-  const tableData = salaryTableData(t)
+  const tableData = useSalaryTableData()
 
   return (
     <Sheet sx={sx}>
