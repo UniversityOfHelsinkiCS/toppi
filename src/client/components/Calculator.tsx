@@ -1,4 +1,4 @@
-import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip } from '@mui/joy'
+import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip, Textarea } from '@mui/joy'
 import { SxProps } from '@mui/joy/styles/types'
 import useContractStore, { ContractState, ContractStateSetters, ExceptionsSetters, ExceptionsState, useTotalHours, useWorkHourCalculatorFields } from '../store/calculatorStore'
 import { Option } from '../types'
@@ -269,7 +269,20 @@ const ExceptionsField = ({ fieldName, setterName }: { fieldName: keyof Exception
   const { t } = useTranslation()
   const { exceptions, setExceptions } = useContractStore((state) => ({ exceptions: state[fieldName], setExceptions: state[setterName] }))
 
-  return <Input value={exceptions} onChange={(e) => setExceptions(e.target.value)} type="text" placeholder={t(`calculator.${fieldName}`)} />
+  return (
+    <Textarea
+      value={exceptions}
+      onChange={(e) => setExceptions(e.target.value)}
+      placeholder={t(`calculator.${fieldName}`)}
+      minRows={3}
+      slotProps={{ textarea: { maxLength: 1000 } }}
+      endDecorator={
+        <Typography level="body-xs" sx={{ ml: 'auto' }}>
+          {exceptions.length}/1000 character(s)
+        </Typography>
+      }
+    />
+  )
 }
 
 const Calculator = () => {
