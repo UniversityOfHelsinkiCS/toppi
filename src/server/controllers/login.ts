@@ -9,7 +9,9 @@ import { User } from '../db/models'
 const loginRouter = Router()
 
 loginRouter.get('/login', requireAuthenticated(), async (req: RequestWithUser, res) => {
-  await User.upsert(req.user!)
+  if (!req.loginAs) {
+    await User.upsert(req.user!)
+  }
   res.send(req.user)
 })
 
