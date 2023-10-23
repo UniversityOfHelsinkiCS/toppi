@@ -1,15 +1,12 @@
-import React, { useEffect } from 'react'
 import { getHandlerAddresses } from '../api'
 import { HandlerAddress } from '../types'
+import { useQuery } from '@tanstack/react-query'
 
 export const useHandlerAddresses = (query?: { facultyCode?: string; address?: string }) => {
-  const [handlerAddresses, setHandlerAddresses] = React.useState<HandlerAddress[]>()
+  const { data: handlerAddresses, ...rest } = useQuery<HandlerAddress[]>({
+    queryKey: ['handlerAddresses', query],
+    queryFn: () => getHandlerAddresses(query),
+  })
 
-  useEffect(() => {
-    getHandlerAddresses(query).then((data) => {
-      setHandlerAddresses(data)
-    })
-  }, []) // TODO REACT QUERY PLS
-
-  return handlerAddresses
+  return { handlerAddresses, ...rest }
 }
