@@ -1,4 +1,4 @@
-import { Box, CssBaseline, Link, Sheet, Typography } from '@mui/joy'
+import { Box, CssBaseline, CssVarsProvider, Link, Sheet, Typography, extendTheme } from '@mui/joy'
 import { Toaster } from 'sonner'
 import { GitHub } from '@mui/icons-material'
 import toskaLogo from './assets/toska13.png'
@@ -33,8 +33,20 @@ const Footer = () => (
   </Sheet>
 )
 
+const theme = extendTheme({
+  components: {
+    JoySheet: {
+      styleOverrides: {
+        root: {
+          boxShadow: '1px 4px 8px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.15)',
+        },
+      },
+    },
+  },
+})
+
 const Layout = () => (
-  <CssBaseline>
+  <CssVarsProvider theme={theme}>
     <Toaster />
     <AdminLoggedInAsBanner />
     <Box display="flex" flexDirection="column" minHeight="100vh">
@@ -42,7 +54,7 @@ const Layout = () => (
       <Outlet />
       <Footer />
     </Box>
-  </CssBaseline>
+  </CssVarsProvider>
 )
 
 export default Layout

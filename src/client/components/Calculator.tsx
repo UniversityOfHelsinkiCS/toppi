@@ -190,7 +190,7 @@ const SalaryTable = ({ sx }: { sx: SxProps }) => {
   const tableData = useSalaryTableData()
 
   return (
-    <Sheet sx={sx}>
+    <Box sx={sx}>
       <Box pb="1rem">
         <Typography level="body-md">{t('calculator.salaryTableTitle')}</Typography>
       </Box>
@@ -210,7 +210,7 @@ const SalaryTable = ({ sx }: { sx: SxProps }) => {
           ))}
         </tbody>
       </Table>
-    </Sheet>
+    </Box>
   )
 }
 

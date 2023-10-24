@@ -29,7 +29,7 @@ export const TableItem = ({ label, value, extra, copy = true }: { label: string;
 }
 
 export const DataTable = ({ children, copy = false, hover = false }: { children: React.ReactNode; copy?: boolean; hover?: boolean }) => (
-  <Sheet variant="outlined" sx={{ borderRadius: 'sm' }}>
+  <Sheet sx={{ borderRadius: 'sm' }}>
     <Table
       hoverRow={copy || hover}
       sx={{

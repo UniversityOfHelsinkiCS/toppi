@@ -1,4 +1,4 @@
-import { Box, Sheet, Tooltip, Typography, useTheme } from '@mui/joy'
+import { Box, Tooltip, Typography, useTheme } from '@mui/joy'
 import { Outlet, useLoaderData, useMatch, useNavigate } from 'react-router-dom'
 import { ContractRequest } from '../types'
 import { StatusChip } from '../components/common'
@@ -36,27 +36,25 @@ const ContractRequestList = () => {
   const { t } = useTranslation()
 
   return (
-    <Box flex={0.4}>
+    <Box width="40%">
       <Typography level="h4" sx={{ mb: '1rem' }}>
         Työsopimuspyynnöt
       </Typography>
-      <Sheet variant="outlined" sx={{ borderRadius: 'sm' }}>
-        <DataTable hover>
-          <thead style={{ height: '3rem' }}>
-            <tr>
-              <th style={{ width: '14rem' }}>{t('common.sender')}</th>
-              <th>{t('common.dateShort')}</th>
-              <th>{t('common.facultyShort')}</th>
-              <th>{t('common.contractRequestStatus')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {contracts.map((c) => (
-              <ContractRequestItem contractRequest={c} key={c.id} facultyName={faculties?.find((f) => f.code === c.data.formData.faculty)?.name?.[currentLng()] ?? ''} />
-            ))}
-          </tbody>
-        </DataTable>
-      </Sheet>
+      <DataTable hover>
+        <thead style={{ height: '3rem' }}>
+          <tr>
+            <th style={{ width: '14rem' }}>{t('common.sender')}</th>
+            <th>{t('common.dateShort')}</th>
+            <th>{t('common.facultyShort')}</th>
+            <th>{t('common.contractRequestStatus')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {contracts.map((c) => (
+            <ContractRequestItem contractRequest={c} key={c.id} facultyName={faculties?.find((f) => f.code === c.data.formData.faculty)?.name?.[currentLng()] ?? ''} />
+          ))}
+        </tbody>
+      </DataTable>
     </Box>
   )
 }
@@ -64,7 +62,7 @@ const ContractRequestList = () => {
 const ContractRequests = () => {
   return (
     <Box p="2rem">
-      <Box display="flex">
+      <Box display="flex" gap="2rem">
         <ContractRequestList />
         <Outlet />
       </Box>

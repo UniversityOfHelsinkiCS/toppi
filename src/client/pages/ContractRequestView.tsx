@@ -1,5 +1,5 @@
 import { Form, useLoaderData } from 'react-router-dom'
-import { Alert, Box, Button, FormControl, FormLabel, Sheet, Textarea, Typography } from '@mui/joy'
+import { Alert, Box, Button, FormControl, FormLabel, Textarea, Typography } from '@mui/joy'
 import React from 'react'
 import { HandlerAddressChip, SectionDivider, StatusChip } from '../components/common'
 import { useFaculties, useProgrammes } from '../hooks/useFaculties'
@@ -147,7 +147,7 @@ const ContractRequestView = () => {
   const [viewRaw, setViewRaw] = React.useState(false)
 
   return (
-    <Sheet sx={{ px: '3rem', flex: 0.5 }}>
+    <Box width="50%">
       <Typography level="h4">Pyynnön #{contractRequest.id} tiedot</Typography>
       {contractRequest.isTest && <Alert sx={{ my: '1rem' }}>{t('contractRequestView.testInfo')}</Alert>}
       <Box display="flex">
@@ -160,7 +160,7 @@ const ContractRequestView = () => {
       <UpdateStatus contractRequest={contractRequest} />
       <SectionDivider />
       {handlerAddresses && <HandlerAddresses handlerAddresses={handlerAddresses} />}
-    </Sheet>
+    </Box>
   )
 }
 

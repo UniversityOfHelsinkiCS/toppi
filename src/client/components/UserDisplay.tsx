@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, IconButton, Sheet, Tooltip, Typography } from '@mui/joy'
+import { Avatar, IconButton, Sheet, Tooltip, Typography } from '@mui/joy'
 import { UserParams } from '../../shared/types'
 import { handleLogout } from '../util/logout'
 import { Logout } from '@mui/icons-material'
@@ -16,7 +16,6 @@ export const UserDisplay = ({ user }: { user: UserParams }) => {
   return (
     <Sheet
       id="user-display"
-      variant="outlined"
       sx={{
         display: 'flex',
         gap: '0.5rem',
