@@ -1,4 +1,4 @@
-import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip, Textarea } from '@mui/joy'
+import { Box, Option as SelectOption, Select, Sheet, Input, Typography, Divider, Table, Tooltip, Chip, Textarea, FormControl, FormLabel, FormHelperText } from '@mui/joy'
 import { SxProps } from '@mui/joy/styles/types'
 import useContractStore, { ContractState, ContractStateSetters, ExceptionsSetters, ExceptionsState, useTotalHours, useWorkHourCalculatorFields } from '../store/calculatorStore'
 import { Option } from '../types'
@@ -174,8 +174,12 @@ const WorkHourCalculator = () => {
           <HoursChip hours={totalHours} />
         </Box>
       </Box>
-      <Box mt="2rem">
-        <ExceptionsField fieldName="workHourExceptions" setterName="setWorkHourExceptions" />
+      <Box mt="6rem">
+        <FormControl>
+          <FormLabel>{t('calculator.workHourExceptions')}</FormLabel>
+          <FormHelperText sx={{ my: '0.5rem' }}>Jos työaikasi tulee poikkeamaan laskurin antamasta lukemasta, kerro siitä seikkaperäisesti tässä.</FormHelperText>
+          <ExceptionsField fieldName="workHourExceptions" setterName="setWorkHourExceptions" />
+        </FormControl>
       </Box>
     </Box>
   )
@@ -255,11 +259,15 @@ const SalaryCalculator = () => {
               <HoursChip hours={totalHours} /> X <SalaryChip salary={hourlyRate} /> = <SalaryChip salary={totalHours * hourlyRate} unit="€" />
             </Box>
           </Box>
-          <Box mt="2rem">
-            <ExceptionsField fieldName="salaryExceptions" setterName="setSalaryExceptions" />
+          <Box mt="4rem">
+            <FormControl>
+              <FormLabel>{t('calculator.salaryExceptions')}</FormLabel>
+              <FormHelperText sx={{ my: '0.5rem' }}>Jos palkkiosi tulee poikkeamaan laskurin antamasta lukemasta, kerro siitä seikkaperäisesti tässä.</FormHelperText>
+              <ExceptionsField fieldName="salaryExceptions" setterName="setSalaryExceptions" />
+            </FormControl>
           </Box>
         </Box>
-        <SalaryTable sx={{ flex: 2 }} />
+        <SalaryTable sx={{ flex: 1 }} />
       </Box>
     </Box>
   )
