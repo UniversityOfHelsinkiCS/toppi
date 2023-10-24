@@ -219,8 +219,8 @@ const SalaryInput = () => {
 
   return (
     <Input
-      value={hourlyRate}
-      onChange={(e) => setHourlyRate(e.target.valueAsNumber)}
+      value={hourlyRate || ''}
+      onChange={(e) => setHourlyRate(e.target.valueAsNumber || 0)}
       type="number"
       placeholder="0"
       slotProps={{ input: { min: 0, max: 1000 } }}
