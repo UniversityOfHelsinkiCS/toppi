@@ -40,7 +40,9 @@ const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }
     <DataTable copy>
       <thead style={{ height: '3rem' }}>
         <tr>
-          <th scope="col">{t('common.fieldName')}</th>
+          <th scope="col" style={{ width: '40%' }}>
+            {t('common.fieldName')}
+          </th>
           <th scope="col">{t('common.fieldValue')}</th>
         </tr>
       </thead>
@@ -56,7 +58,7 @@ const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }
         <TableItem label={t('formFields.courseEndDate')} value={formData.courseEndDate} />
         <TableItem label={t('formFields.contractStartDate')} value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
         <TableItem label={t('formFields.contractEndDate')} value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
-        <TableItem label={t('formFields.additionalInfos')} value={formData.additionalInfo} />
+        <TableItem label={t('formFields.additionalInfos')} value={formData.additionalInfo} copy={false} />
       </tbody>
     </DataTable>
   )

@@ -37,8 +37,8 @@ const CalculatorPreview = ({
       </DataTable>
       <DataTable>
         <tbody>
-          <TableItem label={t('calculatorFields.workHourExceptions')} value={workHourExceptions} copy={copy} />
-          <TableItem label={t('calculatorFields.salaryExceptions')} value={salaryExceptions} copy={copy} />
+          <TableItem label={t('calculatorFields.workHourExceptions')} value={workHourExceptions} copy={false} />
+          <TableItem label={t('calculatorFields.salaryExceptions')} value={salaryExceptions} copy={false} />
         </tbody>
       </DataTable>
     </Box>

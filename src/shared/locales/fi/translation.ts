@@ -3,7 +3,7 @@ const translations = {
     additionalInfo: 'Lisätietoa',
     hours: 'tuntia',
     missing: 'Puuttuu',
-    copySuccess: 'Kopioitu leikepöydälle',
+    copySuccess: 'Sisältö kopioitu leikepöydälle: {{content}}',
     sender: 'Lähettäjä',
     dateShort: 'Pvm',
     facultyShort: 'TDK',
