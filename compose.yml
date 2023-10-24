@@ -25,12 +25,12 @@ services:
       - 5432:5432
     container_name: toppi_db
     volumes:
-      - toppi_dev_data:/data
+      - dev_data:/data
 
   redis:
     image: redis:7-alpine
     container_name: toppi_redis
 
 volumes:
-  toppi_dev_data:
+  dev_data:
   node_modules:
