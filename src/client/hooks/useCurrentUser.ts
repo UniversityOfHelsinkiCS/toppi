@@ -1,8 +1,12 @@
-import { useRouteLoaderData } from 'react-router-dom'
 import { UserParams } from '../../shared/types'
+import { useQuery } from '@tanstack/react-query'
+import { login } from '../api'
 
 export const useCurrentUser = () => {
-  const user = useRouteLoaderData('privateRoot') as UserParams | undefined
+  const { data: user, ...rest } = useQuery<UserParams>({
+    queryKey: ['currentUser'],
+    queryFn: login,
+  })
 
-  return user
+  return { user, ...rest }
 }

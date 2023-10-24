@@ -64,7 +64,7 @@ const getDateError = (t: TFunction, errorMessage?: string) => {
 }
 
 const useDefaultValues = () => {
-  const user = useCurrentUser()
+  const { user } = useCurrentUser()
 
   const defaultValues: ContractRequestFormParams = React.useMemo(
     () => ({
@@ -89,7 +89,7 @@ const useDefaultValues = () => {
 
 const ContractForm = () => {
   const { t } = useTranslation()
-  const user = useCurrentUser()
+  const { user } = useCurrentUser()
   const isStaff = user && hasRight(user, UserRoles.Faculty)
 
   const { control, handleSubmit, setValue, clearErrors, getValues, watch, formState } = useForm({

@@ -3,6 +3,7 @@ import { inDevelopment, inE2E, inTesting } from '../config'
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from 'react-router-dom'
 import { getMockHeaders } from './util/mockHeaders'
 import { ContractRequestParams, HandlerAddressParams, OrganisationUnit, UserParams } from '../shared/types'
+import { queryClient } from './queryClient'
 
 export const publicClient = axios.create({
   baseURL: `/api`,
@@ -66,6 +67,16 @@ export const login = async () => {
 
   return data as UserParams
 }
+
+/**
+ * https://reactrouter.com/en/main/guides/data-libs
+ */
+export const loginLoader = () =>
+  queryClient.fetchQuery({
+    queryKey: ['currentUser'],
+    queryFn: login,
+    staleTime: 1000 * 60,
+  })
 
 export const logout = async () => {
   const { data } = await privateClient.get('/logout')
