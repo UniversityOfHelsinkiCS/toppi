@@ -1,4 +1,4 @@
-import { Box, CssBaseline, CssVarsProvider, Link, Sheet, Typography, extendTheme } from '@mui/joy'
+import { Box, CssVarsProvider, Link, Sheet, Typography, extendTheme } from '@mui/joy'
 import { Toaster } from 'sonner'
 import { GitHub } from '@mui/icons-material'
 import toskaLogo from './assets/toska13.png'

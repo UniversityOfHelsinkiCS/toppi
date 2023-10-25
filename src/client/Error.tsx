@@ -16,13 +16,13 @@ export const Error = () => {
   useEffect(() => {
     if (isRouteErrorResponse(error)) {
       console.log('Route error: ', error)
-      if (error.status === 401 && !user) {
+      if (error.status === 401) {
         handleLogin()
         return
       }
     } else if (error instanceof AxiosError) {
       console.log('Axios error: ', error)
-      if (error.response?.status === 401 && !user) {
+      if (error.response?.status === 401) {
         handleLogin()
         return
       }
