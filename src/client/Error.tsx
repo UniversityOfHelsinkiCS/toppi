@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/browser'
 import { useTranslation } from 'react-i18next'
 import { handleLogin } from './util/login'
 import { useCurrentUser } from './hooks/useCurrentUser'
+import { AxiosError } from 'axios'
 
 export const Error = () => {
   const { t } = useTranslation()
@@ -12,16 +13,21 @@ export const Error = () => {
   const error = useRouteError() as any
   const navigate = useNavigate()
 
-  console.error(error)
-
   useEffect(() => {
     if (isRouteErrorResponse(error)) {
+      console.log('Route error: ', error)
       if (error.status === 401 && !user) {
         handleLogin()
         return
       }
-      Sentry.captureException(error.error)
+    } else if (error instanceof AxiosError) {
+      console.log('Axios error: ', error)
+      if (error.response?.status === 401 && !user) {
+        handleLogin()
+        return
+      }
     } else {
+      console.log('Unknown error: ', error)
       Sentry.captureException(error)
     }
   }, [error, user])
