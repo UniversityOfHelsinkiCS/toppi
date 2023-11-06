@@ -76,6 +76,9 @@ export const Navbar = () => {
         pt: '1rem',
         mb: '4rem',
         borderRadius: '1rem',
+        position: 'sticky',
+        top: '-6rem',
+        zIndex: 10,
       }}
     >
       <Box
