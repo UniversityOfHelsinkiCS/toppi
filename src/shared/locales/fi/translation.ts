@@ -37,6 +37,16 @@ const translations = {
     handlerAddresses: 'Kohdennusosoitteet',
     admin: 'Admin',
   },
+  ingress: {
+    title: 'Tervetuloa Toppiin!',
+    text: `Tämä laskuri on tarkoitettu Helsingin yliopistolle tuntiopetusta pitämään tulevien opettajien palkkioiden laskemista varten. Helsingin yliopistolla on määritetty yleiset periaatteet, miten tuntiopetuksen laskennallinen työaika määräytyy ja minkä suuruisia tuntiperusteisia palkkioita tuntiopetuksesta opettajalle maksetaan.
+ 
+    Laskurilla opettaja voi selvittää, kuinka suuri palkkio hänelle yleisten periaatteiden mukaan maksettaisiin erilaisista tuntiopetuskokonaisuuksista. Laskennalliseen työaikaan vaikuttavat opetustuntien määrä, opetuksen valmisteluun käytetty aika (kurssin tyyppi ja opintopisteet) sekä opiskelijoiden ohjaukseen ja arviointiin käytetty aika (suunniteltu opiskelijoiden määrä). Näiden tietojen perusteella tuntiopetukselle määritetään laskennallinen työaika ja laskennallisilta työtunneilta maksetaan opettajan pätevyyden mukaan määräytyvä tuntipalkkio.
+     
+    Syöttämällä kurssin tiedot työaikalaskuriin opettaja voi selvittää kuinka monelta tunnilta palkkio maksettaisiin. Palkkiolaskurilla opettaja voi laskea koko kurssilta maksettavan kokonaispalkkion.
+     
+    Mikäli olet jo sopinut kurssin pitämisestä ja työstäsi on tarkoitus tehdä työsopimus, voit alla olevalla työsopimuspyyntölomakkeella täyttää työsopimusta varten tarvittavat tiedot. Täyttämällä lomakkeen tiedot huolellisesti nopeutat työsopimuksen valmistelua. Jos olette esihenkilön kanssa erikseen sopineet poikkeuksista yleisistä palkkionmääräytymisperiaatteista, kirjaathan ne alla oleviin asianomaisiin kenttiin. HUOM! Työsopimuspyyntölomake ei ole vielä lopullinen työsopimus vaan sinuun ollaan erikseen yhteydessä, kun lopullinen työsopimus on valmisteltu ja se tulee osapuolten allekirjoitettavaksi.`,
+  },
   status: {
     waiting: 'Odottaa',
     handled: 'Käsitelty',
