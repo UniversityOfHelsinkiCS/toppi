@@ -1,5 +1,4 @@
-import { Box, Button, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from '@mui/joy'
-import CalculatorPreview from './CalculatorPreview'
+import { Box, Button, Modal, ModalClose, ModalDialog, ModalOverflow, Option, Radio, RadioGroup, Select, Sheet, Textarea, Typography } from '@mui/joy'
 import { toast } from 'sonner'
 import React from 'react'
 import dayjs from 'dayjs'
@@ -10,11 +9,11 @@ import { ContractRequestFormParams, ContractRequestFormParamsValidator, UserRole
 import { useCurrentUser } from '../hooks/useCurrentUser'
 import { useSendContract } from '../hooks/useSendContract'
 import { useFaculties, useProgrammes } from '../hooks/useFaculties'
-import { useCalculatorParams } from '../store/calculatorStore'
 import { useTranslation } from 'react-i18next'
 import { FormField, FormInputField } from './formComponents'
 import { TFunction } from 'i18next'
 import { hasRight } from '../../shared/authorizationUtils'
+import FormPreview from './FormPreview'
 
 const InputSection = ({
   label,
@@ -87,10 +86,46 @@ const useDefaultValues = () => {
   return defaultValues
 }
 
+const PreviewModal = ({
+  formData,
+  isStaff,
+  isOpen,
+  setIsOpen,
+  onSubmit,
+}: {
+  formData: ContractRequestFormParams
+  isStaff: boolean
+  isOpen: boolean
+  setIsOpen: (o: boolean) => void
+  onSubmit: () => void
+}) => {
+  const { t } = useTranslation()
+  const onClick = () => {
+    onSubmit()
+    setIsOpen(false)
+  }
+
+  return (
+    <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+      <ModalOverflow>
+        <ModalDialog sx={(theme) => ({ pb: '10rem', [theme.breakpoints.up('md')]: { width: '80vw' }, [theme.breakpoints.up('lg')]: { width: '60vw' } })}>
+          <ModalClose />
+          <FormPreview formData={formData} />
+          <Button sx={{ mt: '4rem' }} type="submit" onClick={onClick}>
+            {t('contractRequestForm.submit')}
+          </Button>
+          {isStaff && <Typography level="body-sm">{t('contractRequestForm.testInfo')}</Typography>}
+        </ModalDialog>
+      </ModalOverflow>
+    </Modal>
+  )
+}
+
 const ContractForm = () => {
   const { t } = useTranslation()
+  const [isOpen, setIsOpen] = React.useState(false)
   const { user } = useCurrentUser()
-  const isStaff = user && hasRight(user, UserRoles.Faculty)
+  const isStaff = (user && hasRight(user, UserRoles.Faculty)) || false
 
   const { control, handleSubmit, setValue, clearErrors, getValues, watch, formState } = useForm({
     resolver: zodResolver(ContractRequestFormParamsValidator),
@@ -116,6 +151,10 @@ const ContractForm = () => {
 
   const isRecommendedContractDates = watch('contractDuration') === 'recommended'
 
+  const isValid = formState.isValid
+
+  const submit = handleSubmit(onSubmit)
+
   return (
     <Sheet
       sx={{
@@ -126,7 +165,7 @@ const ContractForm = () => {
       <Box>
         <Typography level="body-md">{t('contractRequestForm.formTitle')}</Typography>
         <Box mt="2rem">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={submit}>
             <Box display="flex" flexDirection="column" gap="3rem">
               <InputSection>
                 <FormInputField required error={formState.errors.firstName ? t('errors.required') : undefined} label={t('formFields.firstName')} name="firstName" control={control} sx={{ flex: 1 }} />
@@ -274,20 +313,16 @@ const ContractForm = () => {
                 control={control}
                 pretext={t('contractRequestForm.additionalInfoPretext')}
               />
-              <Button type="submit">{t('contractRequestForm.submit')}</Button>
-              {isStaff && <Typography level="body-sm">{t('contractRequestForm.testInfo')}</Typography>}
+              <Button type="button" onClick={() => setIsOpen(true)} disabled={!isValid}>
+                {t('contractRequestForm.beginSubmission')}
+              </Button>
             </Box>
+            <PreviewModal isOpen={isOpen} setIsOpen={setIsOpen} isStaff={isStaff} formData={getValues()} onSubmit={submit} />
           </form>
         </Box>
       </Box>
     </Sheet>
   )
-}
-
-const CalculatorPreviewContainer = () => {
-  const previewData = useCalculatorParams()
-
-  return <CalculatorPreview {...previewData} copy={false} />
 }
 
 const ContractRequestForm = () => {
@@ -296,18 +331,7 @@ const ContractRequestForm = () => {
   return (
     <Box p="1rem">
       <Typography level="h4">{t('common.contractRequest')}</Typography>
-      <Box sx={(theme) => ({ display: 'flex', gap: '2rem', py: '4rem', [theme.breakpoints.down('md')]: { flexDirection: 'column-reverse' } })}>
-        <Box flex={3}>
-          <ContractForm />
-        </Box>
-        <Box flex={2}>
-          <Box mb="2rem">
-            <Typography level="body-md">{t('contractRequestForm.calculatorPreviewTitle')}</Typography>
-            <Typography level="body-sm">{t('contractRequestForm.calculatorPreviewDescription')}</Typography>
-          </Box>
-          <CalculatorPreviewContainer />
-        </Box>
-      </Box>
+      <ContractForm />
     </Box>
   )
 }

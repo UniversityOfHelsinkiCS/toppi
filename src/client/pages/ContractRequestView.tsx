@@ -2,14 +2,13 @@ import { Form, useLoaderData } from 'react-router-dom'
 import { Alert, Box, Button, FormControl, FormLabel, Textarea, Typography } from '@mui/joy'
 import React from 'react'
 import { HandlerAddressChip, SectionDivider, StatusChip } from '../components/common'
-import { useFaculties, useProgrammes } from '../hooks/useFaculties'
 import { ContractRequest, HandlerAddress } from '../types'
-import { ContractDurationOption, ContractRequestFormParams, contractRequestStatuses } from '../../shared/types'
+import { contractRequestStatuses } from '../../shared/types'
 import { useTranslation } from 'react-i18next'
-import { TableItem, DataTable } from '../components/CustomTable'
 import CalculatorPreview from '../components/CalculatorPreview'
 import { useHandlerAddresses } from '../hooks/useHandlerAddresses'
 import { Warning } from '@mui/icons-material'
+import FormPreviewTable from '../components/FormPreviewTable'
 
 const Raw = ({ data }: { data: ContractRequest }) => {
   return (
@@ -21,56 +20,13 @@ const Raw = ({ data }: { data: ContractRequest }) => {
   )
 }
 
-const FormattedFormData = ({ formData }: { formData: ContractRequestFormParams }) => {
-  const { t } = useTranslation()
-  const faculties = useFaculties()
-  const programmes = useProgrammes(formData.faculty)
-
-  const facultyDisplay = (code: string | undefined) => {
-    const faculty = faculties?.find((f) => f.code === code)
-    return faculty ? faculty.name.fi : undefined
-  }
-  const programmeDisplay = (code: string | undefined) => {
-    const programme = programmes?.find((p) => p.key === code)
-    return programme ? programme.name.fi : undefined
-  }
-  const contractDisplay = (duration: ContractDurationOption) => (duration === 'custom' ? t('formFields.customContractDuration') : t('formFields.recommendedContractDuration'))
-
-  return (
-    <DataTable copy>
-      <thead style={{ height: '3rem' }}>
-        <tr>
-          <th scope="col" style={{ width: '40%' }}>
-            {t('common.fieldName')}
-          </th>
-          <th scope="col">{t('common.fieldValue')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <TableItem label={t('formFields.firstName')} value={formData.firstName} />
-        <TableItem label={t('formFields.lastName')} value={formData.lastName} />
-        <TableItem label={t('formFields.email')} value={formData.email} />
-        <TableItem label={t('formFields.birthDate')} value={formData.birthDate} />
-        <TableItem label={t('common.faculty')} value={formData.faculty} extra={facultyDisplay(formData.faculty)} />
-        <TableItem label={t('common.faculty')} value={formData.programme} extra={programmeDisplay(formData.programme)} />
-        <TableItem label={t('formFields.courseName')} value={formData.courseName} />
-        <TableItem label={t('formFields.courseStartDate')} value={formData.courseStartDate} />
-        <TableItem label={t('formFields.courseEndDate')} value={formData.courseEndDate} />
-        <TableItem label={t('formFields.contractStartDate')} value={formData.contractStartDate} extra={contractDisplay(formData.contractDuration)} />
-        <TableItem label={t('formFields.contractEndDate')} value={formData.contractEndDate} extra={contractDisplay(formData.contractDuration)} />
-        <TableItem label={t('formFields.additionalInfos')} value={formData.additionalInfo} copy={false} />
-      </tbody>
-    </DataTable>
-  )
-}
-
 const Formatted = ({ contractRequest }: { contractRequest: ContractRequest }) => {
   const { t } = useTranslation()
 
   return (
     <Box>
       <Typography level="body-sm">{t('common.clickToCopy')}</Typography>
-      <FormattedFormData formData={contractRequest.data.formData} />
+      <FormPreviewTable formData={contractRequest.data.formData} copy />
       <Typography level="body-md" mt="2rem" mb="0.5rem">
         {t('contractRequestView.calculatorFields')}
       </Typography>

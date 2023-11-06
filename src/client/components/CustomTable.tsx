@@ -7,9 +7,9 @@ const copyToClipboard = (text: string, successText: string) => {
   toast.success(successText)
 }
 
-export const TableItem = ({ label, value, extra, copy = true }: { label: string; value?: string | number; extra?: string; copy?: boolean }) => {
+export const TableItem = ({ label, value, extra, copy = true, missingText }: { label: string; value?: string | number; extra?: string; copy?: boolean; missingText?: string }) => {
   const { t } = useTranslation()
-  const shownExtra = value ? extra : t('common.missing')
+  const shownExtra = value ? extra : missingText ?? t('common.missing')
 
   return (
     <tr onClick={copy ? () => value && copyToClipboard('' + value, t('common.copySuccess', { content: value })) : undefined} style={{ cursor: value && copy ? 'copy' : 'inherit' }}>

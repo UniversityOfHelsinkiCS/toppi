@@ -8,9 +8,12 @@ export const useSendContract = () => {
   const calculatorParams = useCalculatorParams()
   const client = user ? privateClient : publicClient
 
-  return (contractRequest: ContractRequestCreateParams) =>
-    sendContract(client, {
+  return (contractRequest: ContractRequestCreateParams) => {
+    console.log('Sending contract request')
+
+    return sendContract(client, {
       formData: contractRequest,
       calculatorData: calculatorParams,
     })
+  }
 }

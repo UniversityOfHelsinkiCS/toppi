@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { CalculatorParams } from '../../shared/types'
 import { DataTable, TableItem } from './CustomTable'
-import { Box } from '@mui/joy'
+import { Box, Typography } from '@mui/joy'
 
 const CalculatorPreview = ({
   teachingHours,
@@ -35,12 +35,17 @@ const CalculatorPreview = ({
           <TableItem label={t('calculatorFields.totalSalary')} value={salary} extra="€" copy={copy} />
         </tfoot>
       </DataTable>
-      <DataTable>
-        <tbody>
-          <TableItem label={t('calculatorFields.workHourExceptions')} value={workHourExceptions} copy={false} />
-          <TableItem label={t('calculatorFields.salaryExceptions')} value={salaryExceptions} copy={false} />
-        </tbody>
-      </DataTable>
+      <Box mt="1rem">
+        <Typography sx={{ mb: '1rem' }} level="h4">
+          {t('common.exceptions')}
+        </Typography>
+        <DataTable>
+          <tbody>
+            <TableItem label={t('calculatorFields.workHourExceptions')} value={workHourExceptions} copy={false} missingText={t('common.notPresent')} />
+            <TableItem label={t('calculatorFields.salaryExceptions')} value={salaryExceptions} copy={false} missingText={t('common.notPresent')} />
+          </tbody>
+        </DataTable>
+      </Box>
     </Box>
   )
 }

@@ -3,6 +3,7 @@ const translations = {
     additionalInfo: 'Lisätietoa',
     hours: 'tuntia',
     missing: 'Puuttuu',
+    notPresent: 'Ei ole',
     copySuccess: 'Sisältö kopioitu leikepöydälle: {{content}}',
     sender: 'Lähettäjä',
     dateShort: 'Pvm',
@@ -25,6 +26,7 @@ const translations = {
     details: 'Tarkemmat tiedot',
     goBack: 'Takaisin',
     test: 'Testi',
+    exceptions: 'Poikkeukset',
   },
   navbar: {
     description: '– TYÖKALU ULKOPUOLISTEN TUNTIOPETTAJIEN TYÖAIKOJEN JA PALKKIOIDEN LASKEMISEEN',
@@ -118,11 +120,17 @@ const translations = {
     calculatorPreviewTitle: 'Työaika ja palkka',
     calculatorPreviewDescription: 'Täyttämäsi laskurin tiedot lähetetään työsopimuspyynnön mukana. Tarkistathan vielä niiden oikeellisuuden.',
     additionalInfoPretext: 'Kerro tässä esimerkiksi sovituista poikkeuksista',
+    beginSubmission: 'Aloita lähetys',
     submitLoading: 'Lähetetään työsopimuspyyntöä...',
     submitSuccess: 'Työsopimuspyyntö lähetetty onnistuneesti',
     submitError: 'Työsopimuspyynnön lähettäminen epäonnistui',
     submit: 'Lähetä käsiteltäväksi',
     testInfo: 'Kuulut Topin henkilökuntaan, joten lähettämäsi pyyntö merkitään testiksi.',
+  },
+  contractRequestPreview: {
+    title: 'Työsopimuspyynnön esikatselu',
+    description: 'Tarkista vielä syöttämäsi työsopimuspyynnön tiedot ennen lähetystä.',
+    formFieldsSection: 'Henkilötiedot ja kurssin muut tiedot',
   },
   formFields: {
     firstName: 'Etunimi',
