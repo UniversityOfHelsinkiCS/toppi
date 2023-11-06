@@ -14,6 +14,8 @@ export const initSentry = (app: Router) => {
 
 export const sentryRequestHandler: RequestHandler = _Sentry.Handlers.requestHandler()
 
+export const sentryTracingHandler: RequestHandler = _Sentry.Handlers.tracingHandler()
+
 export const sentryErrorHandler: ErrorRequestHandler = _Sentry.Handlers.errorHandler()
 
 export const Sentry = _Sentry

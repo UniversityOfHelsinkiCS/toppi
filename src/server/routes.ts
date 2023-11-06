@@ -5,7 +5,7 @@ import contractsRouter from './controllers/contracts'
 import loginRouter from './controllers/login'
 import testRouter from './controllers/test'
 import { inProduction, inStaging } from '../config'
-import { initSentry, sentryErrorHandler, sentryRequestHandler } from './middleware/sentry'
+import { initSentry, sentryErrorHandler, sentryRequestHandler, sentryTracingHandler } from './middleware/sentry'
 import { getCurrentUser } from './middleware/authentication'
 import { errorHandler } from './middleware/error'
 import organisationsRouter from './controllers/organisations'
@@ -38,6 +38,7 @@ if (inProduction) {
 }
 
 mainRouter.use(sentryRequestHandler)
+mainRouter.use(sentryTracingHandler)
 
 mainRouter.use(cors())
 mainRouter.use(express.json())
