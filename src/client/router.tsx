@@ -20,6 +20,7 @@ const router = createBrowserRouter(
         {
           path: '',
           element: <Home />,
+          errorElement: <Error />,
         },
       ],
     },
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
         {
           path: '',
           element: <Home />,
+          errorElement: <Error />,
         },
         {
           path: 'contract-requests',

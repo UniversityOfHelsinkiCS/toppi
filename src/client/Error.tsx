@@ -1,36 +1,29 @@
 import { Box, Button, Typography } from '@mui/joy'
-import { useEffect } from 'react'
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
 import * as Sentry from '@sentry/browser'
 import { useTranslation } from 'react-i18next'
 import { handleLogin } from './util/login'
-import { useCurrentUser } from './hooks/useCurrentUser'
 import { AxiosError } from 'axios'
 
 export const Error = () => {
   const { t } = useTranslation()
-  const user = useCurrentUser()
   const error = useRouteError() as any
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (isRouteErrorResponse(error)) {
-      console.log('Route error: ', error)
-      if (error.status === 401) {
-        handleLogin()
-        return
-      }
-    } else if (error instanceof AxiosError) {
-      console.log('Axios error: ', error)
-      if (error.response?.status === 401) {
-        handleLogin()
-        return
-      }
-    } else {
-      console.log('Unknown error: ', error)
-      Sentry.captureException(error)
+  if (isRouteErrorResponse(error)) {
+    if (error.status === 401) {
+      handleLogin()
+      return
     }
-  }, [error, user])
+  } else if (error instanceof AxiosError) {
+    if (error.response?.status === 401) {
+      handleLogin()
+      return
+    }
+  } else {
+    console.log('Unknown error: ', error)
+    Sentry.captureException(error)
+  }
 
   return (
     <Box

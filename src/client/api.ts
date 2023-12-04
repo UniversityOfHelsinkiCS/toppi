@@ -64,19 +64,22 @@ export const updateStatusAction = async ({ request, params }: ActionFunctionArgs
 
 export const login = async () => {
   const { data } = await privateClient.get('/login')
-
   return data as UserParams
 }
 
 /**
  * https://reactrouter.com/en/main/guides/data-libs
  */
-export const loginLoader = () =>
-  queryClient.fetchQuery({
+export const loginLoader = async () => {
+  const res = await queryClient.fetchQuery({
     queryKey: ['currentUser'],
     queryFn: login,
     staleTime: 1000 * 60,
+    retry: false,
   })
+
+  return res
+}
 
 export const logout = async () => {
   const { data } = await privateClient.get('/logout')
